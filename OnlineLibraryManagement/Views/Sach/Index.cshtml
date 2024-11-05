@@ -1,0 +1,114 @@
+﻿@model IEnumerable<OnlineLibraryManagement.MyModels.CSach>
+
+@{
+    ViewData["Title"] = "Quản lý sách";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+@{
+    QuanLyThuVienContext db = new QuanLyThuVienContext();
+}
+
+<h1>Danh sách các đầu sách</h1>
+
+<p>
+    <a asp-action="formThemSach" class="btn btn-primary">Thêm sách mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Masach)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tensach)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Soluong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Anhbia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maloai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manxb)
+            </th>
+            <th>
+                Tác giả
+            </th>
+            <th>Tác vụ</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Masach)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tensach)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Soluong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anhbia)
+            </td>
+            <td>
+                    @{
+                        Theloai t = db.Theloais.Find(item.Maloai);
+                        if(t!=null)
+                        {
+                            string tenloai = t.Tenloai;
+                            <p>@tenloai</p>
+                        }
+                        else
+                        {
+                            <p></p>
+                        }
+                    }
+                </td>
+                <td>
+                    @{
+                        Nhaxuatban nxb = db.Nhaxuatbans.Find(item.Manxb);
+                        if (nxb!=null)
+                        {
+                            string tennxb = nxb.Tennxb;
+                            <p>@tennxb</p>
+                        }
+                        else
+                        {
+                            <p></p>
+                        }
+
+                    }
+                </td>
+                <td>
+                    @{
+                        List<Phienbansach> dsPhienBanSach = db.Phienbansaches.Where(x => x.Masach == item.Masach).ToList();
+                        // foreach(var p in dsPhienBanSach)
+                        for(int i=0;i<dsPhienBanSach.Count;i++)
+                        {
+                            Phienbansach p = dsPhienBanSach[i];
+                            string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+                            if (i==0)
+                            {
+                                <text>@tenTacgia</text>
+                            }
+                            else if (i >= 1 && i < dsPhienBanSach.Count)
+                            {
+                                <text>, @tenTacgia</text>
+                            }
+                            
+                        }
+                    }
+            </td>
+            <td>
+                    <a asp-action="formSuaSach" class="btn btn-primary" asp-route-id="@item.Masach">Sửa</a>
+                    <a asp-action="formXoaSach" class="btn btn-danger" asp-route-id="@item.Masach">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

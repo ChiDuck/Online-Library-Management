@@ -2,7 +2,7 @@
 
 namespace OnlineLibraryManagement.Controllers
 {
-    public class LibrarianController : Controller
+    public class ThuthuController : Controller
     {
         public IActionResult Index()
         {
