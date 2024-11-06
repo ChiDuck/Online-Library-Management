@@ -10,6 +10,14 @@ namespace OnlineLibraryManagement.Models
         public int? Namxuatban { get; set; }
         public int? Taiban { get; set; }
 
+        public Phienbansach(int masach, int matacgia, int? namxuatban, int? taiban)
+        {
+            Masach = masach;
+            Matacgia = matacgia;
+            Namxuatban = namxuatban;
+            Taiban = taiban;
+        }
+
         public virtual Sach MasachNavigation { get; set; } = null!;
         public virtual Tacgia MatacgiaNavigation { get; set; } = null!;
     }
