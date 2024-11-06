@@ -1,0 +1,36 @@
+﻿@model OnlineLibraryManagement.MyModels.CTheloai
+
+@{
+    ViewData["Title"] = "frmSuaTheloai";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>frmSuaTheloai</h1>
+
+<h4>CTheloai</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="suaTheloai" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Maloai" class="control-label"></label>
+                <input readonly asp-for="Maloai" class="form-control" />
+                <span asp-validation-for="Maloai" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tenloai" class="control-label"></label>
+                <input asp-for="Tenloai" class="form-control" />
+                <span asp-validation-for="Tenloai" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-primary">Trở lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

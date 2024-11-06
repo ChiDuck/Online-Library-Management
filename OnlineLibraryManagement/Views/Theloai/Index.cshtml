@@ -1,0 +1,41 @@
+﻿@model IEnumerable<OnlineLibraryManagement.MyModels.CTheloai>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="frmThemTheloai" class="btn btn-primary">Thêm thể loại</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maloai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tenloai)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maloai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tenloai)
+            </td>
+            <td>
+                <a asp-action="frmSuaTheloai" asp-route-id="@item.Maloai" class="btn btn-primary">Sửa</a>
+                <a asp-action="frmXoaTheloai" asp-route-id="@item.Maloai" class="btn btn-danger">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
