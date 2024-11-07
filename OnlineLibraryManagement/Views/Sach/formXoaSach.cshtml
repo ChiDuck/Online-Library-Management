@@ -1,0 +1,127 @@
+﻿@model OnlineLibraryManagement.MyModels.CSach
+
+@{
+    ViewData["Title"] = "Xóa sách";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+@{
+    QuanLyThuVienContext db = new QuanLyThuVienContext();
+}
+
+<h1>Xóa sách</h1>
+<a class="btn btn-success" asp-action="Index">Quay lại</a>
+<div>
+    <hr />
+    <dl class="row">
+ @*        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Masach)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Masach)
+        </dd> *@
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tensach)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tensach)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Soluong)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Soluong)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Anhbia)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                if (Model.Anhbia != string.Empty)
+                {
+                    string tenFile = "~/img/" + Model.Anhbia;
+                    <img height="150" width="100" src="@Url.Content(tenFile)" />
+                }
+                else
+                {
+                    <p>Không có</p>
+                }
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Maloai)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                Theloai t = db.Theloais.Find(Model.Maloai);
+                if (t != null)
+                {
+                    string tenloai = t.Tenloai;
+                    <p>@tenloai</p>
+                }
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Manxb)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                Nhaxuatban nxb = db.Nhaxuatbans.Find(Model.Manxb);
+                if (nxb != null)
+                {
+                    string tennxb = nxb.Tennxb;
+                    <p>@tennxb</p>
+                }
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Matacgias)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                List<Phienbansach> dsPhienBanSach = db.Phienbansaches.Where(x => x.Masach == Model.Masach).ToList();
+                // foreach(var p in dsPhienBanSach)
+                for (int i = 0; i < dsPhienBanSach.Count; i++)
+                {
+                    Phienbansach p = dsPhienBanSach[i];
+                    string tenTacgia = db.Tacgias.Find(p.Matacgia).Tentacgia;
+                    if (i == 0)
+                    {
+                        <text>@tenTacgia</text>
+                    }
+                    else if (i >= 1 && i < dsPhienBanSach.Count)
+                    {
+                        <text>, @tenTacgia</text>
+                    }
+
+                }
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Namxuatban)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Namxuatban)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Taiban)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Taiban)
+        </dd>
+    </dl>
+</div>
+@if ((bool)ViewBag.flagXoa == true)
+{
+
+    <h3>Bạn có thật sự muốn xóa cuốn sách này?</h3>
+    <div>
+        <form asp-action="xoaSach" method="post">
+            <input type="hidden" name="masach" value="@Model.Masach" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+        </form>
+    </div>
+}
+else
+{
+    <h3>Bạn không thể xóa cuốn sách này?</h3>
+}

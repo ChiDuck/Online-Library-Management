@@ -23,7 +23,7 @@ namespace OnlineLibraryManagement.MyModels
         [Display(Name = "Nhà xuất bản")]
         public int? Manxb { get; set; }
         [Display(Name = "Tác giả")]
-        public List<int>? Matacgia { get; set; }
+        public List<int>? Matacgias { get; set; }
         [Display(Name = "Năm xuất  bản")]
         public int? Namxuatban { get; set; }
         [Display(Name = "Tái bản")]
@@ -56,12 +56,34 @@ namespace OnlineLibraryManagement.MyModels
         public static List<Phienbansach> chuyenDoiPhienBanSach(CSach s)
         {
             List<Phienbansach> ds = new List<Phienbansach>();
-            for (int i = 0;i< s.Matacgia.Count;i++)
+            for (int i = 0;i< s.Matacgias.Count;i++)
             {
-                int matg = s.Matacgia[i];
-                ds.Add(new Phienbansach(s.Masach,matg,s.Namxuatban,s.Taiban));
+                int matg = s.Matacgias[i];
+                Phienbansach p = new Phienbansach();
+                p.Masach = s.Masach;
+                p.Matacgia = matg;
+                p.Namxuatban = s.Namxuatban;
+                p.Taiban = s.Taiban;
+                ds.Add(p);
             }    
             return ds;
+        }
+        public static CSach chuyenDoiPhienBanSach(List<Phienbansach> ds)
+        {
+            CSach s = null;
+            if (ds.Count > 0)
+            {
+                s = new CSach();
+                List<int> matg = new List<int>();
+                foreach (Phienbansach item in ds)
+                {
+                    matg.Add(item.Matacgia);
+                }
+                s.Matacgias = matg;
+                s.Taiban = ds[0].Taiban;
+                s.Namxuatban = ds[0].Namxuatban;
+            }    
+            return s;
         }
     }
 }
