@@ -53,7 +53,7 @@ INSERT INTO TACGIA VALUES
 INSERT INTO SACH VALUES
 (N'Kỹ năng làm việc nhóm',		10, 'kynanglamviecnhom.jpg',			5, 1), 
 (N'39 cuộc đối thoại tri thức', 5,	'39-cuoc-doi-thoai-tri-thuc.png',	5, 2), 
-(N'Chú chó hộ mệnh',			3,	'chuchuhomenh.png',					6, 2)
+(N'Chú chó hộ mệnh',			3,	'chuchohomenh.jpg',					6, 2)
 
 INSERT INTO PHIENBANSACH VALUES
 (1, 1, 2023, 1), 

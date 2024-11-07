@@ -158,6 +158,15 @@ namespace OnlineLibraryManagement.Controllers
                 }
                 db.SaveChanges();
             }
+            else
+            {
+                List<Phienbansach> dsPhienBanCu = db.Phienbansaches.Where(p => p.Masach == s.Masach).ToList();
+                foreach (var item in dsPhienBanCu)
+                {
+                    db.Phienbansaches.Remove(item);
+                }
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
         public IActionResult formXoaSach(int id)
