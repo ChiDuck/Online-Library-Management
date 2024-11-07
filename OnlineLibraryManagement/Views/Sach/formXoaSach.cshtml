@@ -36,7 +36,7 @@
         </dt>
         <dd class = "col-sm-10">
             @{
-                if (Model.Anhbia != string.Empty)
+                if (!string.IsNullOrEmpty(Model.Anhbia))
                 {
                     string tenFile = "~/img/" + Model.Anhbia;
                     <img height="150" width="100" src="@Url.Content(tenFile)" />
@@ -113,7 +113,7 @@
 @if ((bool)ViewBag.flagXoa == true)
 {
 
-    <h3>Bạn có thật sự muốn xóa cuốn sách này?</h3>
+    <h3>Bạn có thật sự muốn xóa cuốn sách này!</h3>
     <div>
         <form asp-action="xoaSach" method="post">
             <input type="hidden" name="masach" value="@Model.Masach" />
@@ -123,5 +123,5 @@
 }
 else
 {
-    <h3>Bạn không thể xóa cuốn sách này?</h3>
+    <h3>Bạn không thể xóa cuốn sách này!</h3>
 }
