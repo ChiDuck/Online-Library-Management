@@ -1,0 +1,45 @@
+﻿@model OnlineLibraryManagement.MyModels.CNhaxuatban
+
+@{
+    ViewData["Title"] = "frmXoaNhaxuatban";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Xóa nhà xuất bản</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Manxb)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Manxb)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tennxb)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tennxb)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Diachi)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Diachi)
+        </dd>
+    </dl>
+
+    <h3>Bạn có chắc chắn muốn xóa @Html.DisplayFor(model => model.Tennxb)?</h3>
+    <form asp-action="xoaNhaxuatban" method="post">
+        <input type="hidden" name="id" value="@Model.Manxb" />
+        <input type="submit" value="Xóa" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-primary">Trở lại</a>
+    </form>
+</div>

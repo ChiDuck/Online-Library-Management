@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh sách thể loại</h1>
 
 <p>
     <a asp-action="frmThemTheloai" class="btn btn-primary">Thêm thể loại</a>
@@ -19,7 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Tenloai)
             </th>
-            <th></th>
+            <th>
+                Tác vụ
+            </th>
         </tr>
     </thead>
     <tbody>
