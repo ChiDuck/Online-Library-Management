@@ -1,0 +1,45 @@
+﻿@model OnlineLibraryManagement.MyModels.CTacgia
+
+@{
+    ViewData["Title"] = "frmXoaTacgia";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Xóa tác giả</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Matacgia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Matacgia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tentacgia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tentacgia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ngaysinh)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Ngaysinh.Value.ToShortDateString()
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Quoctich)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quoctich)
+        </dd>
+    </dl>
+
+    <h3>Bạn có chắc chắn muốn xóa tác giả @Model.Tentacgia ?</h3>
+    <form asp-action="xoaTacgia" method="post">
+        <input type="hidden" name="id" value="@Model.Matacgia" />
+        <input type="submit" value="Xóa" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-primary">Trở lại</a>
+    </form>
+</div>

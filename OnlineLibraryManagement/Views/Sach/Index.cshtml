@@ -91,7 +91,7 @@
                         for(int i=0;i<dsPhienBanSach.Count;i++)
                         {
                             Phienbansach p = dsPhienBanSach[i];
-                            string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+                            string tenTacgia = db.Tacgias.Find(p.Matacgia).Tentacgia;
                             if (i==0)
                             {
                                 <text>@tenTacgia</text>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<OnlineLibraryManagement.MyModels.CTacgia>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Danh sách tác giả</h1>
+
+<p>
+    <a asp-action="frmThemTacgia" class="btn btn-primary">Thêm tác giả</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Matacgia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tentacgia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaysinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quoctich)
+            </th>
+            <th>
+                Tác vụ
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Matacgia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tentacgia)
+            </td>
+            <td>
+                @if (item.Ngaysinh != null) @item.Ngaysinh.Value.ToShortDateString()
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quoctich)
+            </td>
+            <td>
+                <a asp-action="frmSuaTacgia" asp-route-id="@item.Matacgia" class="btn btn-primary">Sửa</a>
+                <a asp-action="frmXoaTacgia" asp-route-id="@item.Matacgia" class="btn btn-danger">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

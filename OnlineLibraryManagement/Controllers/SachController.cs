@@ -17,7 +17,7 @@ namespace OnlineLibraryManagement.Controllers
         {
             ViewBag.DSTheLoai = new SelectList(db.Theloais.ToList(),"Maloai","Tenloai");
             ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatbans.ToList(), "Manxb", "Tennxb");
-            ViewBag.DSTacGia = new MultiSelectList(db.Tacgia.ToList(), "Matacgia", "Tentacgia");
+            ViewBag.DSTacGia = new MultiSelectList(db.Tacgias.ToList(), "Matacgia", "Tentacgia");
             return View();
         }
         public IActionResult themSach(CSach s, IFormFile fileImg)
@@ -68,7 +68,7 @@ namespace OnlineLibraryManagement.Controllers
             }
             ViewBag.DSTheLoai = new SelectList(db.Theloais.ToList(), "Maloai", "Tenloai");
             ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatbans.ToList(), "Manxb", "Tennxb");
-            ViewBag.DSTacGia = new MultiSelectList(db.Tacgia.ToList(), "Matacgia", "Tentacgia");
+            ViewBag.DSTacGia = new MultiSelectList(db.Tacgias.ToList(), "Matacgia", "Tentacgia");
             return View("formThemSach");
 
         }

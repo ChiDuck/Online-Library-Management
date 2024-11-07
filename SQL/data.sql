@@ -44,11 +44,11 @@ INSERT INTO THUTHU VALUES
 (N'Nguyễn Chí Đức', 0123456789, 'breadwithginger@gmail.com')
 
 INSERT INTO TACGIA VALUES
-(N'PGS.TS. Lê Thái Phong',	11-03-1979, N'Việt Nam'), 
-(N'ThS. Nguyễn Diệu Ninh',	null,		N'Việt Nam'), 
-(N'ThS. Phạm Thị Mỹ Dung',	null,		N'Việt Nam'), 
-(N'Phan Đăng',				16-02-1984, N'Việt Nam'), 
-(N'Hase Seishu',			18-02-1965, N'Nhật Bản')
+(N'PGS.TS. Lê Thái Phong',	'1979-3-11',	N'Việt Nam'), 
+(N'ThS. Nguyễn Diệu Ninh',	null,			N'Việt Nam'), 
+(N'ThS. Phạm Thị Mỹ Dung',	null,			N'Việt Nam'), 
+(N'Phan Đăng',				'1984-2-16',	N'Việt Nam'), 
+(N'Hase Seishu',			'1965-2-18',	N'Nhật Bản')
 
 INSERT INTO SACH VALUES
 (N'Kỹ năng làm việc nhóm',		10, 'kynanglamviecnhom.jpg',			5, 1), 
@@ -63,10 +63,10 @@ INSERT INTO PHIENBANSACH VALUES
 (3, 5, 2023, 1)
 
 INSERT INTO PHIEUMUONSACH VALUES
-(06-11-2024, 07-11-2024, 1), 
-(29-10-2024, 01-11-2024, 1)
+('2024-11-6', '2024-11-7', 1), 
+('2024-10-28', '2024-11-1', 1)
 
 INSERT INTO CHITIETPHIEUMUON VALUES
-(1, 2, 20-11-2024, 1), 
-(1, 3, 15-11-2024, 1),
-(2, 1, 22-11-2024, 2)
+(1, 2, '2024-11-15', 1), 
+(1, 3, '2024-11-20', 1),
+(2, 1, '2024-11-27', 2)
