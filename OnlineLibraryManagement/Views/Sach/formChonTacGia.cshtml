@@ -24,6 +24,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Quoctich)
             </th>
+            <th>
+               Vai trò
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,6 +45,16 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quoctich)
+                </td>
+                <td>
+                        <select name="vaitro" class="form-select">
+                            @{
+                                foreach(var vt in ViewBag.DSVaitro)
+                                {
+                                <option value="@vt">@vt</option>
+                                }
+                            }
+                        </select>
                 </td>
                 <td>
                         <input type="hidden" value="@item.Matacgia" name="matacgia" />

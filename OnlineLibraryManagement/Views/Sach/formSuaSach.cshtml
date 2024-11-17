@@ -4,9 +4,6 @@
     ViewData["Title"] = "Thay đổi thông tin sách";
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
-@{
-    QuanLyThuVienContext db = new QuanLyThuVienContext();
-}
 
 <h1>Thay đổi thông tin sách</h1>
 <div>
@@ -72,36 +69,37 @@
                                     <th>
                                         Quốc tịch
                                     </th>
+                                    <th>
+                                        Vai trò
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @{
-                                    foreach (var item in db.Phienbansach.Where(x => x.Masach == Model.Masach).ToList())
+                                    foreach (var item in Model.Phienbansach)
                                     {
-                                        Tacgia tg = db.Tacgia.Find(item.Matacgia);
-                                        if (tg!=null)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @tg.Tentacgia
-                                                </td>
-                                                <td>
-                                                    @{
-                                                        if (tg.Ngaysinh != null)
-                                                        {
-                                                            <p>@tg.Ngaysinh.Value.ToShortDateString()</p>
-                                                        }
-                                                    }
-                                                    
-                                                </td>
-                                                <td>
-                                                    @tg.Quoctich
-                                                </td>
-                                            </tr>
-                                        }
+                                                 <tr>
+                                                     <td>
+                                                         @item.MatacgiaNavigation.Tentacgia
+                                                     </td>
+                                                     <td>
+                                                         @{
+                                                             if (item.MatacgiaNavigation.Ngaysinh != null)
+                                                             {
+                                                        <p>@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()</p>
+                                                             }
+                                                         }
 
+                                                     </td>
+                                                     <td>
+                                                         @item.MatacgiaNavigation.Quoctich
+                                                     </td>
+                                                     <td>
+                                                         @item.Vaitro
+                                                     </td>
+                                                 </tr>
                                     }
-                            }
+                                }
                                
                             </tbody>
                         </table>

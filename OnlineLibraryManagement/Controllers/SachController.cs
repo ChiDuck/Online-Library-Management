@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using OnlineLibraryManagement.Models;
 using OnlineLibraryManagement.MyModels;
@@ -90,6 +91,7 @@ namespace OnlineLibraryManagement.Controllers
 
                         //Sao chép dữ liệu từ phiên bản sách trong biến session
                         Phienbansach.Matacgia = p.Matacgia;
+                        Phienbansach.Vaitro = p.Vaitro;
                         Phienbansach.Masach = s.Masach;
                         s.Phienbansach.Add(Phienbansach); //gán vào s
                     }
@@ -113,13 +115,19 @@ namespace OnlineLibraryManagement.Controllers
         }
         public IActionResult formSuaSach(int id)
         {
-            Sach sach = db.Sach.Find(id);
-            sach.MaloaiNavigation = db.Theloai.Find(sach.Maloai);
-            sach.ManxbNavigation = db.Nhaxuatban.Find(sach.Manxb);
-            foreach (Phienbansach item in db.Phienbansach.Where(s => s.Masach == id).ToList())
-            {
-                item.MatacgiaNavigation = db.Tacgia.Find(item.Matacgia);
-            }
+            //Sach sach = db.Sach.Find(id);
+            //sach.MaloaiNavigation = db.Theloai.Find(sach.Maloai);
+            //sach.ManxbNavigation = db.Nhaxuatban.Find(sach.Manxb);
+            //foreach (Phienbansach item in db.Phienbansach.Where(s => s.Masach == id).ToList())
+            //{
+            //    item.MatacgiaNavigation = db.Tacgia.Find(item.Matacgia);
+            //    item.Vaitro = db.Phienbansach.FirstOrDefault(t => t.Matacgia == item.Matacgia && t.Masach == id).Vaitro;
+            //}
+            Sach sach = db.Sach.Include(s => s.MaloaiNavigation)
+                               .Include(s => s.ManxbNavigation)
+                               .Include(s => s.Phienbansach)
+                               .ThenInclude(p => p.MatacgiaNavigation)
+                               .FirstOrDefault(s => s.Masach == id);
             ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
             ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
             return View(sach);
@@ -131,17 +139,19 @@ namespace OnlineLibraryManagement.Controllers
             if (s.Soluong < 1)
             {
                 ModelState.AddModelError("Soluong", "Số lượng phải lớn hơn 0");
+                Sach book = db.Sach.Include(s => s.MaloaiNavigation).Include(a => a.ManxbNavigation).Include(a => a.Phienbansach).ThenInclude(p => p.MatacgiaNavigation).FirstOrDefault(a => a.Masach == s.Masach);
                 ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
                 ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
-                return View("formSuaSach",s);
+                return View("formSuaSach",book);
 
             }
             if (s.Namxuatban < 1970 || s.Namxuatban > DateTime.Now.Year)
             {
                 ModelState.AddModelError("Namxuatban", "Vui lòng nhập đầu sách có năm xuất bản mới hơn và nhỏ hơn hoặc bằng năm hiện tại");
+                Sach book = db.Sach.Include(s => s.MaloaiNavigation).Include(a => a.ManxbNavigation).Include(a => a.Phienbansach).ThenInclude(p => p.MatacgiaNavigation).FirstOrDefault(a => a.Masach == s.Masach);
                 ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
                 ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
-                return View("formSuaSach", s);
+                return View("formSuaSach", book);
 
             }
 
@@ -167,14 +177,26 @@ namespace OnlineLibraryManagement.Controllers
         }
         public IActionResult formXoaSach(int id)
         {
-            Sach sach = db.Sach.Find(id);
-            sach.MaloaiNavigation = db.Theloai.Find(sach.Maloai);
-            sach.ManxbNavigation = db.Nhaxuatban.Find(sach.Manxb);
-            foreach (Phienbansach item in db.Phienbansach.Where(s => s.Masach == id).ToList())
+            //Sach sach = db.Sach.Find(id);
+            //sach.MaloaiNavigation = db.Theloai.Find(sach.Maloai);
+            //sach.ManxbNavigation = db.Nhaxuatban.Find(sach.Manxb);
+            //foreach (Phienbansach item in db.Phienbansach.Where(s => s.Masach == id).ToList())
+            //{
+            //    item.MatacgiaNavigation = db.Tacgia.Find(item.Matacgia);
+            //}
+            Sach sach = db.Sach.Include(s => s.MaloaiNavigation)
+                              .Include(s => s.ManxbNavigation)
+                              .Include(s => s.Phienbansach)
+                              .ThenInclude(p => p.MatacgiaNavigation)
+                              .FirstOrDefault(s => s.Masach == id);
+            if (sach != null)
             {
-                item.MatacgiaNavigation = db.Tacgia.Find(item.Matacgia);
+                return View(sach);
+            }
+            else
+            {
+                return RedirectToAction("Index");
             }    
-            return View(sach);
         }
         public IActionResult xoaSach(int masach)
         {
@@ -199,9 +221,10 @@ namespace OnlineLibraryManagement.Controllers
         }
         public IActionResult formChonTacGia()
         {
+            ViewBag.DSVaitro = CVaitro.getDSVaitro();
             return View(db.Tacgia.ToList());
         }
-        public IActionResult chonTacGia(int matacgia)
+        public IActionResult chonTacGia(int matacgia, string vaitro)
         {
             Tacgia tg = db.Tacgia.Find(matacgia);
             if (tg == null)
@@ -227,6 +250,7 @@ namespace OnlineLibraryManagement.Controllers
                 pb = new Phienbansach();
                 pb.MatacgiaNavigation = tg;
                 pb.Matacgia = tg.Matacgia;
+                pb.Vaitro = vaitro;
                 s.Phienbansach.Add(pb);
             }
             MySessions.Set<Sach>(HttpContext.Session,"sach",s);
