@@ -7,7 +7,7 @@ namespace OnlineLibraryManagement.Models
     {
         public Nhaxuatban()
         {
-            Saches = new HashSet<Sach>();
+            Sach = new HashSet<Sach>();
         }
 
         public int Manxb { get; set; }
@@ -15,6 +15,6 @@ namespace OnlineLibraryManagement.Models
         public string? Email { get; set; }
         public string? Diachi { get; set; }
 
-        public virtual ICollection<Sach> Saches { get; set; }
+        public virtual ICollection<Sach> Sach { get; set; }
     }
 }

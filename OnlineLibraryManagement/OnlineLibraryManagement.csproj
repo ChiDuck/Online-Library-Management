@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="MyModels\" />
+    <Folder Include="Views\Sach\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 

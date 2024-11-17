@@ -7,7 +7,7 @@ namespace OnlineLibraryManagement.Models
     {
         public Tacgia()
         {
-            Phienbansaches = new HashSet<Phienbansach>();
+            Phienbansach = new HashSet<Phienbansach>();
         }
 
         public int Matacgia { get; set; }
@@ -15,6 +15,6 @@ namespace OnlineLibraryManagement.Models
         public DateTime? Ngaysinh { get; set; }
         public string? Quoctich { get; set; }
 
-        public virtual ICollection<Phienbansach> Phienbansaches { get; set; }
+        public virtual ICollection<Phienbansach> Phienbansach { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Index()
         {
-            List<CTheloai> list = db.Theloais.Select(i => CTheloai.chuyenDoi(i)).ToList();
+            List<CTheloai> list = db.Theloai.Select(i => CTheloai.chuyenDoi(i)).ToList();
             return View(list);
         }
 
@@ -24,7 +24,7 @@ namespace OnlineLibraryManagement.Controllers
             if (ModelState.IsValid)
             {
                 Theloai tl = CTheloai.chuyenDoi(ctl);
-                db.Theloais.Add(tl);
+                db.Theloai.Add(tl);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -34,7 +34,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult frmXoaTheloai(int id)
         {
-            Theloai tl = db.Theloais.Find(id);
+            Theloai tl = db.Theloai.Find(id);
             return View(CTheloai.chuyenDoi(tl));
         }
 
@@ -42,8 +42,8 @@ namespace OnlineLibraryManagement.Controllers
         {
             try
             {
-                Theloai tl = db.Theloais.Find(id);
-                db.Theloais.Remove(tl);
+                Theloai tl = db.Theloai.Find(id);
+                db.Theloai.Remove(tl);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -57,14 +57,14 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult frmSuaTheloai(int id)
         {
-            CTheloai ctl = CTheloai.chuyenDoi(db.Theloais.Find(id));
+            CTheloai ctl = CTheloai.chuyenDoi(db.Theloai.Find(id));
             return View(ctl);
         }
 
         public IActionResult suaTheloai(CTheloai ctl)
         {
             Theloai tl = CTheloai.chuyenDoi(ctl);
-            db.Theloais.Update(tl);
+            db.Theloai.Update(tl);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace OnlineLibraryManagement.Models
 {
-    public partial class Thuthu
+    public partial class Docgia
     {
-        public Thuthu()
+        public Docgia()
         {
             Phieumuonsach = new HashSet<Phieumuonsach>();
         }
 
-        public int Matt { get; set; }
-        public string? Tentt { get; set; }
-        public int? Sdt { get; set; }
+        public int Madocgia { get; set; }
+        public string? Tendocgia { get; set; }
         public string? Email { get; set; }
+        public DateTime? Ngaysinh { get; set; }
         public int? Matk { get; set; }
 
         public virtual Taikhoan? MatkNavigation { get; set; }

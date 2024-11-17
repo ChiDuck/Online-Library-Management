@@ -10,7 +10,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Index()
         {
-            List<CNhaxuatban> list = db.Nhaxuatbans.Select(i => CNhaxuatban.chuyenDoi(i)).ToList();
+            List<CNhaxuatban> list = db.Nhaxuatban.Select(i => CNhaxuatban.chuyenDoi(i)).ToList();
             return View(list);
         }
 
@@ -24,7 +24,7 @@ namespace OnlineLibraryManagement.Controllers
             if (ModelState.IsValid)
             {
                 Nhaxuatban nxb = CNhaxuatban.chuyenDoi(cnxb);
-                db.Nhaxuatbans.Add(nxb);
+                db.Nhaxuatban.Add(nxb);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -34,7 +34,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult frmXoaNhaxuatban(int id)
         {
-            Nhaxuatban nxb = db.Nhaxuatbans.Find(id);
+            Nhaxuatban nxb = db.Nhaxuatban.Find(id);
             return View(CNhaxuatban.chuyenDoi(nxb));
         }
 
@@ -42,8 +42,8 @@ namespace OnlineLibraryManagement.Controllers
         {
             try
             {
-                Nhaxuatban nxb = db.Nhaxuatbans.Find(id);
-                db.Nhaxuatbans.Remove(nxb);
+                Nhaxuatban nxb = db.Nhaxuatban.Find(id);
+                db.Nhaxuatban.Remove(nxb);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -57,14 +57,14 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult frmSuaNhaxuatban(int id)
         {
-            CNhaxuatban cnxb = CNhaxuatban.chuyenDoi(db.Nhaxuatbans.Find(id));
+            CNhaxuatban cnxb = CNhaxuatban.chuyenDoi(db.Nhaxuatban.Find(id));
             return View(cnxb);
         }
 
         public IActionResult suaNhaxuatban(CNhaxuatban cnxb)
         {
             Nhaxuatban nxb = CNhaxuatban.chuyenDoi(cnxb);
-            db.Nhaxuatbans.Update(nxb);
+            db.Nhaxuatban.Update(nxb);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

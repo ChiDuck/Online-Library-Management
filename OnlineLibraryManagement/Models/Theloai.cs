@@ -7,12 +7,12 @@ namespace OnlineLibraryManagement.Models
     {
         public Theloai()
         {
-            Saches = new HashSet<Sach>();
+            Sach = new HashSet<Sach>();
         }
 
         public int Maloai { get; set; }
         public string? Tenloai { get; set; }
 
-        public virtual ICollection<Sach> Saches { get; set; }
+        public virtual ICollection<Sach> Sach { get; set; }
     }
 }

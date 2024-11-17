@@ -10,7 +10,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Index()
         {
-            List<CTacgia> list = db.Tacgias.Select(i => CTacgia.chuyenDoi(i)).ToList();
+            List<CTacgia> list = db.Tacgia.Select(i => CTacgia.chuyenDoi(i)).ToList();
             return View(list);
         }
 
@@ -24,7 +24,7 @@ namespace OnlineLibraryManagement.Controllers
             if (ModelState.IsValid)
             {
                 Tacgia tg = CTacgia.chuyenDoi(ctg);
-                db.Tacgias.Add(tg);
+                db.Tacgia.Add(tg);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -34,7 +34,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult frmXoaTacgia(int id)
         {
-            Tacgia tg = db.Tacgias.Find(id);
+            Tacgia tg = db.Tacgia.Find(id);
             return View(CTacgia.chuyenDoi(tg));
         }
 
@@ -42,8 +42,8 @@ namespace OnlineLibraryManagement.Controllers
         {
             try
             {
-                Tacgia tg = db.Tacgias.Find(id);
-                db.Tacgias.Remove(tg);
+                Tacgia tg = db.Tacgia.Find(id);
+                db.Tacgia.Remove(tg);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -57,14 +57,14 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult frmSuaTacgia(int id)
         {
-            CTacgia ctg = CTacgia.chuyenDoi(db.Tacgias.Find(id));
+            CTacgia ctg = CTacgia.chuyenDoi(db.Tacgia.Find(id));
             return View(ctg);
         }
 
         public IActionResult suaTacgia(CTacgia ctg)
         {
             Tacgia tg = CTacgia.chuyenDoi(ctg);
-            db.Tacgias.Update(tg);
+            db.Tacgia.Update(tg);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
