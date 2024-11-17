@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using OnlineLibraryManagement.Models;
 using OnlineLibraryManagement.MyModels;
+using System.Collections;
 using System.IO;
+using waHoadon.Models;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -10,8 +13,12 @@ namespace OnlineLibraryManagement.Controllers
     {
         QuanLyThuVienContext db = new QuanLyThuVienContext();
         public IActionResult Index()
-        {
-            List<CSach> ds = db.Saches.Select(x => CSach.chuyenDoi(x)).ToList();
+        {   List<Sach> ds = db.Sach.ToList();
+            foreach(var s in ds)
+            {
+                s.ManxbNavigation = db.Nhaxuatban.Find(s.Manxb);
+                s.MaloaiNavigation = db.Theloai.Find(s.Maloai);
+            }    
             return View(ds);
         }
         public void xoaAnh(string filename)
@@ -25,99 +32,116 @@ namespace OnlineLibraryManagement.Controllers
         }
         public IActionResult formThemSach()
         {
-            ViewBag.DSTheLoai = new SelectList(db.Theloais.ToList(),"Maloai","Tenloai");
-            ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatbans.ToList(), "Manxb", "Tennxb");
-            ViewBag.DSTacGia = new MultiSelectList(db.Tacgias.ToList(), "Matacgia", "Tentacgia");
             return View();
         }
-        public IActionResult themSach(CSach s, IFormFile fileImg)
+        public IActionResult themSach(Sach s, IFormFile fileImg)
         {
-
-
-            //xử lý số lượng
-            if (s.Soluong < 1 )
+            Sach book = MySessions.Get<Sach>(HttpContext.Session, "sach");
+            if (book != null)
             {
-                ModelState.AddModelError("Soluong", "Số lượng phải lớn hơn 0");
-                ViewBag.DSTheLoai = new SelectList(db.Theloais.ToList(), "Maloai", "Tenloai");
-                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatbans.ToList(), "Manxb", "Tennxb");
-                ViewBag.DSTacGia = new MultiSelectList(db.Tacgias.ToList(), "Matacgia", "Tentacgia");
-                return View("formThemSach");
-            }
+                //kiểm tra số lượng
+                if (s.Soluong < 1)
+                {
+                    book.Soluong = s.Soluong;
+                    book.Namxuatban = s.Namxuatban;
+                    book.Manxb = s.Manxb;
+                    book.Maloai = s.Maloai;
+                    MySessions.Set<Sach>(HttpContext.Session, "sach", book);
+                    ModelState.AddModelError("Soluong", "Số lượng phải lớn hơn 0");
+                    ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+                    ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                    return View("formThemSach", book);
+                }
 
-            //Xử lý hình ảnh
-            if (fileImg != null)
-            {
-                s.Anhbia = fileImg.FileName;
-                string tenfile = Directory.GetCurrentDirectory();
-                tenfile += @"\wwwroot\img\" + fileImg.FileName;
-                FileStream f = new FileStream(tenfile, FileMode.Create);
-                fileImg.CopyTo(f);
-                f.Close();
+                //kiểm tra năm xuất bản
+                if (s.Namxuatban < 1970 || s.Namxuatban > DateTime.Now.Year)
+                {
+                    book.Soluong = s.Soluong;
+                    book.Namxuatban = s.Namxuatban;
+                    book.Manxb = s.Manxb;
+                    book.Maloai = s.Maloai;
+                    MySessions.Set<Sach>(HttpContext.Session, "sach", book);
+                    ModelState.AddModelError("Namxuatban", "Vui lòng nhập đầu sách có năm xuất bản mới hơn và nhỏ hơn hoặc bằng năm hiện tại");
+                    ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+                    ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                    return View("formThemSach", book);
+                }
+
+                //xử lý hình ảnh
+                if (fileImg != null)
+                {
+                    s.Anhbia = fileImg.FileName;
+                    string tenfile = Directory.GetCurrentDirectory();
+                    tenfile += @"\wwwroot\img\" + fileImg.FileName;
+                    FileStream f = new FileStream(tenfile, FileMode.Create);
+                    fileImg.CopyTo(f);
+                    f.Close();
+                }
+                else
+                {
+                    s.Anhbia = string.Empty;
+                }
+                
+                if (book.Phienbansach.Count > 0)
+                {
+                   foreach(Phienbansach p in book.Phienbansach)
+                    {
+                        Phienbansach Phienbansach = new Phienbansach(); //tạo ra phiên bản sách mới
+
+                        //Sao chép dữ liệu từ phiên bản sách trong biến session
+                        Phienbansach.Matacgia = p.Matacgia;
+                        Phienbansach.Masach = s.Masach;
+                        s.Phienbansach.Add(Phienbansach); //gán vào s
+                    }
+                }
+
             }
             else
             {
-                s.Anhbia = string.Empty;
+                ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                return RedirectToAction("formThemSach");
             }
-
-            //Thêm dữ liệu vào bảng sách
-            Sach sach = CSach.chuyenDoi(s);
-            db.Saches.Add(sach);
+            db.Sach.Add(s);
             db.SaveChanges();
 
-            //Lấy mã sách vừa thêm từ database
-            //Mã sách vừa thêm vào sẽ có mã lớn nhất
-            if (s.Matacgias != null)
-            {
-                int masach = db.Saches.Max(t => t.Masach);
-                Sach sachNew = db.Saches.Find(masach);
+            //xóa dữ liệu sách cũ khi đã thêm sách
+            MySessions.Set<Sach>(HttpContext.Session, "sach", new Sach());
 
-                CSach cSachNew = CSach.chuyenDoi(sachNew);
-                cSachNew.Matacgias = s.Matacgias;
-                cSachNew.Namxuatban = s.Namxuatban;
-                cSachNew.Taiban = s.Taiban;
-
-                //Thêm dữ liệu vào bảng Phiên bản sách
-                List<Phienbansach> dsPhienBan = CSach.chuyenDoiPhienBanSach(cSachNew);
-                foreach (var item in dsPhienBan)
-                {
-                    db.Phienbansaches.Add(item);
-                }
-                db.SaveChanges();
-            }   
             return RedirectToAction("Index");
 
         }
         public IActionResult formSuaSach(int id)
         {
-            Sach sach = db.Saches.Find(id);
-            CSach s = CSach.chuyenDoi(sach);
-
-            List<Phienbansach> dsPhienBan = new List<Phienbansach>();
-            dsPhienBan = db.Phienbansaches.Where(p => p.Masach == id).ToList();
-            CSach s2 = CSach.chuyenDoiPhienBanSach(dsPhienBan);
-            if (s2 != null)
+            Sach sach = db.Sach.Find(id);
+            sach.MaloaiNavigation = db.Theloai.Find(sach.Maloai);
+            sach.ManxbNavigation = db.Nhaxuatban.Find(sach.Manxb);
+            foreach (Phienbansach item in db.Phienbansach.Where(s => s.Masach == id).ToList())
             {
-                s.Matacgias = s2.Matacgias;
-                s.Taiban = s2.Taiban;
-                s.Namxuatban = s2.Namxuatban;
+                item.MatacgiaNavigation = db.Tacgia.Find(item.Matacgia);
             }
-
-            ViewBag.DSTheLoai = new SelectList(db.Theloais.ToList(), "Maloai", "Tenloai");
-            ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatbans.ToList(), "Manxb", "Tennxb");
-            ViewBag.DSTacGia = new MultiSelectList(db.Tacgias.ToList(), "Matacgia", "Tentacgia");
-            return View(s);
+            ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+            ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+            return View(sach);
         }
-        public IActionResult suaSach(CSach s, IFormFile fileImg)
+        public IActionResult suaSach(Sach s, IFormFile fileImg)
         {
 
             //xử lý số lượng
             if (s.Soluong < 1)
             {
                 ModelState.AddModelError("Soluong", "Số lượng phải lớn hơn 0");
-                ViewBag.DSTheLoai = new SelectList(db.Theloais.ToList(), "Maloai", "Tenloai");
-                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatbans.ToList(), "Manxb", "Tennxb");
-                ViewBag.DSTacGia = new MultiSelectList(db.Tacgias.ToList(), "Matacgia", "Tentacgia");
-                return View("formSuaSach");
+                ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                return View("formSuaSach",s);
+
+            }
+            if (s.Namxuatban < 1970 || s.Namxuatban > DateTime.Now.Year)
+            {
+                ModelState.AddModelError("Namxuatban", "Vui lòng nhập đầu sách có năm xuất bản mới hơn và nhỏ hơn hoặc bằng năm hiện tại");
+                ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                return View("formSuaSach", s);
 
             }
 
@@ -133,73 +157,36 @@ namespace OnlineLibraryManagement.Controllers
                 fileImg.CopyTo(f);
                 f.Close();
             }
+
             //Cập nhật dữ liệu vào bảng sách
-            Sach sach = CSach.chuyenDoi(s);
-            db.Saches.Update(sach);
+            db.Sach.Update(s);
             db.SaveChanges();
 
               
-            if (s.Matacgias != null)
-            {
-            //Cập nhật dữ liệu vào bảng Phiên bản sách
-                //xóa phiên bản sách cũ đi
-                List<Phienbansach> dsPhienBanCu = db.Phienbansaches.Where(p => p.Masach == s.Masach).ToList();
-                foreach (var item in dsPhienBanCu)
-                {
-                    db.Phienbansaches.Remove(item);
-                }
-                db.SaveChanges();
-                List<Phienbansach> dsPhienBanMoi = CSach.chuyenDoiPhienBanSach(s);    
-                    
-                //Thêm mới lại
-                foreach (var item in dsPhienBanMoi)
-                {
-                    db.Phienbansaches.Add(item);
-                }
-                db.SaveChanges();
-            }
-            else
-            {
-                List<Phienbansach> dsPhienBanCu = db.Phienbansaches.Where(p => p.Masach == s.Masach).ToList();
-                foreach (var item in dsPhienBanCu)
-                {
-                    db.Phienbansaches.Remove(item);
-                }
-                db.SaveChanges();
-            }
             return RedirectToAction("Index");
         }
         public IActionResult formXoaSach(int id)
         {
-            int dem = 0;
-            dem = db.Phienbansaches.Count(p => p.Masach == id);
-            ViewBag.flagXoa = true;
-            if (dem > 0)
+            Sach sach = db.Sach.Find(id);
+            sach.MaloaiNavigation = db.Theloai.Find(sach.Maloai);
+            sach.ManxbNavigation = db.Nhaxuatban.Find(sach.Manxb);
+            foreach (Phienbansach item in db.Phienbansach.Where(s => s.Masach == id).ToList())
             {
-                ViewBag.flagXoa = false;
-            }
-
-            Sach sach = db.Saches.Find(id);
-            CSach s = CSach.chuyenDoi(sach);
-
-            List<Phienbansach> dsPhienBan = new List<Phienbansach>();
-            dsPhienBan = db.Phienbansaches.Where(p => p.Masach == id).ToList();
-            CSach s2 = CSach.chuyenDoiPhienBanSach(dsPhienBan);
-            if (s2 != null)
-            {
-                s.Matacgias = s2.Matacgias;
-                s.Taiban = s2.Taiban;
-                s.Namxuatban = s2.Namxuatban;
-            }
-            return View(s);
+                item.MatacgiaNavigation = db.Tacgia.Find(item.Matacgia);
+            }    
+            return View(sach);
         }
         public IActionResult xoaSach(int masach)
         {
             try
             {
-                Sach s = db.Saches.Find(masach);
+                Sach s = db.Sach.Find(masach);
+                foreach (Phienbansach p in db.Phienbansach.Where(s => s.Masach == masach).ToList())
+                {
+                    db.Phienbansach.Remove(p);
+                }
                 xoaAnh(s.Anhbia);
-                db.Saches.Remove(s);
+                db.Sach.Remove(s);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -209,6 +196,63 @@ namespace OnlineLibraryManagement.Controllers
                 err.RequestId = e.Message;
                 return View("Error", err);
             }
+        }
+        public IActionResult formChonTacGia()
+        {
+            return View(db.Tacgia.ToList());
+        }
+        public IActionResult chonTacGia(int matacgia)
+        {
+            Tacgia tg = db.Tacgia.Find(matacgia);
+            if (tg == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Sach s = MySessions.Get<Sach>(HttpContext.Session, "sach");
+            if (s == null)
+            {
+                s = new Sach();
+            }
+            Phienbansach pb = null;
+            foreach (Phienbansach a in s.Phienbansach)
+            {
+                if (a.Matacgia == matacgia)
+                {
+                    pb = a;
+                    break;
+                }    
+            }
+            if (pb == null)
+            {
+                pb = new Phienbansach();
+                pb.MatacgiaNavigation = tg;
+                pb.Matacgia = tg.Matacgia;
+                s.Phienbansach.Add(pb);
+            }
+            MySessions.Set<Sach>(HttpContext.Session,"sach",s);
+
+            ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+            ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+            return View("formThemSach",s);
+        }
+        public IActionResult xoaTacgia(int matacgia)
+        {
+            Sach s = MySessions.Get<Sach>(HttpContext.Session, "sach");
+            if (s != null)
+            {
+                foreach (Phienbansach a in s.Phienbansach.Where(t => t.Matacgia == matacgia).ToList())
+                {
+                    s.Phienbansach.Remove(a);
+                }
+                MySessions.Set<Sach>(HttpContext.Session, "sach", s);
+                ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                return View("formThemSach", s);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }    
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OnlineLibraryManagement.MyModels.CSach>
+﻿@model IEnumerable<OnlineLibraryManagement.Models.Sach>
 
 @{
     ViewData["Title"] = "Quản lý sách";
@@ -7,11 +7,10 @@
 @{
     QuanLyThuVienContext db = new QuanLyThuVienContext();
 }
-
 <h1>Danh sách các đầu sách</h1>
 
 <p>
-    <a asp-action="formThemSach" class="btn btn-primary">Thêm sách mới</a>
+    <a asp-action="formChonTacGia" class="btn btn-primary">Thêm sách mới</a>
 </p>
 <table class="table">
     <thead>
@@ -26,6 +25,9 @@
                 @Html.DisplayNameFor(model => model.Soluong)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Namxuatban)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Anhbia)
             </th>
             <th>
@@ -35,9 +37,9 @@
                 @Html.DisplayNameFor(model => model.Manxb)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Matacgias)
+                Tác giả
             </th>
-            <th>Tác vụ</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -52,7 +54,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Soluong)
             </td>
-            <td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Namxuatban)
+                </td>
+             <td>
                     @{
                         if (!string.IsNullOrEmpty(item.Anhbia))
                         {
@@ -63,42 +68,28 @@
             </td>
             <td>
                     @{
-                        Theloai t = db.Theloais.Find(item.Maloai);
-                        if(t!=null)
+                        if (item.MaloaiNavigation != null)
                         {
-                            string tenloai = t.Tenloai;
-                            <p>@tenloai</p>
-                        }
-                        else
-                        {
-                            <p></p>
+                            <p>@item.MaloaiNavigation.Tenloai</p>
                         }
                     }
-                </td>
-                <td>
+            </td>
+            <td>
                     @{
-                        Nhaxuatban nxb = db.Nhaxuatbans.Find(item.Manxb);
-                        if (nxb!=null)
+                        if (item.ManxbNavigation != null)
                         {
-                            string tennxb = nxb.Tennxb;
-                            <p>@tennxb</p>
+                            <p>@item.ManxbNavigation.Tennxb</p>
                         }
-                        else
-                        {
-                            <p></p>
-                        }
-
                     }
-                </td>
-                <td>
+            </td>
+            <td>
                     @{
-                        List<Phienbansach> dsPhienBanSach = db.Phienbansaches.Where(x => x.Masach == item.Masach).ToList();
-                        // foreach(var p in dsPhienBanSach)
-                        for(int i=0;i<dsPhienBanSach.Count;i++)
+                        List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.Masach).ToList();
+                        for (int i = 0; i < dsPhienBanSach.Count; i++)
                         {
                             Phienbansach p = dsPhienBanSach[i];
-                            string tenTacgia = db.Tacgias.Find(p.Matacgia).Tentacgia;
-                            if (i==0)
+                            string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+                            if (i == 0)
                             {
                                 <text>@tenTacgia</text>
                             }
@@ -106,13 +97,12 @@
                             {
                                 <text>, @tenTacgia</text>
                             }
-                            
                         }
                     }
             </td>
             <td>
-                    <a asp-action="formSuaSach" class="btn btn-primary" asp-route-id="@item.Masach">Sửa</a>
-                    <a asp-action="formXoaSach" class="btn btn-danger" asp-route-id="@item.Masach">Xóa</a>
+                  <a asp-action="formSuaSach" class="btn btn-primary" asp-route-id="@item.Masach">Sửa</a>
+                  <a asp-action="formXoaSach" class="btn btn-danger" asp-route-id="@item.Masach">Xóa</a>
             </td>
         </tr>
 }

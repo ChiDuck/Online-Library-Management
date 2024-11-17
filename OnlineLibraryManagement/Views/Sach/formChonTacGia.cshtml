@@ -1,0 +1,54 @@
+﻿@model IEnumerable<OnlineLibraryManagement.Models.Tacgia>
+
+@{
+    ViewData["Title"] = "Chọn tác giả";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Chọn tác giả cho cuốn sách mới</h1>
+<div>
+    <a class="btn btn-success" asp-action="Index">Quay lại</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Matacgia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tentacgia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaysinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quoctich)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <form asp-action="chonTacGia" method="post">
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Matacgia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tentacgia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ngaysinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quoctich)
+                </td>
+                <td>
+                        <input type="hidden" value="@item.Matacgia" name="matacgia" />
+                        <input type="submit" value="Chọn" class="btn btn-primary" />
+                </td>
+            </tr>
+        </form>
+}
+    </tbody>
+</table>

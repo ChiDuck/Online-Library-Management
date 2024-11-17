@@ -1,4 +1,4 @@
-﻿@model OnlineLibraryManagement.MyModels.CSach
+﻿@model OnlineLibraryManagement.Models.Sach
 
 @{
     ViewData["Title"] = "Thêm sách";
@@ -11,12 +11,12 @@
 </div>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="themSach" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 @*             <div class="form-group">
                 <label asp-for="Masach" class="control-label"></label>
-                <input asp-for="Masach" class="form-control" />
+                <input type="hidden" asp-for="Masach" class="form-control" />
                 <span asp-validation-for="Masach" class="text-danger"></span>
             </div> *@
             <div class="form-group">
@@ -30,9 +30,14 @@
                 <span asp-validation-for="Soluong" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Namxuatban" class="control-label"></label>
+                <input type="number" asp-for="Namxuatban" class="form-control" />
+                <span asp-validation-for="Namxuatban" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Anhbia" class="control-label"></label>
                 <input type="file" name="fileImg" class="form-control" />
-                @* <span asp-validation-for="Anhbia" class="text-danger"></span> *@
+                <span asp-validation-for="Anhbia" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Maloai" class="control-label"></label>
@@ -44,21 +49,60 @@
                 <select asp-for="Manxb" asp-items="@ViewBag.DSNhaXuatBan" class="form-select"></select>
                 <span asp-validation-for="Manxb" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Matacgias" class="control-label"></label>
-                <select asp-for="Matacgias" asp-items="@ViewBag.DSTacGia" class="form-select"></select>
-                <span asp-validation-for="Matacgias" class="text-danger"></span>
+            <br />
+            <div>
+                <a asp-action="formChonTacGia" class="btn btn-primary">Chọn thêm tác giả</a>
             </div>
-            <div class="form-group">
-                <label asp-for="Namxuatban" class="control-label"></label>
-                <input type="number" asp-for="Namxuatban" class="form-control" />
-                <span asp-validation-for="Namxuatban" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Taiban" class="control-label"></label>
-                <input type="number" asp-for="Taiban" class="form-control" />
-                <span asp-validation-for="Taiban" class="text-danger"></span>
-            </div>
+            @{
+                if (Model != null)
+                {
+                    <div>
+                        <h3>Danh sách tác giả</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Tên tác giả
+                                    </th>
+                                    <th>
+                                        Ngày sinh
+                                    </th>
+                                    <th>
+                                        Quốc tịch
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Phienbansach)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.MatacgiaNavigation.Tentacgia
+                                        </td>
+                                        <td>
+                                            @{
+                                                if (@item.MatacgiaNavigation.Ngaysinh != null)
+                                                {
+                                                   <p>@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()</p>
+                                                }
+                                                
+                                            }
+                                        </td>
+                                        <td>
+                                            @item.MatacgiaNavigation.Quoctich
+                                        </td>
+                                        <td>
+                                            <a asp-action="xoaTacGia" asp-route-matacgia="@item.Matacgia" class="btn btn-danger">Xóa</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            } 
+           
             <br />
             <div class="form-group">
                 <input type="submit" value="Thêm mới" class="btn btn-primary" />

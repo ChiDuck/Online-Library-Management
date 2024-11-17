@@ -1,19 +1,17 @@
-﻿@model OnlineLibraryManagement.MyModels.CSach
+﻿@model OnlineLibraryManagement.Models.Sach
 
 @{
     ViewData["Title"] = "Xóa sách";
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
-@{
-    QuanLyThuVienContext db = new QuanLyThuVienContext();
-}
 
 <h1>Xóa sách</h1>
-<a class="btn btn-success" asp-action="Index">Quay lại</a>
+
+<h3>Bạn chắc chắn muốn xóa cuốn sách này?</h3>
 <div>
     <hr />
     <dl class="row">
- @*        <dt class = "col-sm-2">
+@*         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Masach)
         </dt>
         <dd class = "col-sm-10">
@@ -31,10 +29,16 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Soluong)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Namxuatban)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Namxuatban)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Anhbia)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @{
                 if (!string.IsNullOrEmpty(Model.Anhbia))
                 {
@@ -52,11 +56,13 @@
         </dt>
         <dd class = "col-sm-10">
             @{
-                Theloai t = db.Theloais.Find(Model.Maloai);
-                if (t != null)
+                if (Model.MaloaiNavigation != null)
                 {
-                    string tenloai = t.Tenloai;
-                    <p>@tenloai</p>
+                    <p>@Model.MaloaiNavigation.Tenloai</p>
+                }
+                else
+                {
+                    <p>Chưa có</p>
                 }
             }
         </dd>
@@ -65,63 +71,61 @@
         </dt>
         <dd class = "col-sm-10">
             @{
-                Nhaxuatban nxb = db.Nhaxuatbans.Find(Model.Manxb);
-                if (nxb != null)
+                if (Model.ManxbNavigation != null)
                 {
-                    string tennxb = nxb.Tennxb;
-                    <p>@tennxb</p>
+                    <p>@Model.ManxbNavigation.Tennxb</p>
+                }
+                else
+                {
+                    <p>Chưa có</p>
                 }
             }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Matacgias)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                List<Phienbansach> dsPhienBanSach = db.Phienbansaches.Where(x => x.Masach == Model.Masach).ToList();
-                // foreach(var p in dsPhienBanSach)
-                for (int i = 0; i < dsPhienBanSach.Count; i++)
-                {
-                    Phienbansach p = dsPhienBanSach[i];
-                    string tenTacgia = db.Tacgias.Find(p.Matacgia).Tentacgia;
-                    if (i == 0)
-                    {
-                        <text>@tenTacgia</text>
-                    }
-                    else if (i >= 1 && i < dsPhienBanSach.Count)
-                    {
-                        <text>, @tenTacgia</text>
-                    }
-
-                }
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Namxuatban)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Namxuatban)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Taiban)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Taiban)
         </dd>
     </dl>
-</div>
-@if ((bool)ViewBag.flagXoa == true)
-{
-
-    <h3>Bạn có thật sự muốn xóa cuốn sách này!</h3>
     <div>
-        <form asp-action="xoaSach" method="post">
-            <input type="hidden" name="masach" value="@Model.Masach" />
-            <input type="submit" value="Xóa" class="btn btn-danger" />
-        </form>
+        <h3>Danh sách tác giả</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Tên tác giả
+                    </th>
+                    <th>
+                        Ngày sinh
+                    </th>
+                    <th>
+                        Quốc tịch
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Phienbansach)
+                {
+                    <tr>
+                        <td>
+                            @item.MatacgiaNavigation.Tentacgia
+                        </td>
+                        <td>
+                            @{
+                                if (@item.MatacgiaNavigation.Ngaysinh != null)
+                                {
+                                    <p>@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()</p>
+                                }
+
+                            }
+                        </td>
+                        <td>
+                            @item.MatacgiaNavigation.Quoctich
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-}
-else
-{
-    <h3>Bạn không thể xóa cuốn sách này!</h3>
-}
+    
+    <form asp-action="xoaSach">
+        <input type="hidden" name="masach" value="@Model.Masach" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a class="btn btn-success" asp-action="Index">Quay lại</a>
+    </form>
+</div>

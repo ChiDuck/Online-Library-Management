@@ -1,8 +1,11 @@
-﻿@model OnlineLibraryManagement.MyModels.CSach
+﻿@model OnlineLibraryManagement.Models.Sach
 
 @{
-    ViewData["Title"] = "formSuaSach";
+    ViewData["Title"] = "Thay đổi thông tin sách";
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+@{
+    QuanLyThuVienContext db = new QuanLyThuVienContext();
 }
 
 <h1>Thay đổi thông tin sách</h1>
@@ -11,7 +14,7 @@
 </div>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form asp-action="suaSach" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -28,7 +31,12 @@
                 <span asp-validation-for="Soluong" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Anhbia" class="control-label"></label>
+                <label asp-for="Namxuatban" class="control-label"></label>
+                <input type="number" asp-for="Namxuatban" class="form-control" />
+                <span asp-validation-for="Namxuatban" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Anhbia" class="control-label">Thay đổi ảnh bìa</label>
                 <input type="hidden" asp-for="Anhbia" class="form-control" />
                 <input type="file" name="fileImg"  class="form-control" />
                 <span asp-validation-for="Anhbia" class="text-danger"></span>
@@ -43,28 +51,70 @@
                 <select asp-for="Manxb" asp-items="@ViewBag.DSNhaXuatBan" class="form-select"></select>
                 <span asp-validation-for="Manxb" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Matacgias" class="control-label"></label>
-                <select asp-for="Matacgias" asp-items="@ViewBag.DSTacGia" class="form-select"></select>
-                <span asp-validation-for="Matacgias" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Namxuatban" class="control-label"></label>
-                <input type="number" asp-for="Namxuatban" class="form-control" />
-                <span asp-validation-for="Namxuatban" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Taiban" class="control-label"></label>
-                <input type="number" asp-for="Taiban" class="form-control" />
-                <span asp-validation-for="Taiban" class="text-danger"></span>
-            </div>
+            <br />
+@*             <div>
+                <a asp-action="formChonTacGia" class="btn btn-primary">Chỉnh sửa tác giả</a>
+            </div> *@
+            @{
+                if (Model != null)
+                {
+                    <div>
+                        <h3>Danh sách tác giả</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Tên tác giả
+                                    </th>
+                                    <th>
+                                        Ngày sinh
+                                    </th>
+                                    <th>
+                                        Quốc tịch
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in db.Phienbansach.Where(x => x.Masach == Model.Masach).ToList())
+                                    {
+                                        Tacgia tg = db.Tacgia.Find(item.Matacgia);
+                                        if (tg!=null)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @tg.Tentacgia
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        if (tg.Ngaysinh != null)
+                                                        {
+                                                            <p>@tg.Ngaysinh.Value.ToShortDateString()</p>
+                                                        }
+                                                    }
+                                                    
+                                                </td>
+                                                <td>
+                                                    @tg.Quoctich
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                            }
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            }
             <br />
             <div class="form-group">
                 <input type="submit" value="Sửa" class="btn btn-primary" />
             </div>
         </form>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-4">
         @{
             if (!string.IsNullOrEmpty(Model.Anhbia))
             {
@@ -74,6 +124,7 @@
         }
     </div>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
