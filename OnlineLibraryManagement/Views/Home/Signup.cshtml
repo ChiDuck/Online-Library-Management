@@ -1,17 +1,17 @@
 ﻿@model OnlineLibraryManagement.Models.Taikhoan
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Signup";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Đăng nhập</h1>
+<h1>Đăng ký tài khoản</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="loginMethod" method="post">
+        <form asp-action="signupMethod" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           @*  <div class="form-group">
+            @* <div class="form-group">
                 <label asp-for="Matk" class="control-label"></label>
                 <input asp-for="Matk" class="form-control" />
                 <span asp-validation-for="Matk" class="text-danger"></span>
@@ -20,26 +20,35 @@
                 <label asp-for="Tentk" class="control-label"></label>
                 <input asp-for="Tentk" class="form-control" />
                 <span asp-validation-for="Tentk" class="text-danger"></span>
-            </div>
+			</div>
+			<div class="form-group">
+				<label asp-for="Email" class="control-label"></label>
+				<input asp-for="Email" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
             <div class="form-group">
                 <label asp-for="Matkhau" class="control-label"></label>
-                <input asp-for="Matkhau" class="form-control" />
+                <input asp-for="Matkhau" placeholder="Nhập mật khẩu từ 3 kí tự trở lên" class="form-control" />
                 <span asp-validation-for="Matkhau" class="text-danger"></span>
             </div>
-@*             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>@*  
             <div class="form-group">
+                <label asp-for="Nhaplaimatkhau" class="control-label"></label>
+                <input asp-for="Nhaplaimatkhau" placeholder="Nhập lại mật khẩu" class="form-control" />
+                <span asp-validation-for="Nhaplaimatkhau" class="text-danger"></span>
+            </div>
+           @*  <div class="form-group">
                 <label asp-for="Loaitk" class="control-label"></label>
                 <input asp-for="Loaitk" class="form-control" />
                 <span asp-validation-for="Loaitk" class="text-danger"></span>
             </div> *@
             <div class="form-group">
-                <input type="submit" value="Đăng nhập" class="btn btn-primary" />
+                <input type="submit" value="Đăng ký" class="btn btn-primary" />
             </div>
         </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 

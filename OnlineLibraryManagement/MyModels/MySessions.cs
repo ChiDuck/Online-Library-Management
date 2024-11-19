@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
-namespace waHoadon.Models
+namespace OnlineLibraryManagement.Models
 {
     public static class MySessions
     {

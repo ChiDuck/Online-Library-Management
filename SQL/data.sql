@@ -3,6 +3,7 @@ GO
 
 -- RESET AUTO_INCREAMENT
 IF exists (SELECT * FROM TAIKHOAN)		DBCC CHECKIDENT (TAIKHOAN, RESEED, 0)
+IF exists (SELECT * FROM TINHTRANGMUON)	DBCC CHECKIDENT (TINHTRANGMUON, RESEED, 0)
 IF exists (SELECT * FROM DOCGIA)		DBCC CHECKIDENT (DOCGIA, RESEED, 0)
 IF exists (SELECT * FROM THELOAI)		DBCC CHECKIDENT (THELOAI, RESEED, 0)
 IF exists (SELECT * FROM NHAXUATBAN)	DBCC CHECKIDENT (NHAXUATBAN, RESEED, 0)
@@ -21,16 +22,22 @@ DELETE FROM TACGIA
 DELETE FROM THUTHU
 DELETE FROM NHAXUATBAN	  
 DELETE FROM DOCGIA
+DELETE FROM TINHTRANGMUON
 DELETE FROM TAIKHOAN
 						  
 INSERT INTO TAIKHOAN VALUES
-('duc','123',0),
-('ducuser','123',1),			  
-('nghia','123',1)			  
+('duc','123','breadwithginger@gmail.com', 0),
+('ducuser','123','du@gmail.com', 1),			  
+('nghia','123','nghia@gmail.com', 1)			  
 						  
+INSERT INTO TINHTRANGMUON VALUES
+(N'Đang mượn'),
+(N'Đã trả'),
+(N'Trễ hạn')
+
 INSERT INTO DOCGIA VALUES
-(N'Nguyễn Đức','duc@gmail.com','2003-2-16',2),
-(N'Đặng Minh Nghĩa','nghia@gmail.com','2003-2-16',3)
+(N'Nguyễn Đức', '2003-2-16', 2),
+(N'Đặng Minh Nghĩa', '2003-2-16', 3)
 
 INSERT INTO THELOAI VALUES
 (N'Sách giáo khoa'),    --1
@@ -54,7 +61,7 @@ INSERT INTO NHAXUATBAN VALUES
 (N'NXB Trẻ', 'hopthubandoc@nxbtre.com.vn',			N'161B Lý Chính Thắng, Phường Võ Thị Sáu, Quận 3 , TP. Hồ Chí Minh')
 
 INSERT INTO THUTHU VALUES
-(N'Nguyễn Chí Đức', 0123456789, 'breadwithginger@gmail.com',1)
+(N'Nguyễn Chí Đức', 0123456789, 1)
 
 INSERT INTO TACGIA VALUES
 (N'PGS.TS. Lê Thái Phong',	'1979-3-11',	N'Việt Nam'), 
@@ -76,10 +83,12 @@ INSERT INTO PHIENBANSACH VALUES
 (3, 5, N'Tác giả chính')
 
 INSERT INTO PHIEUMUONSACH VALUES
-('2024-11-6',  '2024-11-7',	1, 1), 
-('2024-10-28', '2024-11-1', 1, 1)
+('2024-11-6',  '2024-11-7', '2024-11-15',1, 1, 1), 
+('2024-10-28', '2024-11-1', '2024-11-10',0, 1, 1)
 
 INSERT INTO CHITIETPHIEUMUON VALUES
-(1, 2, '2024-11-15', 1), 
-(1, 3, '2024-11-20', 1),
-(2, 1, '2024-11-27', 2)
+(1, 2, '2024-11-17', 1,3), 
+(1, 3, null, 1, 1),
+(2, 1, '2024-11-9', 2, 2)
+
+select * from TAIKHOAN

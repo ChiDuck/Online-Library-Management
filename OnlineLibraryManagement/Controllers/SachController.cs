@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using OnlineLibraryManagement.Models;
 using OnlineLibraryManagement.MyModels;
-using System.Collections;
-using System.IO;
-using waHoadon.Models;
 
 namespace OnlineLibraryManagement.Controllers
 {

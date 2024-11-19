@@ -12,7 +12,6 @@ namespace OnlineLibraryManagement.Models
 
         public int Madocgia { get; set; }
         public string? Tendocgia { get; set; }
-        public string? Email { get; set; }
         public DateTime? Ngaysinh { get; set; }
         public int? Matk { get; set; }
 

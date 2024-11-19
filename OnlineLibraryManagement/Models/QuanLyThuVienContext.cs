@@ -32,7 +32,7 @@ namespace OnlineLibraryManagement.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=MinhNghia;Initial Catalog=QuanLyThuVien;Integrated Security=True;Trust Server Certificate=True");
+                optionsBuilder.UseSqlServer("Data Source=chiduck;Initial Catalog=QuanLyThuVien;Integrated Security=True;Trust Server Certificate=True");
             }
         }
 
@@ -41,7 +41,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Chitietphieumuon>(entity =>
             {
                 entity.HasKey(e => new { e.Maphieu, e.Masach })
-                    .HasName("PK__CHITIETP__23FDF1A50DF837B4");
+                    .HasName("PK__CHITIETP__23FDF1A599194F36");
 
                 entity.ToTable("CHITIETPHIEUMUON");
 
@@ -59,31 +59,26 @@ namespace OnlineLibraryManagement.Models
                     .WithMany(p => p.Chitietphieumuon)
                     .HasForeignKey(d => d.Maphieu)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__CHITIETPH__MAPHI__52593CB8");
+                    .HasConstraintName("FK__CHITIETPH__MAPHI__534D60F1");
 
                 entity.HasOne(d => d.MasachNavigation)
                     .WithMany(p => p.Chitietphieumuon)
                     .HasForeignKey(d => d.Masach)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__CHITIETPH__MASAC__534D60F1");
+                    .HasConstraintName("FK__CHITIETPH__MASAC__5441852A");
             });
 
             modelBuilder.Entity<Docgia>(entity =>
             {
                 entity.HasKey(e => e.Madocgia)
-                    .HasName("PK__DOCGIA__8CA726FC3CBD3BC4");
+                    .HasName("PK__DOCGIA__8CA726FC210FC253");
 
                 entity.ToTable("DOCGIA");
 
-                entity.HasIndex(e => e.Matk, "UQ__DOCGIA__60237217BE5378A0")
+                entity.HasIndex(e => e.Matk, "UQ__DOCGIA__60237217C9BE7609")
                     .IsUnique();
 
                 entity.Property(e => e.Madocgia).HasColumnName("MADOCGIA");
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("EMAIL");
 
                 entity.Property(e => e.Matk).HasColumnName("MATK");
 
@@ -98,13 +93,13 @@ namespace OnlineLibraryManagement.Models
                 entity.HasOne(d => d.MatkNavigation)
                     .WithOne(p => p.Docgia)
                     .HasForeignKey<Docgia>(d => d.Matk)
-                    .HasConstraintName("FK__DOCGIA__MATK__3A81B327");
+                    .HasConstraintName("FK__DOCGIA__MATK__3B75D760");
             });
 
             modelBuilder.Entity<Nhaxuatban>(entity =>
             {
                 entity.HasKey(e => e.Manxb)
-                    .HasName("PK__NHAXUATB__7ABD9EF26F441F42");
+                    .HasName("PK__NHAXUATB__7ABD9EF2DF8DE8C4");
 
                 entity.ToTable("NHAXUATBAN");
 
@@ -127,7 +122,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Phienbansach>(entity =>
             {
                 entity.HasKey(e => new { e.Masach, e.Matacgia })
-                    .HasName("PK__PHIENBAN__F3934F2A905B755B");
+                    .HasName("PK__PHIENBAN__F3934F2ABA240B20");
 
                 entity.ToTable("PHIENBANSACH");
 
@@ -143,19 +138,19 @@ namespace OnlineLibraryManagement.Models
                     .WithMany(p => p.Phienbansach)
                     .HasForeignKey(d => d.Masach)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__PHIENBANS__MASAC__46E78A0C");
+                    .HasConstraintName("FK__PHIENBANS__MASAC__47DBAE45");
 
                 entity.HasOne(d => d.MatacgiaNavigation)
                     .WithMany(p => p.Phienbansach)
                     .HasForeignKey(d => d.Matacgia)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__PHIENBANS__MATAC__47DBAE45");
+                    .HasConstraintName("FK__PHIENBANS__MATAC__48CFD27E");
             });
 
             modelBuilder.Entity<Phieumuonsach>(entity =>
             {
                 entity.HasKey(e => e.Maphieu)
-                    .HasName("PK__PHIEUMUO__F001B941309DA98C");
+                    .HasName("PK__PHIEUMUO__F001B94195937A84");
 
                 entity.ToTable("PHIEUMUONSACH");
 
@@ -176,18 +171,18 @@ namespace OnlineLibraryManagement.Models
                 entity.HasOne(d => d.MadocgiaNavigation)
                     .WithMany(p => p.Phieumuonsach)
                     .HasForeignKey(d => d.Madocgia)
-                    .HasConstraintName("FK__PHIEUMUON__MADOC__4F7CD00D");
+                    .HasConstraintName("FK__PHIEUMUON__MADOC__5070F446");
 
                 entity.HasOne(d => d.MattNavigation)
                     .WithMany(p => p.Phieumuonsach)
                     .HasForeignKey(d => d.Matt)
-                    .HasConstraintName("FK__PHIEUMUONS__MATT__4E88ABD4");
+                    .HasConstraintName("FK__PHIEUMUONS__MATT__4F7CD00D");
             });
 
             modelBuilder.Entity<Sach>(entity =>
             {
                 entity.HasKey(e => e.Masach)
-                    .HasName("PK__SACH__3FC48E4CA570A283");
+                    .HasName("PK__SACH__3FC48E4C6982833F");
 
                 entity.ToTable("SACH");
 
@@ -213,18 +208,18 @@ namespace OnlineLibraryManagement.Models
                 entity.HasOne(d => d.MaloaiNavigation)
                     .WithMany(p => p.Sach)
                     .HasForeignKey(d => d.Maloai)
-                    .HasConstraintName("FK__SACH__MALOAI__4316F928");
+                    .HasConstraintName("FK__SACH__MALOAI__440B1D61");
 
                 entity.HasOne(d => d.ManxbNavigation)
                     .WithMany(p => p.Sach)
                     .HasForeignKey(d => d.Manxb)
-                    .HasConstraintName("FK__SACH__MANXB__440B1D61");
+                    .HasConstraintName("FK__SACH__MANXB__44FF419A");
             });
 
             modelBuilder.Entity<Tacgia>(entity =>
             {
                 entity.HasKey(e => e.Matacgia)
-                    .HasName("PK__TACGIA__C57C166D8E7EF5C9");
+                    .HasName("PK__TACGIA__C57C166D5B3F44F7");
 
                 entity.ToTable("TACGIA");
 
@@ -246,11 +241,19 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Taikhoan>(entity =>
             {
                 entity.HasKey(e => e.Matk)
-                    .HasName("PK__TAIKHOAN__60237216D35777E6");
+                    .HasName("PK__TAIKHOAN__60237216958E0C14");
 
                 entity.ToTable("TAIKHOAN");
 
+                entity.HasIndex(e => e.Tentk, "UQ__TAIKHOAN__A58DF1B8D994A5CE")
+                    .IsUnique();
+
                 entity.Property(e => e.Matk).HasColumnName("MATK");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("EMAIL");
 
                 entity.Property(e => e.Loaitk).HasColumnName("LOAITK");
 
@@ -268,7 +271,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Theloai>(entity =>
             {
                 entity.HasKey(e => e.Maloai)
-                    .HasName("PK__THELOAI__2F633F236817D2B6");
+                    .HasName("PK__THELOAI__2F633F233FA90820");
 
                 entity.ToTable("THELOAI");
 
@@ -282,19 +285,14 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Thuthu>(entity =>
             {
                 entity.HasKey(e => e.Matt)
-                    .HasName("PK__THUTHU__6023720FCB7F76CF");
+                    .HasName("PK__THUTHU__6023720F5DE13145");
 
                 entity.ToTable("THUTHU");
 
-                entity.HasIndex(e => e.Matk, "UQ__THUTHU__60237217FEE7BBB9")
+                entity.HasIndex(e => e.Matk, "UQ__THUTHU__602372177E868AEA")
                     .IsUnique();
 
                 entity.Property(e => e.Matt).HasColumnName("MATT");
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("EMAIL");
 
                 entity.Property(e => e.Matk).HasColumnName("MATK");
 
@@ -307,7 +305,7 @@ namespace OnlineLibraryManagement.Models
                 entity.HasOne(d => d.MatkNavigation)
                     .WithOne(p => p.Thuthu)
                     .HasForeignKey<Thuthu>(d => d.Matk)
-                    .HasConstraintName("FK__THUTHU__MATK__4BAC3F29");
+                    .HasConstraintName("FK__THUTHU__MATK__4CA06362");
             });
 
             OnModelCreatingPartial(modelBuilder);
