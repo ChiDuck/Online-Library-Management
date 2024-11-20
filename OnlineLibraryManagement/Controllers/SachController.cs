@@ -10,7 +10,8 @@ namespace OnlineLibraryManagement.Controllers
     {
         QuanLyThuVienContext db = new QuanLyThuVienContext();
         public IActionResult Index()
-        {   List<Sach> ds = db.Sach.ToList();
+        {   
+            List<Sach> ds = db.Sach.ToList();
             foreach(var s in ds)
             {
                 s.ManxbNavigation = db.Nhaxuatban.Find(s.Manxb);
