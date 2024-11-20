@@ -114,5 +114,74 @@ namespace OnlineLibraryManagement.Controllers
             }
         }
 
+
+        public Taikhoan tk()
+        {
+            return MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
+        }
+
+        public IActionResult Taikhoan()
+        {
+            Docgia dg = db.Docgia.Where(x => x.Matk == tk().Matk).FirstOrDefault();
+            dg.MatkNavigation = tk();
+            return View(dg);
+        }
+
+        public IActionResult frmSuaTaikhoan(int id)
+        {
+            Docgia dg = db.Docgia.Include(t => t.MatkNavigation).FirstOrDefault(t => t.Madocgia == id);
+        //    dg.MatkNavigation = tk();
+            return View(dg);
+        }
+
+        public IActionResult suaTaikhoan(Docgia dg)
+        {    
+            Taikhoan x = tk();
+            x.Email = dg.MatkNavigation.Email;     
+            MySessions.Set(HttpContext.Session, "taikhoan",x);
+        
+            dg.MatkNavigation = tk();
+            if (dg.Ngaysinh > DateTime.Now)
+            {
+                ModelState.AddModelError("Ngaysinh", "Ngày sinh lớn hơn ngày hiện tại");
+                return View("frmSuaTaikhoan");
+            }    
+            db.Docgia.Update(dg);    
+            db.SaveChanges();               
+            return RedirectToAction("Taikhoan");
+        }
+
+        public IActionResult frmDoiMatkhau(int id)
+        {
+            return View();
+        }
+
+        [ValidateAntiForgeryToken]
+        public IActionResult doiMatkhau(Taikhoan tkmoi)
+        {
+            ModelState.Remove(nameof(tkmoi.Tentk));
+            ModelState.Remove(nameof(tkmoi.Email));
+
+            if (!ModelState.IsValid)
+            {
+                return View("frmDoiMatkhau");
+            }
+
+            Taikhoan t = tk();
+            if (t.Matkhau == tkmoi.Matkhaucu)
+            {
+                t.Matkhau = tkmoi.Matkhau;
+            }
+            else
+            {
+                ModelState.AddModelError("Matkhaucu", "Sai mật khẩu");
+                return View("frmDoiMatkhau");
+            }
+
+            db.Taikhoan.Update(t);
+            db.SaveChanges();
+            MySessions.Set(HttpContext.Session, "taikhoan", t);
+            return RedirectToAction("Taikhoan");          
+        }
     }
 }

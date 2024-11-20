@@ -36,9 +36,10 @@ namespace OnlineLibraryManagement.Controllers
             if (tk != null)
             {
                 if (tk.Matkhau == a.Matkhau)
-                {
+                {               
                     MySessions.Set<Taikhoan>(HttpContext.Session, "taikhoan",tk);
-                    return View("~/Views/Thuthu/Index.cshtml");
+                    if (tk.Loaitk == false) return View("~/Views/Thuthu/Index.cshtml");
+                    else return View("~/Views/Docgia/Index.cshtml");
                 }
                 ModelState.AddModelError("Matkhau", "Sai tên hoặc mật khẩu.");
             }
@@ -62,6 +63,11 @@ namespace OnlineLibraryManagement.Controllers
                         tk.Loaitk = true;
                         db.Taikhoan.Add(tk);
                         db.SaveChanges();
+
+                        Docgia dg = new Docgia();
+                        dg.Matk = tk.Matk;
+                        db.Docgia.Add(dg);
+                        db.SaveChanges();
                         return RedirectToAction("Index");
                     }
                     else
@@ -79,7 +85,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Remove("taikhoan");
+            HttpContext.Session.Remove("tk");
             return RedirectToAction("Index");
         }
 

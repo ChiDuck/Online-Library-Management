@@ -27,7 +27,7 @@ DELETE FROM TAIKHOAN
 						  
 INSERT INTO TAIKHOAN VALUES
 ('duc','123','breadwithginger@gmail.com', 0),
-('ducuser','123','du@gmail.com', 1),			  
+('ducuser','123','duc@gmail.com', 1),			  
 ('nghia','123','nghia@gmail.com', 1)			  
 						  
 INSERT INTO TINHTRANGMUON VALUES
@@ -92,3 +92,4 @@ INSERT INTO CHITIETPHIEUMUON VALUES
 (2, 1, '2024-11-9', 2, 2)
 
 select * from TAIKHOAN
+select * from DOCGIA
