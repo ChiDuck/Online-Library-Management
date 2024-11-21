@@ -68,19 +68,27 @@ INSERT INTO TACGIA VALUES
 (N'ThS. Nguyễn Diệu Ninh',	null,			N'Việt Nam'), 
 (N'ThS. Phạm Thị Mỹ Dung',	null,			N'Việt Nam'), 
 (N'Phan Đăng',				'1984-2-16',	N'Việt Nam'), 
-(N'Hase Seishu',			'1965-2-18',	N'Nhật Bản')
+('Hase Seishu',				'1965-2-18',	N'Nhật Bản'),
+(N'Trang Thế Hy',			'1924-5-10',	N'Việt Nam'),
+('Tatsuki Fujimoto',		'1993-10-10',	N'Nhật Bản'),
+('Ili Tenjou',				null,			N'Nhật Bản')
 
 INSERT INTO SACH VALUES
 (N'Kỹ năng làm việc nhóm',		10, 2023, 'kynanglamviecnhom.jpg',			5, 1), 
 (N'39 cuộc đối thoại tri thức', 5,	2023, '39-cuoc-doi-thoai-tri-thuc.png',	5, 2), 
-(N'Chú chó hộ mệnh',			3,	2024, 'chuchohomenh.jpg',				6, 2)
+(N'Chú chó hộ mệnh',			15,	2024, 'chuchohomenh.jpg',				6, 2),
+(N'Tuyển tập truyện ngắn Trang Thế Hy',	18,	2024, 'nxbtre_trthehy.jpg',		8, 4),
+('LOOK BACK',					8,	2024, 'lookback.jpg',					7, 4)
 
 INSERT INTO PHIENBANSACH VALUES
 (1, 1, N'Tác giả chính'), 
 (1, 2, N'Tác giả phụ'), 
 (1, 3, N'Biên tập viên'), 
 (2, 4, N'Tác giả chính'), 
-(3, 5, N'Tác giả chính')
+(3, 5, N'Tác giả chính'),
+(4, 6, N'Tác giả chính'),
+(5, 7, N'Tác giả chính'),
+(5, 8, N'Dịch giả')
 
 INSERT INTO PHIEUMUONSACH VALUES
 ('2024-11-6',  '2024-11-7', '2024-11-15',1, 1, 1), 

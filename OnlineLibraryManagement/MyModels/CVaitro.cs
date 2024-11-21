@@ -4,14 +4,16 @@
     {
         public static List<string> getDSVaitro()
         {
-            List<string> ds = new List<string>();
-            ds.Add("Tác giả chính");
-            ds.Add("Tác giả phụ");
-            ds.Add("Biên tập viên");
-            ds.Add("Dịch giả");
-            ds.Add("Người giới thiệu");
-            ds.Add("Nhà nghiên cứu");
-            ds.Add("Nhà soạn thảo");
+            List<string> ds = new()
+            {
+                "Tác giả chính",
+                "Tác giả phụ",
+                "Biên tập viên",
+                "Dịch giả",
+                "Người giới thiệu",
+                "Nhà nghiên cứu",
+                "Nhà soạn thảo"
+            };
             return ds;
         }
     }

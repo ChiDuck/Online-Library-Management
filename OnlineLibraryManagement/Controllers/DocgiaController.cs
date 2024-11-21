@@ -129,8 +129,8 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult frmSuaTaikhoan(int id)
         {
-            Docgia dg = db.Docgia.Include(t => t.MatkNavigation).FirstOrDefault(t => t.Madocgia == id);
-        //    dg.MatkNavigation = tk();
+            Docgia dg = db.Docgia.Find(id);
+            dg.MatkNavigation = tk();
             return View(dg);
         }
 
