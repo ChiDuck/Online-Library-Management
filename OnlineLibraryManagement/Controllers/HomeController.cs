@@ -54,6 +54,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult signupMethod(Taikhoan tk)
         {
+            ModelState.Clear();
             if (ModelState.IsValid)
             {
                 if (!db.Taikhoan.Any(t => t.Tentk == tk.Tentk))

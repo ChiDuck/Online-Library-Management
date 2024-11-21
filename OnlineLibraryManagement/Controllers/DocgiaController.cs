@@ -141,11 +141,21 @@ namespace OnlineLibraryManagement.Controllers
             MySessions.Set(HttpContext.Session, "taikhoan",x);
         
             dg.MatkNavigation = tk();
+            if (db.Taikhoan.Any(t => t.Email == dg.MatkNavigation.Email))
+            {
+                ModelState.AddModelError("MatkNavigation.Email", "Email đã tồn tại.");
+                return View("frmSuaTaikhoan");
+            }
+            if (string.IsNullOrEmpty(dg.MatkNavigation.Email))
+            {
+                ModelState.AddModelError("MatkNavigation.Email", "Email không được để trống.");
+                return View("frmSuaTaikhoan");
+            }
             if (dg.Ngaysinh > DateTime.Now)
             {
                 ModelState.AddModelError("Ngaysinh", "Ngày sinh lớn hơn ngày hiện tại");
                 return View("frmSuaTaikhoan");
-            }    
+            }
             db.Docgia.Update(dg);    
             db.SaveChanges();               
             return RedirectToAction("Taikhoan");
