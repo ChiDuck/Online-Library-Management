@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineLibraryManagement.Models;
 using OnlineLibraryManagement.MyModels;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks.Dataflow;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -215,6 +218,20 @@ namespace OnlineLibraryManagement.Controllers
                 err.RequestId = e.Message;
                 return View("Error", err);
             }
+        }
+        public IActionResult getData([FromBody]Sach x)
+        {
+            if (x == null)
+                x = new Sach();
+            Sach book = MySessions.Get<Sach>(HttpContext.Session, "sach");
+            book.Soluong = x.Soluong;
+            book.Tensach = x.Tensach;
+            book.Namxuatban = x.Namxuatban;
+            book.Maloai = x.Maloai;
+            book.Manxb = x.Manxb;
+            MySessions.Set<Sach>(HttpContext.Session, "sach", book);
+            return Json(true);
+
         }
         public IActionResult formChonTacGia()
         {

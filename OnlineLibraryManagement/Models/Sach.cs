@@ -21,7 +21,7 @@ namespace OnlineLibraryManagement.Models
         [Required(ErrorMessage = "Bạn chưa nhập số lượng")]
         public int? Soluong { get; set; }
         [Display(Name = "Năm xuất bản")]
-        [Required(ErrorMessage = "Bạn chưa năm xuất bản")]
+        [Required(ErrorMessage = "Bạn chưa nhập năm xuất bản")]
         public int? Namxuatban { get; set; }
         [Display(Name = "Ảnh bìa")]
         public string? Anhbia { get; set; }

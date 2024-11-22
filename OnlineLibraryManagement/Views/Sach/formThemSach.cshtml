@@ -1,9 +1,9 @@
 ﻿@model OnlineLibraryManagement.Models.Sach
-
 @{
     ViewData["Title"] = "Thêm sách";
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
+
 
 <h1>Thêm sách mới</h1>
 <div>
@@ -12,23 +12,21 @@
 <hr />
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="themSach" method="post" enctype="multipart/form-data">
+        <form asp-action="themSach" id="formThemSach" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 @*             <div class="form-group">
                 <label asp-for="Masach" class="control-label"></label>
                 <input type="hidden" asp-for="Masach" class="form-control" />
                 <span asp-validation-for="Masach" class="text-danger"></span>
             </div> *@
-            <div>
-                <label style="font-size:larger"><strong>Vui lòng chọn tác giả trước</strong></label>
-                <a asp-action="formChonTacGia" class="btn btn-primary">Chọn thêm tác giả</a>
-            </div>
             <br />
             @{
                 if (Model != null)
                 {
                     <div>
                         <h3>Danh sách tác giả</h3>
+                        <input type="button" class="btn btn-primary" value="Chọn thêm tác giả" onclick="sendData()" />
+                        <br />
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -81,17 +79,17 @@
             }
             <div class="form-group">
                 <label asp-for="Tensach" class="control-label"></label>
-                <input asp-for="Tensach" class="form-control" />
+                <input asp-for="Tensach"  class="form-control" />
                 <span asp-validation-for="Tensach" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Soluong" class="control-label"></label>
-                <input type="number" asp-for="Soluong" class="form-control" />
+                <input type="number"  asp-for="Soluong" class="form-control" />
                 <span asp-validation-for="Soluong" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Namxuatban" class="control-label"></label>
-                <input type="number" asp-for="Namxuatban" class="form-control" />
+                <input type="number"  asp-for="Namxuatban" class="form-control" />
                 <span asp-validation-for="Namxuatban" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -116,7 +114,33 @@
         </form>
     </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    function sendData() {
+        let tensach = document.forms["formThemSach"]["Tensach"].value;
+        let soluong = document.forms["formThemSach"]["Soluong"].value;
+        let namxuatban = document.forms["formThemSach"]["Namxuatban"].value;
+        let maloai = document.forms["formThemSach"]["Maloai"].value;
+        let manxb = document.forms["formThemSach"]["Manxb"].value;
+        let data = {
+            Tensach: tensach,
+            Soluong: soluong,
+            Namxuatban: namxuatban,
+            Maloai: maloai,
+            Manxb: manxb
+        };
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            if (JSON.parse(xhttp.responseText) == true) {
+                location.href = "/Sach/formChonTacGia";
+            }
+        }
+        var url = "/Sach/getData";
+        xhttp.open("POST", url);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+
+        xhttp.send(JSON.stringify(data));
+    }
+</script>
