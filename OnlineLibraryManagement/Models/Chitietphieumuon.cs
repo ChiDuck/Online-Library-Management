@@ -7,8 +7,6 @@ namespace OnlineLibraryManagement.Models
     {
         public int Maphieu { get; set; }
         public int Masach { get; set; }
-        public DateTime? Ngaytrathucte { get; set; }
-        public int? Soluong { get; set; }
         public int? Matinhtrang { get; set; }
 
         public virtual Phieumuonsach MaphieuNavigation { get; set; } = null!;
