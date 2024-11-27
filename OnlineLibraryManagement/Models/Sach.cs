@@ -14,11 +14,14 @@ namespace OnlineLibraryManagement.Models
 
         [Display(Name = "Mã sách")]
         public int Masach { get; set; }
+
         [Display(Name = "Tên sách")]
         [Required(ErrorMessage = "Bạn chưa nhập tên sách")]
         public string? Tensach { get; set; }
+
         [Display(Name = "Số lượng")]
         [Required(ErrorMessage = "Bạn chưa nhập số lượng")]
+        [Range(1, int.MaxValue, ErrorMessage = "Số lượng phải lớn hơn 0")]
         public int? Soluong { get; set; }
         [Display(Name = "Năm xuất bản")]
         [Required(ErrorMessage = "Bạn chưa nhập năm xuất bản")]

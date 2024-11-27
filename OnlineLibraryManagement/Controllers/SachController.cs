@@ -6,6 +6,7 @@ using OnlineLibraryManagement.MyModels;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -38,21 +39,9 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult themSach(Sach s, IFormFile fileImg)
         {
             Sach book = MySessions.Get<Sach>(HttpContext.Session, "sach");
-            if (book != null)
+            ModelState.Remove("fileImg");
+            if (ModelState.IsValid && book != null)
             {
-                //kiểm tra số lượng
-                if (s.Soluong < 1)
-                {
-                    book.Soluong = s.Soluong;
-                    book.Namxuatban = s.Namxuatban;
-                    book.Manxb = s.Manxb;
-                    book.Maloai = s.Maloai;
-                    MySessions.Set<Sach>(HttpContext.Session, "sach", book);
-                    ModelState.AddModelError("Soluong", "Số lượng phải lớn hơn 0");
-                    ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-                    ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
-                    return View("formThemSach", book);
-                }
 
                 //kiểm tra năm xuất bản
                 if (s.Namxuatban < 1970 || s.Namxuatban > DateTime.Now.Year)
@@ -62,7 +51,7 @@ namespace OnlineLibraryManagement.Controllers
                     book.Manxb = s.Manxb;
                     book.Maloai = s.Maloai;
                     MySessions.Set<Sach>(HttpContext.Session, "sach", book);
-                    ModelState.AddModelError("Namxuatban", "Vui lòng nhập đầu sách có năm xuất bản mới hơn và nhỏ hơn hoặc bằng năm hiện tại");
+                    ModelState.AddModelError("Namxuatban", "Sách đã quá cũ. Vui lòng nhập đầu sách có năm xuất bản mới hơn năm 1970 và nhỏ hơn hoặc bằng năm hiện tại");
                     ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
                     ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
                     return View("formThemSach", book);
@@ -82,10 +71,10 @@ namespace OnlineLibraryManagement.Controllers
                 {
                     s.Anhbia = string.Empty;
                 }
-                
+
                 if (book.Phienbansach.Count > 0)
                 {
-                   foreach(Phienbansach p in book.Phienbansach)
+                    foreach (Phienbansach p in book.Phienbansach)
                     {
                         Phienbansach Phienbansach = new Phienbansach(); //tạo ra phiên bản sách mới
 
@@ -97,20 +86,32 @@ namespace OnlineLibraryManagement.Controllers
                     }
                 }
 
+                else
+                {
+                    ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+                    ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                    return RedirectToAction("formThemSach");
+                }
+                db.Sach.Add(s);
+                db.SaveChanges();
+
+                //xóa dữ liệu sách cũ khi đã thêm sách
+                MySessions.Set<Sach>(HttpContext.Session, "sach", new Sach());
+
+                return RedirectToAction("Index");
             }
             else
             {
+                book.Soluong = s.Soluong;
+                book.Namxuatban = s.Namxuatban;
+                book.Manxb = s.Manxb;
+                book.Maloai = s.Maloai;
+                MySessions.Set<Sach>(HttpContext.Session, "sach", book);
                 ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
                 ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
-                return RedirectToAction("formThemSach");
-            }
-            db.Sach.Add(s);
-            db.SaveChanges();
-
-            //xóa dữ liệu sách cũ khi đã thêm sách
-            MySessions.Set<Sach>(HttpContext.Session, "sach", new Sach());
-
-            return RedirectToAction("Index");
+                return View("formThemSach",book);
+            }    
+            
 
         }
         public IActionResult formSuaSach(int id)
@@ -134,46 +135,47 @@ namespace OnlineLibraryManagement.Controllers
         }
         public IActionResult suaSach(Sach s, IFormFile fileImg)
         {
-
-            //xử lý số lượng
-            if (s.Soluong < 1)
+            ModelState.Remove("fileImg");
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("Soluong", "Số lượng phải lớn hơn 0");
-                Sach book = db.Sach.Include(s => s.MaloaiNavigation).Include(a => a.ManxbNavigation).Include(a => a.Phienbansach).ThenInclude(p => p.MatacgiaNavigation).FirstOrDefault(a => a.Masach == s.Masach);
+                if (s.Namxuatban < 1970 || s.Namxuatban > DateTime.Now.Year)
+                {
+                    ModelState.AddModelError("Namxuatban", "Vui lòng nhập đầu sách có năm xuất bản mới hơn và nhỏ hơn hoặc bằng năm hiện tại");
+                    Sach book = db.Sach.Include(s => s.MaloaiNavigation).Include(a => a.ManxbNavigation).Include(a => a.Phienbansach).ThenInclude(p => p.MatacgiaNavigation).FirstOrDefault(a => a.Masach == s.Masach);
+                    ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+                    ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                    return View("formSuaSach", book);
+
+                }
+                //xử lý file ảnh
+                if (fileImg != null)
+                {
+                    xoaAnh(s.Anhbia); //xóa ảnh cũ đi
+                    //Thêm ảnh mới vào folder img
+                    s.Anhbia = fileImg.FileName;
+                    string tenfile = Directory.GetCurrentDirectory();
+                    tenfile += @"\wwwroot\img\" + fileImg.FileName;
+                    FileStream f = new FileStream(tenfile, FileMode.Create);
+                    fileImg.CopyTo(f);
+                    f.Close();
+                }
+
+                //Cập nhật dữ liệu vào bảng sách
+                db.Sach.Update(s);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Sach sach = db.Sach.Include(a => a.MaloaiNavigation)
+                              .Include(a => a.ManxbNavigation)
+                              .Include(a => a.Phienbansach)
+                              .ThenInclude(a => a.MatacgiaNavigation)
+                              .FirstOrDefault(a => a.Masach == s.Masach);
                 ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
                 ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
-                return View("formSuaSach",book);
-
-            }
-            if (s.Namxuatban < 1970 || s.Namxuatban > DateTime.Now.Year)
-            {
-                ModelState.AddModelError("Namxuatban", "Vui lòng nhập đầu sách có năm xuất bản mới hơn và nhỏ hơn hoặc bằng năm hiện tại");
-                Sach book = db.Sach.Include(s => s.MaloaiNavigation).Include(a => a.ManxbNavigation).Include(a => a.Phienbansach).ThenInclude(p => p.MatacgiaNavigation).FirstOrDefault(a => a.Masach == s.Masach);
-                ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
-                return View("formSuaSach", book);
-
-            }
-
-            //xử lý file ảnh
-            if (fileImg != null)
-            {
-                xoaAnh(s.Anhbia); //xóa ảnh cũ đi
-                //Thêm ảnh mới vào folder img
-                s.Anhbia = fileImg.FileName;
-                string tenfile = Directory.GetCurrentDirectory();
-                tenfile += @"\wwwroot\img\" + fileImg.FileName;
-                FileStream f = new FileStream(tenfile, FileMode.Create);
-                fileImg.CopyTo(f);
-                f.Close();
-            }
-
-            //Cập nhật dữ liệu vào bảng sách
-            db.Sach.Update(s);
-            db.SaveChanges();
-
-              
-            return RedirectToAction("Index");
+                return View("formSuaSach", sach);
+            }    
         }
         public IActionResult formXoaSach(int id)
         {
