@@ -1,0 +1,52 @@
+﻿@model OnlineLibraryManagement.Models.Thuthu
+
+@{
+    ViewData["Title"] = "frmSuaTaikhoan";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Sửa thông tin tài khoản</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="suaTaikhoan" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@*             <div class="form-group">
+                <label asp-for="Matt" class="control-label"></label>
+                <input asp-for="Matt" class="form-control" />
+                <span asp-validation-for="Matt" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="MatkNavigation.Tentk" class="control-label"></label>
+                <input readonly asp-for="MatkNavigation.Tentk" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Tentt" class="control-label"></label>
+                <input asp-for="Tentt" class="form-control" />
+                <span asp-validation-for="Tentt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sdt" class="control-label"></label>
+                <input asp-for="Sdt" class="form-control" />
+                <span asp-validation-for="Sdt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MatkNavigation.Email" class="control-label"></label>
+                <input asp-for="MatkNavigation.Email" class="form-control" />
+                <span asp-validation-for="MatkNavigation.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Matk" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Taikhoan">Trở lại</a>
+</div>
+

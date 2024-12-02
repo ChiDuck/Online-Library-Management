@@ -1,0 +1,48 @@
+﻿@model OnlineLibraryManagement.Models.Thuthu
+
+@{
+    ViewData["Title"] = "Taikhoan";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Thông tin tài khoản</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        @* <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Matt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Matt)
+        </dd> *@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MatkNavigation.Tentk)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.MatkNavigation.Tentk
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tentt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tentt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Sdt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Sdt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MatkNavigation.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.MatkNavigation.Email
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="frmSuaTaikhoan" asp-route-id="@Model.Matt" class="btn btn-primary">Chỉnh sửa thông tin</a>
+    <a asp-action="frmDoiMatkhau" class="btn btn-primary">Thay đổi mật khẩu</a>
+</div>
