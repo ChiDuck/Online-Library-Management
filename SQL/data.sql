@@ -43,12 +43,10 @@ INSERT INTO TINHTRANGMUON VALUES
 (N'Mất sách')		
 
 INSERT INTO TINHTRANGPHIEU VALUES
-(N'Đang lập phiếu'),	--1
-(N'Chờ phản hồi'),		--2
-(N'Đã chấp nhận'),		--3
-(N'Đã kết thúc'),		--4
-(N'Từ chối'),			--5
-(N'Hết hạn')			--6
+(N'Chờ phản hồi'),		--1
+(N'Đã chấp nhận'),		--2
+(N'Đã kết thúc'),		--3
+(N'Từ chối')			--4
 
 INSERT INTO DOCGIA VALUES
 (N'Nguyễn Đức', '2003-2-16', 2),
@@ -106,8 +104,8 @@ INSERT INTO PHIENBANSACH VALUES
 (5, 8, N'Dịch giả')
 
 INSERT INTO PHIEUMUONSACH VALUES		-- Ngày lập, ngày mượn, hạn trả, số lượng, mã tình trạng, mã tthu, mã độc giả
-('2024-11-6',  '2024-11-7', '2024-11-14',2, 4, 1, 1), 
-('2024-10-28', '2024-11-1', '2024-11-4'	,1, 4, 1, 1)
+('2024-11-6',  '2024-11-7', '2024-11-14',2, 3, 1, 1), 
+('2024-10-28', '2024-11-1', '2024-11-4'	,1, 3, 1, 1)
 
 INSERT INTO CHITIETPHIEUMUON VALUES		-- Mã phiếu, mã sách, mã tình trạng
 (1, 2, 2), 
