@@ -29,6 +29,7 @@ namespace OnlineLibraryManagement.Models
         public virtual DbSet<Theloai> Theloai { get; set; } = null!;
         public virtual DbSet<Thuthu> Thuthu { get; set; } = null!;
         public virtual DbSet<Tinhtrangmuon> Tinhtrangmuon { get; set; } = null!;
+        public virtual DbSet<Tinhtrangphieu> Tinhtrangphieu { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,7 +45,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Chitietphieumuon>(entity =>
             {
                 entity.HasKey(e => new { e.Maphieu, e.Masach })
-                    .HasName("PK__CHITIETP__23FDF1A559FDA7B6");
+                    .HasName("PK__CHITIETP__23FDF1A513ABC5AC");
 
                 entity.ToTable("CHITIETPHIEUMUON");
 
@@ -58,28 +59,28 @@ namespace OnlineLibraryManagement.Models
                     .WithMany(p => p.Chitietphieumuon)
                     .HasForeignKey(d => d.Maphieu)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__CHITIETPH__MAPHI__5441852A");
+                    .HasConstraintName("FK__CHITIETPH__MAPHI__571DF1D5");
 
                 entity.HasOne(d => d.MasachNavigation)
                     .WithMany(p => p.Chitietphieumuon)
                     .HasForeignKey(d => d.Masach)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__CHITIETPH__MASAC__5535A963");
+                    .HasConstraintName("FK__CHITIETPH__MASAC__5812160E");
 
                 entity.HasOne(d => d.MatinhtrangNavigation)
                     .WithMany(p => p.Chitietphieumuon)
                     .HasForeignKey(d => d.Matinhtrang)
-                    .HasConstraintName("FK__CHITIETPH__MATIN__5629CD9C");
+                    .HasConstraintName("FK__CHITIETPH__MATIN__59063A47");
             });
 
             modelBuilder.Entity<Docgia>(entity =>
             {
                 entity.HasKey(e => e.Madocgia)
-                    .HasName("PK__DOCGIA__8CA726FC961AF17B");
+                    .HasName("PK__DOCGIA__8CA726FC2B7F4F58");
 
                 entity.ToTable("DOCGIA");
 
-                entity.HasIndex(e => e.Matk, "UQ__DOCGIA__60237217433E2870")
+                entity.HasIndex(e => e.Matk, "UQ__DOCGIA__602372173CCF0FB7")
                     .IsUnique();
 
                 entity.Property(e => e.Madocgia).HasColumnName("MADOCGIA");
@@ -91,7 +92,7 @@ namespace OnlineLibraryManagement.Models
                     .HasColumnName("NGAYSINH");
 
                 entity.Property(e => e.Tendocgia)
-                    .HasMaxLength(50)
+                    .HasMaxLength(35)
                     .HasColumnName("TENDOCGIA");
 
                 entity.HasOne(d => d.MatkNavigation)
@@ -103,7 +104,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Nhaxuatban>(entity =>
             {
                 entity.HasKey(e => e.Manxb)
-                    .HasName("PK__NHAXUATB__7ABD9EF2C2E85BD2");
+                    .HasName("PK__NHAXUATB__7ABD9EF27AC4DD5F");
 
                 entity.ToTable("NHAXUATBAN");
 
@@ -114,7 +115,7 @@ namespace OnlineLibraryManagement.Models
                     .HasColumnName("DIACHI");
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(50)
+                    .HasMaxLength(35)
                     .IsUnicode(false)
                     .HasColumnName("EMAIL");
 
@@ -126,7 +127,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Phienbansach>(entity =>
             {
                 entity.HasKey(e => new { e.Masach, e.Matacgia })
-                    .HasName("PK__PHIENBAN__F3934F2A3D5F4021");
+                    .HasName("PK__PHIENBAN__F3934F2A7E46AD93");
 
                 entity.ToTable("PHIENBANSACH");
 
@@ -136,7 +137,8 @@ namespace OnlineLibraryManagement.Models
 
                 entity.Property(e => e.Vaitro)
                     .HasMaxLength(30)
-                    .HasColumnName("VAITRO");
+                    .HasColumnName("VAITRO")
+                    .IsFixedLength();
 
                 entity.HasOne(d => d.MasachNavigation)
                     .WithMany(p => p.Phienbansach)
@@ -154,11 +156,15 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Phieugiahan>(entity =>
             {
                 entity.HasKey(e => e.Maphieu)
-                    .HasName("PK__PHIEUGIA__F001B94176C48BDD");
+                    .HasName("PK__PHIEUGIA__F001B941E9E25147");
 
                 entity.ToTable("PHIEUGIAHAN");
 
                 entity.Property(e => e.Maphieu).HasColumnName("MAPHIEU");
+
+                entity.Property(e => e.Hantramoi)
+                    .HasColumnType("date")
+                    .HasColumnName("HANTRAMOI");
 
                 entity.Property(e => e.Langiahan).HasColumnName("LANGIAHAN");
 
@@ -173,18 +179,18 @@ namespace OnlineLibraryManagement.Models
                 entity.HasOne(d => d.MadocgiaNavigation)
                     .WithMany(p => p.Phieugiahan)
                     .HasForeignKey(d => d.Madocgia)
-                    .HasConstraintName("FK__PHIEUGIAH__MADOC__5EBF139D");
+                    .HasConstraintName("FK__PHIEUGIAH__MADOC__619B8048");
 
                 entity.HasOne(d => d.MaphieumuonNavigation)
                     .WithMany(p => p.Phieugiahan)
                     .HasForeignKey(d => d.Maphieumuon)
-                    .HasConstraintName("FK__PHIEUGIAH__MAPHI__5DCAEF64");
+                    .HasConstraintName("FK__PHIEUGIAH__MAPHI__60A75C0F");
             });
 
             modelBuilder.Entity<Phieumuonsach>(entity =>
             {
                 entity.HasKey(e => e.Maphieu)
-                    .HasName("PK__PHIEUMUO__F001B941E595A65C");
+                    .HasName("PK__PHIEUMUO__F001B94137FFDE84");
 
                 entity.ToTable("PHIEUMUONSACH");
 
@@ -195,6 +201,8 @@ namespace OnlineLibraryManagement.Models
                     .HasColumnName("HANTRA");
 
                 entity.Property(e => e.Madocgia).HasColumnName("MADOCGIA");
+
+                entity.Property(e => e.Matinhtrang).HasColumnName("MATINHTRANG");
 
                 entity.Property(e => e.Matt).HasColumnName("MATT");
 
@@ -211,22 +219,27 @@ namespace OnlineLibraryManagement.Models
                 entity.HasOne(d => d.MadocgiaNavigation)
                     .WithMany(p => p.Phieumuonsach)
                     .HasForeignKey(d => d.Madocgia)
-                    .HasConstraintName("FK__PHIEUMUON__MADOC__5165187F");
+                    .HasConstraintName("FK__PHIEUMUON__MADOC__5441852A");
+
+                entity.HasOne(d => d.MatinhtrangNavigation)
+                    .WithMany(p => p.Phieumuonsach)
+                    .HasForeignKey(d => d.Matinhtrang)
+                    .HasConstraintName("FK__PHIEUMUON__MATIN__52593CB8");
 
                 entity.HasOne(d => d.MattNavigation)
                     .WithMany(p => p.Phieumuonsach)
                     .HasForeignKey(d => d.Matt)
-                    .HasConstraintName("FK__PHIEUMUONS__MATT__5070F446");
+                    .HasConstraintName("FK__PHIEUMUONS__MATT__534D60F1");
             });
 
             modelBuilder.Entity<Phieutrasach>(entity =>
             {
                 entity.HasKey(e => e.Maphieu)
-                    .HasName("PK__PHIEUTRA__F001B9412883BDB5");
+                    .HasName("PK__PHIEUTRA__F001B941BF1CF0CE");
 
                 entity.ToTable("PHIEUTRASACH");
 
-                entity.HasIndex(e => e.Maphieumuon, "UQ__PHIEUTRA__3F97C76A84E49FC4")
+                entity.HasIndex(e => e.Maphieumuon, "UQ__PHIEUTRA__3F97C76A31826AC2")
                     .IsUnique();
 
                 entity.Property(e => e.Maphieu).HasColumnName("MAPHIEU");
@@ -244,18 +257,18 @@ namespace OnlineLibraryManagement.Models
                 entity.HasOne(d => d.MadocgiaNavigation)
                     .WithMany(p => p.Phieutrasach)
                     .HasForeignKey(d => d.Madocgia)
-                    .HasConstraintName("FK__PHIEUTRAS__MADOC__5AEE82B9");
+                    .HasConstraintName("FK__PHIEUTRAS__MADOC__5DCAEF64");
 
                 entity.HasOne(d => d.MaphieumuonNavigation)
                     .WithOne(p => p.Phieutrasach)
                     .HasForeignKey<Phieutrasach>(d => d.Maphieumuon)
-                    .HasConstraintName("FK__PHIEUTRAS__MAPHI__59FA5E80");
+                    .HasConstraintName("FK__PHIEUTRAS__MAPHI__5CD6CB2B");
             });
 
             modelBuilder.Entity<Sach>(entity =>
             {
                 entity.HasKey(e => e.Masach)
-                    .HasName("PK__SACH__3FC48E4C805C13EB");
+                    .HasName("PK__SACH__3FC48E4CB90C38B5");
 
                 entity.ToTable("SACH");
 
@@ -292,7 +305,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Tacgia>(entity =>
             {
                 entity.HasKey(e => e.Matacgia)
-                    .HasName("PK__TACGIA__C57C166DDFA6A9C0");
+                    .HasName("PK__TACGIA__C57C166DAB011B26");
 
                 entity.ToTable("TACGIA");
 
@@ -314,26 +327,26 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Taikhoan>(entity =>
             {
                 entity.HasKey(e => e.Matk)
-                    .HasName("PK__TAIKHOAN__60237216F1670B05");
+                    .HasName("PK__TAIKHOAN__60237216B0758F15");
 
                 entity.ToTable("TAIKHOAN");
 
                 entity.Property(e => e.Matk).HasColumnName("MATK");
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(50)
+                    .HasMaxLength(35)
                     .IsUnicode(false)
                     .HasColumnName("EMAIL");
 
                 entity.Property(e => e.Loaitk).HasColumnName("LOAITK");
 
                 entity.Property(e => e.Matkhau)
-                    .HasMaxLength(30)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("MATKHAU");
 
                 entity.Property(e => e.Tentk)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("TENTK");
             });
@@ -341,7 +354,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Theloai>(entity =>
             {
                 entity.HasKey(e => e.Maloai)
-                    .HasName("PK__THELOAI__2F633F23280A48CC");
+                    .HasName("PK__THELOAI__2F633F2379D88D34");
 
                 entity.ToTable("THELOAI");
 
@@ -355,21 +368,25 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Thuthu>(entity =>
             {
                 entity.HasKey(e => e.Matt)
-                    .HasName("PK__THUTHU__6023720FE8BFDEF5");
+                    .HasName("PK__THUTHU__6023720F750E18B5");
 
                 entity.ToTable("THUTHU");
 
-                entity.HasIndex(e => e.Matk, "UQ__THUTHU__60237217B6967E2A")
+                entity.HasIndex(e => e.Matk, "UQ__THUTHU__6023721752C5FAD2")
                     .IsUnique();
 
                 entity.Property(e => e.Matt).HasColumnName("MATT");
 
                 entity.Property(e => e.Matk).HasColumnName("MATK");
 
-                entity.Property(e => e.Sdt).HasColumnName("SDT");
+                entity.Property(e => e.Sdt)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("SDT")
+                    .IsFixedLength();
 
                 entity.Property(e => e.Tentt)
-                    .HasMaxLength(50)
+                    .HasMaxLength(35)
                     .HasColumnName("TENTT");
 
                 entity.HasOne(d => d.MatkNavigation)
@@ -381,14 +398,29 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Tinhtrangmuon>(entity =>
             {
                 entity.HasKey(e => e.Matinhtrang)
-                    .HasName("PK__TINHTRAN__C118F2D5F1BD53AA");
+                    .HasName("PK__TINHTRAN__C118F2D50F518EEC");
 
                 entity.ToTable("TINHTRANGMUON");
 
                 entity.Property(e => e.Matinhtrang).HasColumnName("MATINHTRANG");
 
                 entity.Property(e => e.Tentinhtrang)
-                    .HasMaxLength(20)
+                    .HasMaxLength(15)
+                    .HasColumnName("TENTINHTRANG")
+                    .IsFixedLength();
+            });
+
+            modelBuilder.Entity<Tinhtrangphieu>(entity =>
+            {
+                entity.HasKey(e => e.Matinhtrang)
+                    .HasName("PK__TINHTRAN__C118F2D5A9EA65B7");
+
+                entity.ToTable("TINHTRANGPHIEU");
+
+                entity.Property(e => e.Matinhtrang).HasColumnName("MATINHTRANG");
+
+                entity.Property(e => e.Tentinhtrang)
+                    .HasMaxLength(15)
                     .HasColumnName("TENTINHTRANG")
                     .IsFixedLength();
             });

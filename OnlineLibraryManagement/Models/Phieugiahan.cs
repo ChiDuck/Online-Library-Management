@@ -7,6 +7,7 @@ namespace OnlineLibraryManagement.Models
     {
         public int Maphieu { get; set; }
         public DateTime? Ngaylapphieu { get; set; }
+        public DateTime? Hantramoi { get; set; }
         public int? Langiahan { get; set; }
         public int? Maphieumuon { get; set; }
         public int? Madocgia { get; set; }

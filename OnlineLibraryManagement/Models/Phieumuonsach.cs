@@ -16,10 +16,12 @@ namespace OnlineLibraryManagement.Models
         public DateTime? Ngaymuon { get; set; }
         public DateTime? Hantra { get; set; }
         public int? Soluongsach { get; set; }
+        public int? Matinhtrang { get; set; }
         public int? Matt { get; set; }
         public int? Madocgia { get; set; }
 
         public virtual Docgia? MadocgiaNavigation { get; set; }
+        public virtual Tinhtrangphieu? MatinhtrangNavigation { get; set; }
         public virtual Thuthu? MattNavigation { get; set; }
         public virtual Phieutrasach? Phieutrasach { get; set; }
         public virtual ICollection<Chitietphieumuon> Chitietphieumuon { get; set; }
