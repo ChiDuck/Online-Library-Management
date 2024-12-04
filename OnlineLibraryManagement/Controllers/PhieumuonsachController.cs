@@ -11,7 +11,8 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Index()
         {
-           return View();
+            int madg = MySessions.Get<int>(HttpContext.Session, "madocgia");
+            return View(db.Phieumuonsach.OrderByDescending(x => x.Ngaylapphieu).Where(x => x.Madocgia == madg).ToList());
         }
         #region Thủ thư
         public IActionResult DSPhieuMuon_Thuthu()
@@ -80,8 +81,8 @@ namespace OnlineLibraryManagement.Controllers
 
                     //update bảng phiếu mượn
                     p.Matinhtrang = 2;
-                    p.Ngaymuon = DateTime.Now.Date;
-                    p.Hantra = p.Ngaymuon.Value.AddDays(14);
+                    p.Ngaypheduyet = DateTime.Now.Date;
+                    p.Hantra = p.Ngaypheduyet.Value.AddDays(14);
                     p.Matt = tt.Matt; 
                     db.Phieumuonsach.Update(p);
 
@@ -107,7 +108,7 @@ namespace OnlineLibraryManagement.Controllers
                 {
                     //update bảng phiếu mượn
                     p.Matinhtrang = 4;
-                    p.Ngaymuon = DateTime.Now.Date;
+                    p.Ngaypheduyet = DateTime.Now.Date;
                     p.Matt = tt.Matt;
                     db.Phieumuonsach.Update(p);
 

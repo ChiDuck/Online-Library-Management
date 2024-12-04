@@ -36,10 +36,16 @@ namespace OnlineLibraryManagement.Controllers
             if (tk != null)
             {
                 if (tk.Matkhau == a.Matkhau)
-                {               
-                    MySessions.Set<Taikhoan>(HttpContext.Session, "taikhoan",tk);
+                {
+                    MySessions.Set(HttpContext.Session, "taikhoan",tk);
                     if (tk.Loaitk == false) return View("~/Views/Thuthu/Index.cshtml");
-                    else return View("~/Views/Docgia/Index.cshtml");
+                    else
+                    {
+                        Docgia dg = db.Docgia.Where(t => t.Matk == tk.Matk).FirstOrDefault();
+                        dg.MatkNavigation = null;
+                        MySessions.Set(HttpContext.Session, "madocgia", dg.Madocgia);
+                        return View("~/Views/Docgia/Index.cshtml");
+                    }
                 }
                 ModelState.AddModelError("Matkhau", "Sai tên hoặc mật khẩu.");
             }

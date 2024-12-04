@@ -9,10 +9,11 @@ namespace OnlineLibraryManagement.Models
         public DateTime? Ngaylapphieu { get; set; }
         public DateTime? Hantramoi { get; set; }
         public int? Langiahan { get; set; }
+        public string? Ghichu { get; set; }
         public int? Maphieumuon { get; set; }
-        public int? Madocgia { get; set; }
+        public int? Matt { get; set; }
 
-        public virtual Docgia? MadocgiaNavigation { get; set; }
         public virtual Phieumuonsach? MaphieumuonNavigation { get; set; }
+        public virtual Thuthu? MattNavigation { get; set; }
     }
 }

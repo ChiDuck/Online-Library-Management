@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.Globalization;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -293,6 +294,21 @@ namespace OnlineLibraryManagement.Controllers
             {
                 return RedirectToAction("Index");
             }    
+        }
+
+        public IActionResult chonSach(Sach sach)
+        {
+            if (db.Phieumuonsach.FirstOrDefault(x => x.Matinhtrang == null)  != null)
+            {
+                Taikhoan tk = MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
+
+                Phieumuonsach pms = new Phieumuonsach();
+                pms.Ngaylapphieu = DateTime.Now;
+                pms.Soluongsach = 1;
+             //   pms.Madocgia = MySessions.Get();
+             //   MySessions.Set()
+            }
+            return RedirectToAction("Index");
         }
     }
 }

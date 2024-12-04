@@ -37,13 +37,14 @@ INSERT INTO TAIKHOAN VALUES
 ('nghia','123','nghia@gmail.com', 1)			  
 						  
 INSERT INTO TINHTRANGMUON VALUES
-(N'Đang mượn'),
-(N'Đã trả'),
-(N'Trễ hạn'),
-(N'Mất sách')		
+(N'Chờ phê duyệt'),		--1
+(N'Đang mượn'),			--2
+(N'Đã trả'),			--3
+(N'Trễ hạn'),			--4
+(N'Mất sách')			--5
 
 INSERT INTO TINHTRANGPHIEU VALUES
-(N'Chờ phản hồi'),		--1
+(N'Chờ phê duyệt'),		--1
 (N'Đã chấp nhận'),		--2
 (N'Đã kết thúc'),		--3
 (N'Từ chối')			--4
@@ -103,18 +104,18 @@ INSERT INTO PHIENBANSACH VALUES
 (5, 7, N'Tác giả chính'),
 (5, 8, N'Dịch giả')
 
-INSERT INTO PHIEUMUONSACH VALUES		-- Ngày lập, ngày mượn, hạn trả, số lượng, mã tình trạng, mã tthu, mã độc giả
-('2024-11-6',  '2024-11-7', '2024-11-14',2, 3, 1, 1), 
-('2024-10-28', '2024-11-1', '2024-11-4'	,1, 3, 1, 1)
+INSERT INTO PHIEUMUONSACH VALUES		-- Ngày lập, ngày mượn, hạn trả, số lượng, ghi chú, mã tình trạng, mã tthu, mã độc giả
+('2024-11-6',  '2024-11-7', '2024-11-14',2, null, 3, 1, 1), 
+('2024-10-28', '2024-11-1', '2024-11-4'	,1, null, 3, 1, 2)
 
 INSERT INTO CHITIETPHIEUMUON VALUES		-- Mã phiếu, mã sách, mã tình trạng
 (1, 2, 2), 
 (1, 3, 2),
 (2, 5, 2)
 
-INSERT INTO PHIEUTRASACH VALUES		-- Ngày lập, số lượng trả, mã phiếu mượn, mã độc giả
-('2024-11-17', 2, 1, 1),
-('2024-11-4' , 1, 2, 1)
+INSERT INTO PHIEUTRASACH VALUES		-- Ngày lập, số lượng trả, ghi chú, mã phiếu mượn, mã tthu
+('2024-11-17', 2, null, 1, 1),
+('2024-11-4' , 1, null, 2, 1)
 
-INSERT INTO PHIEUGIAHAN VALUES		-- Ngày lập, lần ghan, mã phiếu mượn, mã độc giả
-('2024-11-14','2024-11-17', 1, 1, 1)
+INSERT INTO PHIEUGIAHAN VALUES		-- Ngày lập, lần ghan, mã phiếu mượn, ghi chú, mã tthu
+('2024-11-14','2024-11-17', 1, N'Không trả phạt giờ', 1, 1)

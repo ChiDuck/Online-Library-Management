@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Ngaylapphieu)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ngaymuon)
+                @Html.DisplayNameFor(model => model.Ngaypheduyet)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Hantra)
@@ -50,9 +50,9 @@
                     }
                 </td>
                 <td>
-                    @if (item.Ngaymuon != null)
+                    @if (item.Ngaypheduyet != null)
                     {
-                        @item.Ngaymuon.Value.ToShortDateString()
+                        @item.Ngaypheduyet.Value.ToShortDateString()
                     }
                 </td>
                 <td>
