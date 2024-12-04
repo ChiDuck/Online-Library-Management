@@ -37,45 +37,55 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Maphieu)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Maphieu)
+                </td>
+                <td>
                     @if (item.Ngaylapphieu != null)
                     {
                         @item.Ngaylapphieu.Value.ToShortDateString()
                     }
-            </td>
-            <td>
+                </td>
+                <td>
                     @if (item.Ngaymuon != null)
                     {
                         @item.Ngaymuon.Value.ToShortDateString()
                     }
-            </td>
-            <td>
+                </td>
+                <td>
                     @if (item.Hantra != null)
                     {
                         @item.Hantra.Value.ToShortDateString()
                     }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Soluongsach)
-            </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MatinhtrangNavigation.Tentinhtrang)
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MattNavigation.Tentt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MadocgiaNavigation.Tendocgia)
-            </td>
-            <td>
-                   <a asp-action="formXemCTPhieuMuon" class="btn btn-primary" asp-route-maphieumuon="@item.Maphieu">Xem chi tiết</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluongsach)
+                </td>
+                <td>
+                    @if (item.MatinhtrangNavigation != null)
+                    {
+                        <strong>@item.MatinhtrangNavigation.Tentinhtrang</strong>
+                    }
+                </td>
+                <td>
+                    @if(item.MattNavigation != null)
+                    {
+                        @item.MattNavigation.Tentt
+                    }
+                </td>
+                <td>
+                    @if (item.MadocgiaNavigation!= null)
+                    {
+                        @item.MadocgiaNavigation.Tendocgia
+                    }
+                </td>
+                <td>
+                    <a asp-action="formXemCTPhieuMuon" class="btn btn-primary" asp-route-maphieumuon="@item.Maphieu">Xem chi tiết</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

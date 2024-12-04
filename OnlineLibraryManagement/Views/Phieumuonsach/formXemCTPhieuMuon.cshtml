@@ -8,65 +8,68 @@
     QuanLyThuVienContext db = new QuanLyThuVienContext();
 }
 <h1>Chi tiết phiếu mượn</h1>
-<a asp-action="Index" class="btn btn-primary">Quay lại</a>
+<a asp-action="DSPhieuMuon_Thuthu" class="btn btn-primary">Quay lại</a>
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Maphieu)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Maphieu)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ngaylapphieu)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @if (Model.Ngaylapphieu != null)
             {
                 @Model.Ngaylapphieu.Value.ToShortDateString()
             }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ngaymuon)
         </dt>
-        <dd class = "col-sm-10">
-            @if (Model.Ngaylapphieu != null)
+        <dd class="col-sm-10">
+            @if (Model.Ngaymuon != null)
             {
                 @Model.Ngaymuon.Value.ToShortDateString()
             }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Hantra)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @if (Model.Hantra != null)
             {
                 @Model.Hantra.Value.ToShortDateString()
             }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Soluongsach)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Soluongsach)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Matinhtrang)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Model.MatinhtrangNavigation.Tentinhtrang
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Matt)
         </dt>
-        <dd class = "col-sm-10">
-            @Model.MattNavigation.Tentt
+        <dd class="col-sm-10">
+            @if (Model.MattNavigation != null)
+            {
+                @Model.MattNavigation.Tentt
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Madocgia)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Model.MadocgiaNavigation.Tendocgia
         </dd>
     </dl>
@@ -165,7 +168,10 @@
         }
     </tbody>
 </table>
-<div>
-    <a asp-action="xacNhanMuonSach" class="btn btn-success">Xác nhận</a> |
-    <a asp-action="tuChoiMuonSach" class="btn btn-danger">Từ chối</a>
-</div>
+@if (Model.Matinhtrang == 1)
+{
+    <div>
+        <a asp-controller="Phieumuonsach" asp-action="xacNhanMuonSach" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-success">Xác nhận</a> |
+        <a asp-controller="Phieumuonsach" asp-action="tuChoiMuonSach" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-danger">Từ chối</a>
+    </div>
+}
