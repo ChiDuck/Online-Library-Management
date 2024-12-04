@@ -109,9 +109,9 @@ INSERT INTO PHIEUMUONSACH VALUES		-- Ngày lập, ngày mượn, hạn trả, s�
 ('2024-10-28', '2024-11-1', '2024-11-4'	,1, null, 3, 1, 2)
 
 INSERT INTO CHITIETPHIEUMUON VALUES		-- Mã phiếu, mã sách, mã tình trạng
-(1, 2, 2), 
-(1, 3, 2),
-(2, 5, 2)
+(1, 2, 3), 
+(1, 3, 3),
+(2, 5, 3)
 
 INSERT INTO PHIEUTRASACH VALUES		-- Ngày lập, số lượng trả, ghi chú, mã phiếu mượn, mã tthu
 ('2024-11-17', 2, null, 1, 1),
