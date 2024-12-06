@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineLibraryManagement.Models;
+using System.Security.Cryptography;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -26,6 +27,13 @@ namespace OnlineLibraryManagement.Controllers
                 ViewBag.dsSach = dsSach;
             }
             ViewBag.soSachMuon = dsSach != null ? dsSach.Count : 0;
+
+            int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
+            if (db.Phieumuonsach.Any(t => t.Madocgia == mdg && (t.Matinhtrang == 1 || t.Matinhtrang == 2)))
+            {
+                MySessions.Set(HttpContext.Session, "tinhTrang", true);
+            }
+            ViewBag.tinhTrang = checkFlag("tinhTrang");
 
             List<Sach> ds = db.Sach.ToList();
             return View(ds);
@@ -247,7 +255,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult chonSach(int id)
         {
-            Sach sach = db.Sach.Find(id);
+			Sach sach = db.Sach.Find(id);
             Phieumuonsach pms = new Phieumuonsach();
             List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
             if (dsSach == null) dsSach = new List<Sach>();
@@ -301,12 +309,85 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult huyPhieu()
         {
-            MySessions.Set(HttpContext.Session, "dangLapPhieu", false);
-            HttpContext.Session.Remove("lapPMS");
-            HttpContext.Session.Remove("dsSach");
+            removeSessions();
             return RedirectToAction("dsPhieumuonsach");
         }
 
+        public IActionResult taoPhieu()
+        {
+            Phieumuonsach pms = MySessions.Get<Phieumuonsach>(HttpContext.Session, "lapPMS");
+            List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
+            pms.Matinhtrang = 1;
+            db.Phieumuonsach.Add(pms); 
+            db.SaveChanges();
 
+            Phieumuonsach phieumoi = db.Phieumuonsach
+                .Where(t => t.Madocgia == pms.Madocgia)
+                .OrderByDescending(t => t.Ngaylapphieu)
+                .FirstOrDefault();
+
+            foreach (Sach s in dsSach)
+            {
+                Chitietphieumuon ctpm = new Chitietphieumuon();
+                ctpm.Maphieu = phieumoi.Maphieu;
+                ctpm.Masach = s.Masach;
+                ctpm.Matinhtrang = 1;
+                db.Chitietphieumuon.Add(ctpm);
+                db.SaveChanges();
+            }
+            removeSessions();
+
+            return RedirectToAction("dsPhieumuonsach");
+        }
+
+        public void removeSessions()
+        {
+            MySessions.Set(HttpContext.Session, "dangLapPhieu", false);
+            HttpContext.Session.Remove("lapPMS");
+            HttpContext.Session.Remove("dsSach");
+        }
+
+        public IActionResult chitietPhieumuonsach(int id)
+        {
+            Phieumuonsach pms = db.Phieumuonsach
+                .Include(x => x.MatinhtrangNavigation)
+                .Include(x => x.MattNavigation)
+                .FirstOrDefault(x => x.Maphieu == id);
+
+			ViewBag.DSCTPhieuMuon = db.Chitietphieumuon.Where(x => x.Maphieu == id).ToList();
+            foreach (Chitietphieumuon ct in ViewBag.DSCTPhieuMuon)
+            {
+                ct.MasachNavigation = db.Sach.Include(s => s.MaloaiNavigation)
+                                             .Include(s => s.ManxbNavigation)
+                                             .FirstOrDefault(s => s.Masach == ct.Masach);
+
+				if (ct.Matinhtrang == 1 && pms.Hantra.HasValue)
+				{
+					if (DateTime.Compare(DateTime.Now.Date, pms.Hantra.Value.Date) > 0)
+					{
+						ct.Matinhtrang = 3;
+						try
+						{
+							db.Chitietphieumuon.Update(ct);
+							db.SaveChanges();
+						}
+						catch (Exception ex) { }
+					}
+				}
+				ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
+			}
+
+			return View(pms);
+        }
+
+        public IActionResult dsPhieutrasach()
+        {
+            int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
+            List<Phieutrasach> ds = db.Phieutrasach
+                .Where(t => t.MaphieumuonNavigation.Madocgia == mdg)
+                .Include(t => t.MattNavigation)
+                .ToList();
+            return View(ds);
+        }
     }
 }

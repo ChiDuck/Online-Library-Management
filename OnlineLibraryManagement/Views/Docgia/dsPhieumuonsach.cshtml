@@ -17,7 +17,7 @@
     {
         <hr />
         <h2>Phiếu mượn đang lập</h2>
-        <a asp-action="hienThiDSSach" class="btn btn-primary">Tạo phiếu</a>
+        <a asp-action="taoPhieu" class="btn btn-primary">Tạo phiếu</a>
         <a asp-action="huyPhieu" class="btn btn-danger">Hủy phiếu</a>
         <br />
 
@@ -63,30 +63,30 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (Sach item in ViewBag.dsSach)
+                @foreach (Sach s in ViewBag.dsSach)
                 {
                     <tr>
 						<td>
 							@{
-								if (!string.IsNullOrEmpty(item.Anhbia))
+								if (!string.IsNullOrEmpty(s.Anhbia))
 								{
-									string tenFile = "~/img/" + item.Anhbia;
+									string tenFile = "~/img/" + s.Anhbia;
 									<img height="100" width="50" src="@Url.Content(tenFile)" />
 								}
 							}
 						</td>
                         <td>
-                            @item.Tensach
+                            @s.Tensach
                         </td>
                         <td>
-                            @item.MaloaiNavigation.Tenloai
+                            @s.MaloaiNavigation.Tenloai
                         </td>
                         <td>
-                            @item.Namxuatban
+                            @s.Namxuatban
                         </td>                    
                         <td>
                         @{
-                            List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.Masach).ToList();
+                            List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == s.Masach).ToList();
                             for (int i = 0; i < dsPhienBanSach.Count; i++)
                             {
                                 Phienbansach p = dsPhienBanSach[i];
@@ -103,10 +103,10 @@
                         }
                         </td>
                         <td>
-                            @item.ManxbNavigation.Tennxb
+                            @s.ManxbNavigation.Tennxb
                         </td>
                         <td>
-                            <a asp-action="xoaSach" asp-route-id="@item.Masach" class="btn btn-danger">Xóa</a>
+                            <a asp-action="xoaSach" asp-route-id="@s.Masach" class="btn btn-danger">Xóa</a>
                         </td>
                     </tr>
                 }
@@ -143,9 +143,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Matt)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.Madocgia)
-            </th> *@
             <th>Tác vụ</th>
         </tr>
     </thead>
@@ -160,25 +157,28 @@
                     @item.Ngaylapphieu.Value.ToShortDateString()
                 </td>
                 <td>
-                    @item.Ngaypheduyet.Value.ToShortDateString()
+                    @{
+                        if (item.Ngaypheduyet != null) @item.Ngaypheduyet.Value.ToShortDateString()
+                    }
                 </td>
                 <td>
-                    @item.Hantra.Value.ToShortDateString()
+                    @{
+                        if (item.Hantra != null) @item.Hantra.Value.ToShortDateString()
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Soluongsach)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MatinhtrangNavigation.Tentinhtrang)
+                    @item.MatinhtrangNavigation.Tentinhtrang
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MattNavigation.Tentt)
+                    @{
+                        if (item.MattNavigation != null) @item.MattNavigation.Tentt
+                    }
                 </td>
-                @* <td>
-            @Html.DisplayFor(modelItem => item.Madocgia)
-            </td> *@
                 <td>
-                    <a asp-action="frmXemCTPhieumuonsach_Docgia" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
+                    <a asp-action="chitietPhieumuonsach" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
                 </td>
             </tr>
         }

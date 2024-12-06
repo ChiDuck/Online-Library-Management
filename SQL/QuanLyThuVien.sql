@@ -182,6 +182,16 @@ CREATE TABLE PHIEUGIAHAN
 	PRIMARY KEY(MAPHIEU)
 );
 
+/*==============================================================*/
+/* Table: CHITIETPHIEUTRA										*/
+/*==============================================================*/
+CREATE TABLE CHITIETPHIEUTRA 
+(
+	MAPHIEU			INT			NOT NULL FOREIGN KEY(MAPHIEU) REFERENCES PHIEUTRASACH(MAPHIEU),
+	MASACH			INT			NOT NULL FOREIGN KEY(MASACH) REFERENCES SACH(MASACH),
+	PRIMARY KEY(MAPHIEU, MASACH)
+);
+
 
 
 

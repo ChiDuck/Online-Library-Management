@@ -1,0 +1,170 @@
+﻿@model OnlineLibraryManagement.Models.Phieumuonsach
+
+@{
+    ViewData["Title"] = "chitietPhieumuonsach";
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+}
+
+<h1>Chi tiết phiếu mượn sách</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Maphieu)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Maphieu)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ngaylapphieu)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Ngaylapphieu.Value.ToShortDateString()
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ngaypheduyet)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                if (Model.Ngaypheduyet != null) @Model.Ngaypheduyet.Value.ToShortDateString()
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hantra)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                if (Model.Hantra != null) @Model.Hantra.Value.ToShortDateString()
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Soluongsach)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Soluongsach)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Matinhtrang)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.MatinhtrangNavigation.Tentinhtrang
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Matt)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                if (Model.MattNavigation != null) @Model.MattNavigation.Tentt
+            }
+        </dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Ghichu)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Ghichu)
+		</dd>
+	</dl>
+</div>
+
+@{
+    QuanLyThuVienContext db = new QuanLyThuVienContext();
+}
+<br />
+<h3>Chi tiết danh sách</h3>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Ảnh bìa
+            </th>
+            <th>
+                Tên sách
+            </th>
+            <th>
+                Thể loại
+            </th>
+            <th>
+                Năm xuất bản
+            </th>
+            <th>
+                Tác giả
+            </th>
+            <th>
+                Nhà xuất bản
+            </th>
+            <th>
+                Tình trạng
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Chitietphieumuon item in ViewBag.DSCTPhieuMuon)
+        {
+            <tr>
+                <td>
+                    @{
+                        if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
+                        {
+                            string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
+                            <img height="100" width="50" src="@Url.Content(tenFile)" />
+                        }
+                    }
+                </td>
+                <td>
+                    @item.MasachNavigation.Tensach
+                </td>
+                <td>
+                    @{
+                        if (item.MasachNavigation.MaloaiNavigation != null)
+                        {
+                            <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
+                        }
+                    }
+                </td>
+                <td>
+                    @item.MasachNavigation.Namxuatban
+                </td>
+                <td>
+                    @{
+                        List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.MasachNavigation.Masach).ToList();
+                        for (int i = 0; i < dsPhienBanSach.Count; i++)
+                        {
+                            Phienbansach p = dsPhienBanSach[i];
+                            string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+                            if (i == 0)
+                            {
+                                <text>@tenTacgia</text>
+                            }
+                            else if (i >= 1 && i < dsPhienBanSach.Count)
+                            {
+                                <text>, @tenTacgia</text>
+                            }
+                        }
+                    }
+                </td>
+				<td>
+					@{
+						if (item.MasachNavigation.ManxbNavigation != null)
+						{
+							<p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
+						}
+					}
+				</td>
+				<td>
+                    @{
+                        if (item.MatinhtrangNavigation != null)
+                        {
+                            <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="dsPhieumuonsach" class="btn btn-primary">Trở lại danh sách</a>
+</div>

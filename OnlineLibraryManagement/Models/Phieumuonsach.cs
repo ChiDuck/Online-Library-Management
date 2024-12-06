@@ -33,7 +33,7 @@ namespace OnlineLibraryManagement.Models
         [Display(Name = "Tình trạng")]
         public int? Matinhtrang { get; set; }
 
-        [Display(Name = "Thủ thư")]
+        [Display(Name = "Thủ thư duyệt")]
         public int? Matt { get; set; }
 
         [Display(Name = "Độc giả")]

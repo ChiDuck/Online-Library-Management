@@ -1,0 +1,55 @@
+﻿@model IEnumerable<OnlineLibraryManagement.Models.Phieutrasach>
+
+@{
+    ViewData["Title"] = "dsPhieutrasach";
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+}
+
+<h1>Danh sách phiếu trả sách của bạn</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaylapphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sosachtra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ghichu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Maphieu)
+                </td>
+                <td>
+                    @item.Ngaylapphieu.Value.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sosachtra)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ghichu)
+                </td>
+                <td>
+                    @item.MattNavigation.Tentt
+                </td>
+                <td>
+                    <a asp-action="" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
