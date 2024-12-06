@@ -389,5 +389,21 @@ namespace OnlineLibraryManagement.Controllers
                 .ToList();
             return View(ds);
         }
+
+        public IActionResult chitietPhieutrasach(int id)
+        {
+            Phieutrasach p = db.Phieutrasach.Include(s => s.MattNavigation)
+                                            .Include(s => s.MaphieumuonNavigation)
+                                            .FirstOrDefault(s => s.Maphieu == id);
+            ViewBag.DSCTPhieuTra = db.Chitietphieumuon.Where(x => x.Maphieu == p.Maphieumuon && x.Matinhtrang == 3).ToList();
+            foreach (Chitietphieumuon ct in ViewBag.DSCTPhieuTra)
+            {
+                ct.MasachNavigation = db.Sach.Include(s => s.MaloaiNavigation)
+                                             .Include(s => s.ManxbNavigation)
+                                             .FirstOrDefault(s => s.Masach == ct.Masach);
+                ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
+            }
+            return View(p);
+        }
     }
 }

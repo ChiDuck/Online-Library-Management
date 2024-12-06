@@ -42,7 +42,7 @@ namespace OnlineLibraryManagement.Controllers
                     {
                         Docgia dg = db.Docgia.Where(t => t.Matk == tk.Matk).FirstOrDefault();
                         dg.MatkNavigation = null;
-                   //     MySessions.Set(HttpContext.Session, "madocgia", dg.Madocgia);
+                        MySessions.Set(HttpContext.Session, "madocgia", dg.Madocgia);
                         return View("~/Views/Docgia/Index.cshtml");
                     }
                 }
