@@ -13,6 +13,7 @@ namespace OnlineLibraryManagement.Controllers
             foreach (Phieutrasach item in ds)
             {
                 item.MaphieumuonNavigation = db.Phieumuonsach.Find(item.Maphieumuon);
+                item.MaphieumuonNavigation.MadocgiaNavigation = db.Docgia.Find(item.MaphieumuonNavigation.Madocgia);
                 item.MattNavigation = db.Thuthu.Find(item.Matt);
             }
             return View(ds);
@@ -84,6 +85,7 @@ namespace OnlineLibraryManagement.Controllers
         {
             Phieutrasach p = db.Phieutrasach.Include(s => s.MattNavigation)
                                             .Include(s => s.MaphieumuonNavigation)
+                                            .ThenInclude(s => s.MadocgiaNavigation)
                                             .FirstOrDefault(s => s.Maphieu == maphieutra);
             ViewBag.DSCTPhieuTra = db.Chitietphieumuon.Where(x => x.Maphieu == p.Maphieumuon && x.Matinhtrang == 3).ToList();
             foreach (Chitietphieumuon ct in ViewBag.DSCTPhieuTra)

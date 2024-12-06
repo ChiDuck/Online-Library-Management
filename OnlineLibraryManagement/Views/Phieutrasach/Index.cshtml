@@ -32,6 +32,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Matt)
             </th>
+            <th>
+                Độc giả
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -69,6 +72,9 @@
                     {
                         @item.MattNavigation.Tentt
                     }
+                </td>
+                <td>
+                    @item.MaphieumuonNavigation.MadocgiaNavigation.Tendocgia
                 </td>
                 <td>
                     <a asp-action="formXemCTPhieuTra" class="btn btn-primary" asp-route-maphieutra="@item.Maphieu">Xem chi tiết</a>
