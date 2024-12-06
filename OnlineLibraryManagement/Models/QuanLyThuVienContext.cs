@@ -45,7 +45,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Chitietphieumuon>(entity =>
             {
                 entity.HasKey(e => new { e.Maphieu, e.Masach })
-                    .HasName("PK__CHITIETP__23FDF1A5A8E982D5");
+                    .HasName("PK__CHITIETP__23FDF1A5F0C78C77");
 
                 entity.ToTable("CHITIETPHIEUMUON");
 
@@ -76,11 +76,11 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Docgia>(entity =>
             {
                 entity.HasKey(e => e.Madocgia)
-                    .HasName("PK__DOCGIA__8CA726FCA1FBD356");
+                    .HasName("PK__DOCGIA__8CA726FC29CBB4D1");
 
                 entity.ToTable("DOCGIA");
 
-                entity.HasIndex(e => e.Matk, "UQ__DOCGIA__60237217A9411BD1")
+                entity.HasIndex(e => e.Matk, "UQ__DOCGIA__60237217A48E0A6A")
                     .IsUnique();
 
                 entity.Property(e => e.Madocgia).HasColumnName("MADOCGIA");
@@ -104,7 +104,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Nhaxuatban>(entity =>
             {
                 entity.HasKey(e => e.Manxb)
-                    .HasName("PK__NHAXUATB__7ABD9EF2B25447DF");
+                    .HasName("PK__NHAXUATB__7ABD9EF23B9B444E");
 
                 entity.ToTable("NHAXUATBAN");
 
@@ -127,7 +127,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Phienbansach>(entity =>
             {
                 entity.HasKey(e => new { e.Masach, e.Matacgia })
-                    .HasName("PK__PHIENBAN__F3934F2AC0D03940");
+                    .HasName("PK__PHIENBAN__F3934F2AC98A133B");
 
                 entity.ToTable("PHIENBANSACH");
 
@@ -156,7 +156,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Phieugiahan>(entity =>
             {
                 entity.HasKey(e => e.Maphieu)
-                    .HasName("PK__PHIEUGIA__F001B941CA8C2DF0");
+                    .HasName("PK__PHIEUGIA__F001B941106202F8");
 
                 entity.ToTable("PHIEUGIAHAN");
 
@@ -194,7 +194,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Phieumuonsach>(entity =>
             {
                 entity.HasKey(e => e.Maphieu)
-                    .HasName("PK__PHIEUMUO__F001B941232FF1F4");
+                    .HasName("PK__PHIEUMUO__F001B94129994AAE");
 
                 entity.ToTable("PHIEUMUONSACH");
 
@@ -243,11 +243,11 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Phieutrasach>(entity =>
             {
                 entity.HasKey(e => e.Maphieu)
-                    .HasName("PK__PHIEUTRA__F001B94102C88E7E");
+                    .HasName("PK__PHIEUTRA__F001B941712DD96A");
 
                 entity.ToTable("PHIEUTRASACH");
 
-                entity.HasIndex(e => e.Maphieumuon, "UQ__PHIEUTRA__3F97C76A43127EA5")
+                entity.HasIndex(e => e.Maphieumuon, "UQ__PHIEUTRA__3F97C76AC1EEB19D")
                     .IsUnique();
 
                 entity.Property(e => e.Maphieu).HasColumnName("MAPHIEU");
@@ -280,7 +280,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Sach>(entity =>
             {
                 entity.HasKey(e => e.Masach)
-                    .HasName("PK__SACH__3FC48E4CB58F6D29");
+                    .HasName("PK__SACH__3FC48E4C3DD8470D");
 
                 entity.ToTable("SACH");
 
@@ -317,7 +317,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Tacgia>(entity =>
             {
                 entity.HasKey(e => e.Matacgia)
-                    .HasName("PK__TACGIA__C57C166DAEC01D89");
+                    .HasName("PK__TACGIA__C57C166DEFB5B23C");
 
                 entity.ToTable("TACGIA");
 
@@ -339,7 +339,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Taikhoan>(entity =>
             {
                 entity.HasKey(e => e.Matk)
-                    .HasName("PK__TAIKHOAN__602372167C42623A");
+                    .HasName("PK__TAIKHOAN__6023721673A54FE9");
 
                 entity.ToTable("TAIKHOAN");
 
@@ -366,7 +366,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Theloai>(entity =>
             {
                 entity.HasKey(e => e.Maloai)
-                    .HasName("PK__THELOAI__2F633F23E4E703C8");
+                    .HasName("PK__THELOAI__2F633F2355DD7332");
 
                 entity.ToTable("THELOAI");
 
@@ -380,11 +380,11 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Thuthu>(entity =>
             {
                 entity.HasKey(e => e.Matt)
-                    .HasName("PK__THUTHU__6023720F047B5BE9");
+                    .HasName("PK__THUTHU__6023720FEA943C03");
 
                 entity.ToTable("THUTHU");
 
-                entity.HasIndex(e => e.Matk, "UQ__THUTHU__60237217BC1371D2")
+                entity.HasIndex(e => e.Matk, "UQ__THUTHU__60237217E0A5C43C")
                     .IsUnique();
 
                 entity.Property(e => e.Matt).HasColumnName("MATT");
@@ -410,7 +410,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Tinhtrangmuon>(entity =>
             {
                 entity.HasKey(e => e.Matinhtrang)
-                    .HasName("PK__TINHTRAN__C118F2D5CEA7A7BF");
+                    .HasName("PK__TINHTRAN__C118F2D5363F39F4");
 
                 entity.ToTable("TINHTRANGMUON");
 
@@ -425,7 +425,7 @@ namespace OnlineLibraryManagement.Models
             modelBuilder.Entity<Tinhtrangphieu>(entity =>
             {
                 entity.HasKey(e => e.Matinhtrang)
-                    .HasName("PK__TINHTRAN__C118F2D518FAE991");
+                    .HasName("PK__TINHTRAN__C118F2D5AC379625");
 
                 entity.ToTable("TINHTRANGPHIEU");
 

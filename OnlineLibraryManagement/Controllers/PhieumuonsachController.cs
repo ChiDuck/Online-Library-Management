@@ -11,8 +11,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Index()
         {
-            int madg = MySessions.Get<int>(HttpContext.Session, "madocgia");
-            return View(db.Phieumuonsach.OrderByDescending(x => x.Ngaylapphieu).Where(x => x.Madocgia == madg).ToList());
+            return View();
         }
         #region Thủ thư
         public IActionResult DSPhieuMuon_Thuthu()
@@ -28,7 +27,7 @@ namespace OnlineLibraryManagement.Controllers
         }
         public IActionResult formXemCTPhieuMuon(int maphieumuon)
         {
-            #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Phieumuonsach p = db.Phieumuonsach.Include(s => s.MadocgiaNavigation)
                                               .Include(s => s.MattNavigation)
                                               .Include(s => s.MatinhtrangNavigation)
@@ -56,7 +55,7 @@ namespace OnlineLibraryManagement.Controllers
                             db.SaveChanges();
                         }
                         catch (Exception ex) { }
-                    }    
+                    }
                 }
                 ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
             }
@@ -65,7 +64,7 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult xacNhanMuonSach(int maphieumuon)
         {
             Taikhoan tk = MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
-            Thuthu tt = db.Thuthu.Where(t => t.Matk == tk.Matk).FirstOrDefault(); 
+            Thuthu tt = db.Thuthu.Where(t => t.Matk == tk.Matk).FirstOrDefault();
             Phieumuonsach p = db.Phieumuonsach.Find(maphieumuon);
             if (p != null && p.Matinhtrang == 1) //Nếu tìm thấy phiếu mượn và có tình trạng đang chờ phản hồi
             {
@@ -83,7 +82,7 @@ namespace OnlineLibraryManagement.Controllers
                     p.Matinhtrang = 2;
                     p.Ngaypheduyet = DateTime.Now.Date;
                     p.Hantra = p.Ngaypheduyet.Value.AddDays(14);
-                    p.Matt = tt.Matt; 
+                    p.Matt = tt.Matt;
                     db.Phieumuonsach.Update(p);
 
                     //Cập nhật xuống DB
@@ -92,10 +91,10 @@ namespace OnlineLibraryManagement.Controllers
                 }
                 catch (Exception e)
                 { }
-            }    
-            
+            }
+
             return View("formXemCTPhieuMuon");
-            
+
         }
         public IActionResult tuChoiMuonSach(int maphieumuon)
         {
@@ -121,7 +120,7 @@ namespace OnlineLibraryManagement.Controllers
                         {
                             s.Soluong += 1; //cập nhật lại số lượng
                             db.Sach.Update(s);
-                        }   
+                        }
                     }
 
                     //Cập nhật xuống DB

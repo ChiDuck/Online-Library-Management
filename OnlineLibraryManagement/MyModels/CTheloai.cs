@@ -18,15 +18,15 @@ namespace OnlineLibraryManagement.MyModels
             return new CTheloai
             {
                 Maloai = tl.Maloai,
-                Tenloai = tl.Tenloai 
+                Tenloai = tl.Tenloai
             };
-        } 
+        }
         public static Theloai chuyenDoi(CTheloai ctl)
         {
             return new Theloai
             {
                 Maloai = ctl.Maloai,
-                Tenloai = ctl.Tenloai 
+                Tenloai = ctl.Tenloai
             };
         }
     }

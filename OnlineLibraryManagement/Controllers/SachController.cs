@@ -3,11 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineLibraryManagement.Models;
 using OnlineLibraryManagement.MyModels;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks.Dataflow;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.Globalization;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -15,13 +10,13 @@ namespace OnlineLibraryManagement.Controllers
     {
         QuanLyThuVienContext db = new QuanLyThuVienContext();
         public IActionResult Index()
-        {   
+        {
             List<Sach> ds = db.Sach.ToList();
-            foreach(var s in ds)
+            foreach (var s in ds)
             {
                 s.ManxbNavigation = db.Nhaxuatban.Find(s.Manxb);
                 s.MaloaiNavigation = db.Theloai.Find(s.Maloai);
-            }    
+            }
             return View(ds);
         }
         public void xoaAnh(string filename)
@@ -110,9 +105,9 @@ namespace OnlineLibraryManagement.Controllers
                 MySessions.Set<Sach>(HttpContext.Session, "sach", book);
                 ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
                 ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
-                return View("formThemSach",book);
-            }    
-            
+                return View("formThemSach", book);
+            }
+
 
         }
         public IActionResult formSuaSach(int id)
@@ -176,7 +171,7 @@ namespace OnlineLibraryManagement.Controllers
                 ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
                 ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
                 return View("formSuaSach", sach);
-            }    
+            }
         }
         public IActionResult formXoaSach(int id)
         {
@@ -199,7 +194,7 @@ namespace OnlineLibraryManagement.Controllers
             else
             {
                 return RedirectToAction("Index");
-            }    
+            }
         }
         public IActionResult xoaSach(int masach)
         {
@@ -222,7 +217,7 @@ namespace OnlineLibraryManagement.Controllers
                 return View("Error", err);
             }
         }
-        public IActionResult getData([FromBody]Sach x)
+        public IActionResult getData([FromBody] Sach x)
         {
             if (x == null)
                 x = new Sach();
@@ -260,7 +255,7 @@ namespace OnlineLibraryManagement.Controllers
                 {
                     pb = a;
                     break;
-                }    
+                }
             }
             if (pb == null)
             {
@@ -270,11 +265,11 @@ namespace OnlineLibraryManagement.Controllers
                 pb.Vaitro = vaitro;
                 s.Phienbansach.Add(pb);
             }
-            MySessions.Set<Sach>(HttpContext.Session,"sach",s);
+            MySessions.Set<Sach>(HttpContext.Session, "sach", s);
 
             ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
             ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
-            return View("formThemSach",s);
+            return View("formThemSach", s);
         }
         public IActionResult xoaTacgia(int matacgia)
         {
@@ -293,22 +288,7 @@ namespace OnlineLibraryManagement.Controllers
             else
             {
                 return RedirectToAction("Index");
-            }    
-        }
-
-        public IActionResult chonSach(Sach sach)
-        {
-            if (db.Phieumuonsach.FirstOrDefault(x => x.Matinhtrang == null)  != null)
-            {
-                Taikhoan tk = MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
-
-                Phieumuonsach pms = new Phieumuonsach();
-                pms.Ngaylapphieu = DateTime.Now;
-                pms.Soluongsach = 1;
-             //   pms.Madocgia = MySessions.Get();
-             //   MySessions.Set()
             }
-            return RedirectToAction("Index");
         }
     }
 }

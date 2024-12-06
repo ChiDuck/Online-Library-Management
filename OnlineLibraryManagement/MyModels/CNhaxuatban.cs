@@ -33,6 +33,6 @@ namespace OnlineLibraryManagement.MyModels
                 Email = cnxb.Email,
                 Diachi = cnxb.Diachi
             };
-        }      
+        }
     }
 }

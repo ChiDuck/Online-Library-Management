@@ -36,7 +36,6 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 </div>
 
-
 <table class="table">
     <thead>
         <tr>
@@ -65,7 +64,9 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
+            string idSach = "chon" + item.Masach;
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Tensach)
@@ -125,12 +126,53 @@
                     @{
                         if (item.Soluong > 0)
                         {
-                            <a asp-action="hienThiDSSach" class="btn btn-primary" asp-route-id="@item.Masach">Chọn</a>
+                            if (ViewBag.dsSach != null)
+                            {
+                                List<Sach> dsSach = ViewBag.dsSach;
+                                if (dsSach.Find(x => x.Masach == item.Masach) != null)
+                                {
+                                    <input type="button" value="Đã chọn" class="btn btn-secondary" disabled/>
+                                }
+                                else
+                                {
+                                    <input type="button" value="Chọn" id="@idSach" class="btn btn-primary" onclick="chonSach('@item.Masach')" />
+                                }
+                            } 
+                            else
+                            {
+                                <input type="button" value="Chọn" id="@idSach" class="btn btn-primary" onclick="chonSach('@item.Masach')" />
+                            }
                         }
-
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<script>
+    function chonSach(id,sl) {
+
+        if (@ViewBag.soSachMuon >= 3) {
+            window.alert("Bạn chỉ được mượn tối đa 3 cuốn sách cho mỗi phiếu!");
+            return;
+        }
+
+        var chon = document.getElementById("chon" + id);
+            chon.classList = "btn btn-secondary";
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onload = function() {
+            if (chon.value == "Chọn") {
+                chon.value = "Đã chọn";
+                chon.disabled = true;
+                chon.classList = "btn btn-secondary"
+            }
+            window.location.reload();
+        }
+
+        const url = "/Docgia/chonSach/" + id;
+        xhttp.open("GET", url);
+        xhttp.send();
+    }
+</script>

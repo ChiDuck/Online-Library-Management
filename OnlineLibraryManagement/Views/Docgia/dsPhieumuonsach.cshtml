@@ -1,0 +1,186 @@
+﻿@model IEnumerable<OnlineLibraryManagement.Models.Phieumuonsach>
+
+@{
+    ViewData["Title"] = "Danh sách phiếu mượn";
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+}
+<br />
+<p>
+    <a asp-action="hienThiDSSach" class="btn btn-primary">Lập phiếu mượn sách</a>
+</p>
+
+@{
+    QuanLyThuVienContext db = new QuanLyThuVienContext();
+    Phieumuonsach pms = ViewBag.PhieuMoi;
+
+    if (ViewBag.dangLapPhieu)
+    {
+        <hr />
+        <h2>Phiếu mượn đang lập</h2>
+        <a asp-action="hienThiDSSach" class="btn btn-primary">Tạo phiếu</a>
+        <a asp-action="huyPhieu" class="btn btn-danger">Hủy phiếu</a>
+        <br />
+
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Ngaylapphieu)
+            </dt>
+            <dd class="col-sm-10">
+                @pms.Ngaylapphieu.Value.ToShortDateString()
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Soluongsach)
+            </dt>
+            <dd class="col-sm-10">
+                @pms.Soluongsach
+            </dd>
+        </dl>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Ảnh bìa
+                    </th>
+                    <th>
+                        Tên sách
+                    </th>
+                    <th>
+                        Thể loại
+                    </th>
+                    <th>
+                        Năm xuất bản
+                    </th>
+                    <th>
+                        Tác giả
+                    </th>
+                    <th>
+                        Nhà xuất bản
+                    </th>
+                    <th>
+                        Tác vụ
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Sach item in ViewBag.dsSach)
+                {
+                    <tr>
+						<td>
+							@{
+								if (!string.IsNullOrEmpty(item.Anhbia))
+								{
+									string tenFile = "~/img/" + item.Anhbia;
+									<img height="100" width="50" src="@Url.Content(tenFile)" />
+								}
+							}
+						</td>
+                        <td>
+                            @item.Tensach
+                        </td>
+                        <td>
+                            @item.MaloaiNavigation.Tenloai
+                        </td>
+                        <td>
+                            @item.Namxuatban
+                        </td>                    
+                        <td>
+                        @{
+                            List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.Masach).ToList();
+                            for (int i = 0; i < dsPhienBanSach.Count; i++)
+                            {
+                                Phienbansach p = dsPhienBanSach[i];
+                                string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+                                if (i == 0)
+                                {
+                                    <text>@tenTacgia</text>
+                                }
+                                else if (i >= 1 && i < dsPhienBanSach.Count)
+                                {
+                                    <text>, @tenTacgia</text>
+                                }
+                            }
+                        }
+                        </td>
+                        <td>
+                            @item.ManxbNavigation.Tennxb
+                        </td>
+                        <td>
+                            <a asp-action="xoaSach" asp-route-id="@item.Masach" class="btn btn-danger">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<br />
+
+<h1>Danh sách phiếu mượn của bạn</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaylapphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaypheduyet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hantra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Soluongsach)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matinhtrang)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matt)
+            </th>
+            @* <th>
+            @Html.DisplayNameFor(model => model.Madocgia)
+            </th> *@
+            <th>Tác vụ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Maphieu)
+                </td>
+                <td>
+                    @item.Ngaylapphieu.Value.ToShortDateString()
+                </td>
+                <td>
+                    @item.Ngaypheduyet.Value.ToShortDateString()
+                </td>
+                <td>
+                    @item.Hantra.Value.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluongsach)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatinhtrangNavigation.Tentinhtrang)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MattNavigation.Tentt)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.Madocgia)
+            </td> *@
+                <td>
+                    <a asp-action="frmXemCTPhieumuonsach_Docgia" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

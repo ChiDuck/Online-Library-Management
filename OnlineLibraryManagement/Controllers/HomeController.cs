@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using OnlineLibraryManagement.Models;
 using System.Diagnostics;
 
@@ -37,7 +36,7 @@ namespace OnlineLibraryManagement.Controllers
             {
                 if (tk.Matkhau == a.Matkhau)
                 {
-                    MySessions.Set(HttpContext.Session, "taikhoan",tk);
+                    MySessions.Set(HttpContext.Session, "taikhoan", tk);
                     if (tk.Loaitk == false) return View("~/Views/Thuthu/Index.cshtml");
                     else
                     {
@@ -79,13 +78,13 @@ namespace OnlineLibraryManagement.Controllers
                     }
                     else
                     {
-					    ModelState.AddModelError("Email", "Email đã tồn tại.");
+                        ModelState.AddModelError("Email", "Email đã tồn tại.");
                     }
                 }
                 else
                 {
-					ModelState.AddModelError("Tentk", "Tên tài khoản đã tồn tại.");
-				}
+                    ModelState.AddModelError("Tentk", "Tên tài khoản đã tồn tại.");
+                }
             }
             return View("Signup");
         }
