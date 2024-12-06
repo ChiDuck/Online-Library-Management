@@ -1,0 +1,72 @@
+﻿@model IEnumerable<OnlineLibraryManagement.Models.Phieutrasach>
+
+@{
+    ViewData["Title"] = "Phiếu trả sách";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>DSPhieuTra_ThuThu</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaylapphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sosachtra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ghichu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maphieumuon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maphieu)
+            </td>
+            <td>
+                    @if (item.Ngaylapphieu != null)
+                    {
+                         @item.Ngaylapphieu.Value.ToShortDateString()
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sosachtra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ghichu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maphieumuon)
+            </td>
+            <td>
+                    @if (item.MattNavigation != null)
+                    {
+                        @item.MattNavigation.Tentt
+                    }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

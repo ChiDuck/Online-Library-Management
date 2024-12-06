@@ -1,0 +1,177 @@
+﻿@model OnlineLibraryManagement.Models.Phieutrasach
+
+@{
+    ViewData["Title"] = "Lập phiếu trả";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+@{
+    QuanLyThuVienContext db = new QuanLyThuVienContext();
+}
+<h1>Lập phiếu trả</h1>
+<hr />
+<div class="row">
+    <div class="col">
+        <form asp-action="lapPhieuTra" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group col-md-4">
+                <label asp-for="Ngaylapphieu" class="control-label"></label>
+                <input type="text" value="@DateTime.Now.Date.ToShortDateString()" asp-for="Ngaylapphieu" readonly class="form-control" />
+                <span asp-validation-for="Ngaylapphieu" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="Ghichu" class="control-label"></label>
+                <input asp-for="Ghichu" class="form-control" />
+                <span asp-validation-for="Ghichu" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="Maphieumuon" class="control-label"></label>
+                <input asp-for="Maphieumuon" readonly class="form-control" />
+                <span asp-validation-for="Maphieumuon" class="text-danger"></span>
+            </div>
+            <h3>Các cuốn sách độc giả đang mượn</h3>
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Tên sách
+                        </th>
+                        <th>
+                            Năm xuất bản
+                        </th>
+                        <th>
+                            Ảnh bìa
+                        </th>
+                        <th>
+                            Thể loại
+                        </th>
+                        <th>
+                            Nhà xuất bản
+                        </th>
+                        <th>
+                            Tác giả
+                        </th>
+                        <th>
+                            Tình trạng
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Chitietphieumuon item in ViewBag.DSCTPhieuMuon)
+                    {
+                        String idButton = "btn" + item.Masach;
+                        <tr>
+                            <td>
+                                @item.MasachNavigation.Tensach
+                            </td>
+                            <td>
+                                @item.MasachNavigation.Namxuatban
+                            </td>
+                            <td>
+                                @{
+                                    if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
+                                    {
+                                        string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
+                                        <img height="100" width="50" src="@Url.Content(tenFile)" />
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{
+                                    if (item.MasachNavigation.MaloaiNavigation != null)
+                                    {
+                                        <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{
+                                    if (item.MasachNavigation.ManxbNavigation != null)
+                                    {
+                                        <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{
+                                    List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.MasachNavigation.Masach).ToList();
+                                    for (int i = 0; i < dsPhienBanSach.Count; i++)
+                                    {
+                                        Phienbansach p = dsPhienBanSach[i];
+                                        string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+                                        if (i == 0)
+                                        {
+                                            <text>@tenTacgia</text>
+                                        }
+                                        else if (i >= 1 && i < dsPhienBanSach.Count)
+                                        {
+                                            <text>, @tenTacgia</text>
+                                        }
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{
+                                    if (item.MatinhtrangNavigation != null)
+                                    {
+                                        <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (item.Matinhtrang == 2 || item.Matinhtrang == 4)
+                                {
+                                    <input type="button" id="@idButton" onclick="matSach(@item.Masach, @item.Maphieu)" class="btn btn-danger" value="Mất sách" />
+                                }
+                                else
+                                {
+                                    <input type="button" disabled class="btn btn-secondary" value="Đã mất sách" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Lập phiếu" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function matSach(masach, maphieu) {
+        var btn = document.getElementById("btn" + masach);
+        var data = {
+            Maphieu: maphieu,
+            Masach: masach
+        };
+
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            let result = window.confirm("Bạn có chắc chắn cuốn sách này đã bị mất không?");
+            if (result)
+            {
+                if (JSON.parse(xhttp.responseText) == true) {
+                    btn.classList = "btn btn-secondary";
+                    btn.value = "Đã mất sách"
+                    btn.disabled = true;
+                    location.reload();
+                }
+                else {
+                    window.alert("Báo mất sách thất bại")
+                }
+            }
+        }
+        // Send a request
+        const url = "/Phieutrasach/matSach/";
+        xhttp.open("POST", url);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(JSON.stringify(data));
+
+    }
+</script>
+

@@ -16,7 +16,8 @@
             @Html.DisplayNameFor(model => model.Maphieu)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Maphieu)
+@*             <input class="border-0" readonly id="Maphieu" value="@Model.Maphieu"/> *@
+            <p id="Maphieu">@Model.Maphieu</p>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ngaylapphieu)
@@ -55,7 +56,10 @@
             @Html.DisplayNameFor(model => model.Matinhtrang)
         </dt>
         <dd class="col-sm-10">
-            @Model.MatinhtrangNavigation.Tentinhtrang
+            @if (Model.MatinhtrangNavigation != null)
+            {
+                @Model.MatinhtrangNavigation.Tentinhtrang
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Matt)
@@ -71,6 +75,27 @@
         </dt>
         <dd class="col-sm-10">
             @Model.MadocgiaNavigation.Tendocgia
+        </dd>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ghichu)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Matinhtrang == 1)
+            {
+                <input id="Ghichu" placeholder="Nhập ghi chú (nếu có)" value="@Model.Ghichu" class="form-control" />
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(Model.Ghichu))
+                {
+                    <p>Không có</p>
+                }
+                else
+                {
+                    @Model.Ghichu
+                }
+            }
         </dd>
     </dl>
 </div>
@@ -171,7 +196,74 @@
 @if (Model.Matinhtrang == 1)
 {
     <div>
-        <a asp-controller="Phieumuonsach" asp-action="xacNhanMuonSach" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-success">Xác nhận</a> |
-        <a asp-controller="Phieumuonsach" asp-action="tuChoiMuonSach" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-danger">Từ chối</a>
+      @*   <a asp-controller="Phieumuonsach" asp-action="xacNhanMuonSach" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-success">Xác nhận</a> |
+        <a asp-controller="Phieumuonsach" asp-action="tuChoiMuonSach" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-danger">Từ chối</a> *@
+        <input type="button" value="Xác nhận" onclick="xacnhanMuonSach()" class="btn btn-success" /> |
+        <input type="button" value="Từ chối" onclick="tuchoiMuonSach()" class="btn btn-danger" />
     </div>
 }
+else if (Model.Matinhtrang == 2)
+{
+    <div>
+        <a asp-controller="Phieutrasach" asp-action="formLapPhieuTra" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-success">Lập phiếu trả</a>
+    </div>
+}
+else if (Model.Matinhtrang == 3)
+{
+    <div>
+        @{
+            int maphieutra = db.Phieutrasach.Where(x => x.Maphieumuon == Model.Maphieu).FirstOrDefault().Maphieu;
+        }
+        <a asp-controller="Phieutrasach" asp-action="formXemCTPhieuTra" class="btn btn-success" asp-route-maphieutra="@maphieutra">Xem chi tiết phiếu trả</a>
+    </div>
+}
+
+<script>
+    function xacnhanMuonSach() {
+        let maphieu = parseInt(document.getElementById("Maphieu").innerHTML);
+        let ghichu = document.getElementById("Ghichu").value;
+        let data = {
+            Maphieumuon: maphieu,
+            Ghichu: ghichu
+        };
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            if (JSON.parse(xhttp.responseText) == true) {
+                alert("Xác nhận yêu cầu mượn sách thành công");
+                location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+            }
+            else {
+                alert("Xác nhận yêu cầu mượn sách thất bại");
+            }
+        }
+        var url = "/Phieumuonsach/xacNhanMuonSach";
+        xhttp.open("POST", url);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(JSON.stringify(data));
+    }
+
+    function tuchoiMuonSach()
+    {
+        let maphieu = parseInt(document.getElementById("Maphieu").innerHTML);
+        let ghichu = document.getElementById("Ghichu").value;
+        let data = {
+            Maphieumuon: maphieu,
+            Ghichu: ghichu
+        };
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            if (JSON.parse(xhttp.responseText) == true) {
+                alert("Từ chối yêu cầu mượn sách thành công");
+                location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+            }
+            else {
+                alert("Từ chối yêu cầu mượn sách thất bại");
+            }
+        }
+        var url = "/Phieumuonsach/tuChoiMuonSach";
+        xhttp.open("POST", url);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(JSON.stringify(data));
+    }
+</script>
+
