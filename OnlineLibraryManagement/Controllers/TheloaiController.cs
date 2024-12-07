@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineLibraryManagement.Models;
 using OnlineLibraryManagement.MyModels;
 
 namespace OnlineLibraryManagement.Controllers
 {
+    [Authorize(Roles = "Thuthu")]
     public class TheloaiController : Controller
     {
         QuanLyThuVienContext db = new QuanLyThuVienContext();

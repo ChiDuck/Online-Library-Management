@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using OnlineLibraryManagement.Models;
@@ -6,6 +7,7 @@ using OnlineLibraryManagement.MyModels;
 
 namespace OnlineLibraryManagement.Controllers
 {
+    [Authorize(Roles = "Thuthu")]
     public class PhieumuonsachController : Controller
     {
         QuanLyThuVienContext db = new QuanLyThuVienContext();

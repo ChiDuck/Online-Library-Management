@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OnlineLibraryManagement.Models;
@@ -6,15 +7,17 @@ using System.Collections.Generic;
 
 namespace OnlineLibraryManagement.Controllers
 {
+
     public class DocgiaController : Controller
     {
         QuanLyThuVienContext db = new QuanLyThuVienContext();
-
+        #region Độc giả
+        [Authorize(Roles = "Docgia")]
         public IActionResult Index()
         {
             return View();
         }
-        #region Độc giả
+        [Authorize(Roles = "Docgia")]
         public IActionResult hienThiDSSach()
         {
             List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
@@ -48,7 +51,7 @@ namespace OnlineLibraryManagement.Controllers
             }
             return View(ds);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult timSach(string giatricantim)
         {
             HttpContext.Session.Remove("timkiem");
@@ -108,6 +111,7 @@ namespace OnlineLibraryManagement.Controllers
             }
             return RedirectToAction("hienThiDSSach");
         }
+        [Authorize(Roles = "Docgia")]
         public IActionResult locSach(int theloai, int nhaxuatban)
         {
             HttpContext.Session.Remove("timkiem");
@@ -148,12 +152,12 @@ namespace OnlineLibraryManagement.Controllers
             return RedirectToAction("hienThiDSSach");
         }
 
-
+        [Authorize(Roles = "Docgia")]
         public Taikhoan tk()
         {
             return MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
         }
-
+        [Authorize(Roles = "Docgia")]
         public bool checkFlag(string s)
         {
             if (MySessions.Get<bool?>(HttpContext.Session, s) == null)
@@ -163,21 +167,21 @@ namespace OnlineLibraryManagement.Controllers
                 return MySessions.Get<bool>(HttpContext.Session, s);
             }
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult Taikhoan()
         {
             Docgia dg = db.Docgia.Where(x => x.Matk == tk().Matk).FirstOrDefault();
             dg.MatkNavigation = tk();
             return View(dg);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult frmSuaTaikhoan(int id)
         {
             Docgia dg = db.Docgia.Find(id);
             dg.MatkNavigation = tk();
             return View(dg);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult suaTaikhoan(Docgia dg)
         {
             Taikhoan x = tk();
@@ -204,12 +208,12 @@ namespace OnlineLibraryManagement.Controllers
             db.SaveChanges();
             return RedirectToAction("Taikhoan");
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult frmDoiMatkhau(int id)
         {
             return View();
         }
-
+        [Authorize(Roles = "Docgia")]
         [ValidateAntiForgeryToken]
         public IActionResult doiMatkhau(Taikhoan tkmoi)
         {
@@ -237,7 +241,7 @@ namespace OnlineLibraryManagement.Controllers
             MySessions.Set(HttpContext.Session, "taikhoan", t);
             return RedirectToAction("Taikhoan");
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult dsPhieumuonsach()
         {
             ViewBag.dangLapPhieu = checkFlag("dangLapPhieu");
@@ -262,7 +266,7 @@ namespace OnlineLibraryManagement.Controllers
                 .ToList();
             return View(dspms);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult chonSach(int id)
         {
             Sach sach = db.Sach.Find(id);
@@ -298,7 +302,7 @@ namespace OnlineLibraryManagement.Controllers
 
             return RedirectToAction("hienThiDSSach");
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult xoaSach(int id)
         {
             Sach sach = db.Sach.Find(id);
@@ -316,13 +320,13 @@ namespace OnlineLibraryManagement.Controllers
             db.SaveChanges();
             return RedirectToAction("dsPhieumuonsach");
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult huyPhieu()
         {
             removeSessions();
             return RedirectToAction("dsPhieumuonsach");
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult taoPhieu()
         {
             Phieumuonsach pms = MySessions.Get<Phieumuonsach>(HttpContext.Session, "lapPMS");
@@ -349,14 +353,14 @@ namespace OnlineLibraryManagement.Controllers
 
             return RedirectToAction("dsPhieumuonsach");
         }
-
+        [Authorize(Roles = "Docgia")]
         public void removeSessions()
         {
             MySessions.Set(HttpContext.Session, "dangLapPhieu", false);
             HttpContext.Session.Remove("lapPMS");
             HttpContext.Session.Remove("dsSach");
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult chitietPhieumuonsach(int id)
         {
             Phieumuonsach pms = db.Phieumuonsach
@@ -389,7 +393,7 @@ namespace OnlineLibraryManagement.Controllers
 
             return View(pms);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult dsPhieutrasach()
         {
             int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
@@ -399,7 +403,7 @@ namespace OnlineLibraryManagement.Controllers
                 .ToList();
             return View(ds);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult chitietPhieutrasach(int id)
         {
             Phieutrasach p = db.Phieutrasach.Include(s => s.MattNavigation)
@@ -419,6 +423,7 @@ namespace OnlineLibraryManagement.Controllers
         #endregion
 
         #region Thủ thư
+        [Authorize(Roles = "Thuthu")]
         public IActionResult hienthiDSDocgia()
         {
            List<Docgia> ds = db.Docgia.ToList();
@@ -428,6 +433,7 @@ namespace OnlineLibraryManagement.Controllers
            }
            return View(ds);
         }
+        [Authorize(Roles = "Thuthu")]
         public IActionResult formXemCTDocGia(int madocgia)
         {
            Docgia d = db.Docgia.Find(madocgia);

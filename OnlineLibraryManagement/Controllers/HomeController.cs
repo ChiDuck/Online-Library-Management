@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using OnlineLibraryManagement.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -28,8 +31,12 @@ namespace OnlineLibraryManagement.Controllers
         {
             return View();
         }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
-        public IActionResult loginMethod(Taikhoan a)
+        public async Task<IActionResult> loginMethodAsync(Taikhoan a)
         {
             Taikhoan tk = db.Taikhoan.Where(t => t.Tentk == a.Tentk).FirstOrDefault();
             if (tk != null)
@@ -37,9 +44,29 @@ namespace OnlineLibraryManagement.Controllers
                 if (tk.Matkhau == a.Matkhau)
                 {
                     MySessions.Set(HttpContext.Session, "taikhoan", tk);
-                    if (tk.Loaitk == false) return View("~/Views/Thuthu/Index.cshtml");
+                    if (tk.Loaitk == false)
+                    {
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, "Admin"),
+                            new Claim(ClaimTypes.Role, "Thuthu")
+                        };
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                        return View("~/Views/Thuthu/Index.cshtml");
+                    }
+
                     else
                     {
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, "User"),
+                            new Claim(ClaimTypes.Role, "Docgia")
+                        };
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
                         Docgia dg = db.Docgia.Where(t => t.Matk == tk.Matk).FirstOrDefault();
                         dg.MatkNavigation = null;
                         MySessions.Set(HttpContext.Session, "madocgia", dg.Madocgia);
@@ -89,12 +116,13 @@ namespace OnlineLibraryManagement.Controllers
             return View("Signup");
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> LogoutAsync()
         {
             MySessions.Set(HttpContext.Session, "dangLapPhieu", false);
             HttpContext.Session.Remove("lapPMS");
             HttpContext.Session.Remove("dsSach");
             HttpContext.Session.Remove("tk");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index");
         }
 
