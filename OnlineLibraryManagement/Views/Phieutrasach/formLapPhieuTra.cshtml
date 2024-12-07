@@ -125,10 +125,6 @@
                                 {
                                     <input type="button" id="@idButton" onclick="matSach(@item.Masach, @item.Maphieu)" class="btn btn-danger" value="Mất sách" />
                                 }
-                                else
-                                {
-                                    <input type="button" disabled class="btn btn-secondary" value="Đã mất sách" />
-                                }
                             </td>
                         </tr>
                     }
@@ -157,8 +153,8 @@
             {
                 if (JSON.parse(xhttp.responseText) == true) {
                     btn.classList = "btn btn-secondary";
-                    btn.value = "Đã mất sách"
-                    btn.disabled = true;
+                    btn.hidden = true;]
+
                     location.reload();
                 }
                 else {

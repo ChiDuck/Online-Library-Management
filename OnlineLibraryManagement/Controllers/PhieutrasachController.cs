@@ -58,7 +58,7 @@ namespace OnlineLibraryManagement.Controllers
                         ct.MasachNavigation = db.Sach.Find(ct.Masach); //Lấy dữ liệu sách trả sách về lại kho
                         ct.MasachNavigation.Soluong++;
 
-                        p.Sosachtra ++; //tăng số sách trả
+                        p.Sosachtra++; //tăng số sách trả
                     }
                 }
 
@@ -74,7 +74,7 @@ namespace OnlineLibraryManagement.Controllers
                 TempData["Message"] = "Lập phiếu trả sách thành công";
                 return RedirectToAction("Index");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 TempData["Message"] = "Lỗi!!!";
             }

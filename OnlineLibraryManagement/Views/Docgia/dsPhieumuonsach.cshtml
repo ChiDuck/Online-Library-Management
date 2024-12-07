@@ -157,25 +157,22 @@
                     @item.Ngaylapphieu.Value.ToShortDateString()
                 </td>
                 <td>
-                    @{
-                        if (item.Ngaypheduyet != null) @item.Ngaypheduyet.Value.ToShortDateString()
-                    }
+                    @if (item.Ngaypheduyet != null) @item.Ngaypheduyet.Value.ToShortDateString()
                 </td>
                 <td>
-                    @{
-                        if (item.Hantra != null) @item.Hantra.Value.ToShortDateString()
-                    }
+                    @if (item.Hantra != null) @item.Hantra.Value.ToShortDateString()
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Soluongsach)
                 </td>
                 <td>
-                    @item.MatinhtrangNavigation.Tentinhtrang
+                    @if (item.MatinhtrangNavigation != null)
+                    {
+                    <strong>@item.MatinhtrangNavigation.Tentinhtrang</strong>
+                    }
                 </td>
                 <td>
-                    @{
-                        if (item.MattNavigation != null) @item.MattNavigation.Tentt
-                    }
+                    @if (item.MattNavigation != null) @item.MattNavigation.Tentt                 
                 </td>
                 <td>
                     <a asp-action="chitietPhieumuonsach" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>

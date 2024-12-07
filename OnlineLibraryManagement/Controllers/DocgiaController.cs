@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using OnlineLibraryManagement.Models;
-using System.Security.Cryptography;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -29,13 +29,23 @@ namespace OnlineLibraryManagement.Controllers
             ViewBag.soSachMuon = dsSach != null ? dsSach.Count : 0;
 
             int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
-            if (db.Phieumuonsach.Any(t => t.Madocgia == mdg && (t.Matinhtrang == 1 || t.Matinhtrang == 2)))
+            if (db.Phieumuonsach.Any(t => t.Madocgia == mdg && t.Matinhtrang == 1))
             {
                 MySessions.Set(HttpContext.Session, "tinhTrang", true);
             }
             ViewBag.tinhTrang = checkFlag("tinhTrang");
 
             List<Sach> ds = db.Sach.ToList();
+            string dsJson = HttpContext.Session.GetString("timkiem");
+            if (dsJson != null)
+            {
+                ds = JsonConvert.DeserializeObject<List<Sach>>(dsJson);
+                HttpContext.Session.Remove("timkiem");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Không có sách thỏa điều kiện");
+            }
             return View(ds);
         }
 
@@ -47,14 +57,16 @@ namespace OnlineLibraryManagement.Controllers
             //Trường hợp để trống giá trị tìm kiếm
             if (string.IsNullOrEmpty(giatricantim))
             {
-                return View("hienThiDSSach", dsGoc);
+                HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsGoc));
+                return RedirectToAction("hienThiDSSach");
             }
 
             //tìm theo tên sách
             dsTimKiem = db.Sach.Where(s => s.Tensach.Contains(giatricantim)).ToList();
             if (dsTimKiem.Count > 0)
             {
-                return View("hienThiDSSach", dsTimKiem);
+                HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsTimKiem));
+                return RedirectToAction("hienThiDSSach");
             }
 
             //Tìm theo năm xuất bản
@@ -64,7 +76,8 @@ namespace OnlineLibraryManagement.Controllers
                 dsTimKiem = db.Sach.Where(s => s.Namxuatban == namxb).ToList();
                 if (dsTimKiem.Count > 0)
                 {
-                    return View("hienThiDSSach", dsTimKiem);
+                    HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsTimKiem));
+                    return RedirectToAction("hienThiDSSach");
                 }
             }
             catch (Exception ex)
@@ -87,54 +100,60 @@ namespace OnlineLibraryManagement.Controllers
                 dsTimKiem = kq.ToList();
                 if (dsTimKiem.Count > 0)
                 {
-                    return View("hienThiDSSach", dsTimKiem);
+                    HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsTimKiem));
+                    return RedirectToAction("hienThiDSSach");
                 }
 
             }
-            ModelState.AddModelError("", "Không tìm thấy");
-            return View("hienThiDSSach", dsGoc);
+            return RedirectToAction("hienThiDSSach");
         }
         public IActionResult locSach(int theloai, int nhaxuatban)
         {
-            List<Sach> dsGoc = db.Sach.ToList();
             List<Sach> dsLoc = null;
             if (theloai != 0 && nhaxuatban == 0)
             {
                 dsLoc = db.Sach.Where(s => s.Maloai == theloai).ToList();
                 if (dsLoc.Count > 0)
-                    return View("hienThiDSSach", dsLoc);
+                {
+                    HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
+                    return RedirectToAction("hienThiDSSach");
+                }
                 else
                 {
-                    ModelState.AddModelError("", "Chưa có sách thỏa điều kiện lọc");
-                    return View("hienThiDSSach", dsGoc);
+                    return RedirectToAction("hienThiDSSach");
                 }
             }
             else if (theloai == 0 && nhaxuatban != 0)
             {
                 dsLoc = db.Sach.Where(s => s.Manxb == nhaxuatban).ToList();
                 if (dsLoc.Count > 0)
-                    return View("hienThiDSSach", dsLoc);
+                {
+                    HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
+                    return RedirectToAction("hienThiDSSach");
+                }
                 else
                 {
-                    ModelState.AddModelError("", "Chưa có sách thỏa điều kiện lọc");
-                    return View("hienThiDSSach", dsGoc);
+                    return RedirectToAction("hienThiDSSach");
                 }
             }
             else if (theloai != 0 && nhaxuatban != 0)
             {
                 dsLoc = db.Sach.Where(s => s.Maloai == theloai && s.Manxb == nhaxuatban).ToList();
                 if (dsLoc.Count > 0)
-                    return View("hienThiDSSach", dsLoc);
+                {
+                    HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
+                    return RedirectToAction("hienThiDSSach");
+                }
                 else
                 {
-                    ModelState.AddModelError("", "Chưa có sách thỏa điều kiện lọc");
-                    return View("hienThiDSSach", dsGoc);
+                    return RedirectToAction("hienThiDSSach");
                 }
             }
             else
             {
                 dsLoc = db.Sach.ToList();
-                return View("hienThiDSSach", dsLoc);
+                HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
+                return RedirectToAction("hienThiDSSach");
             }
         }
 
@@ -255,14 +274,14 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult chonSach(int id)
         {
-			Sach sach = db.Sach.Find(id);
+            Sach sach = db.Sach.Find(id);
             Phieumuonsach pms = new Phieumuonsach();
             List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
             if (dsSach == null) dsSach = new List<Sach>();
-            if (dsSach.Count < 3) dsSach.Add(sach);
+            if (dsSach.Count < 7) dsSach.Add(sach);
             else
             {
-              //  MySessions.Set(HttpContext.Session, "slToiDa", true);
+                //  MySessions.Set(HttpContext.Session, "slToiDa", true);
                 return RedirectToAction("hienthiDSSach");
             }
 
@@ -292,7 +311,7 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult xoaSach(int id)
         {
             Sach sach = db.Sach.Find(id);
-            
+
             Phieumuonsach pms = MySessions.Get<Phieumuonsach>(HttpContext.Session, "lapPMS");
             pms.Soluongsach--;
             MySessions.Set(HttpContext.Session, "lapPMS", pms);
@@ -318,7 +337,7 @@ namespace OnlineLibraryManagement.Controllers
             Phieumuonsach pms = MySessions.Get<Phieumuonsach>(HttpContext.Session, "lapPMS");
             List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
             pms.Matinhtrang = 1;
-            db.Phieumuonsach.Add(pms); 
+            db.Phieumuonsach.Add(pms);
             db.SaveChanges();
 
             Phieumuonsach phieumoi = db.Phieumuonsach
@@ -354,30 +373,30 @@ namespace OnlineLibraryManagement.Controllers
                 .Include(x => x.MattNavigation)
                 .FirstOrDefault(x => x.Maphieu == id);
 
-			ViewBag.DSCTPhieuMuon = db.Chitietphieumuon.Where(x => x.Maphieu == id).ToList();
+            ViewBag.DSCTPhieuMuon = db.Chitietphieumuon.Where(x => x.Maphieu == id).ToList();
             foreach (Chitietphieumuon ct in ViewBag.DSCTPhieuMuon)
             {
                 ct.MasachNavigation = db.Sach.Include(s => s.MaloaiNavigation)
                                              .Include(s => s.ManxbNavigation)
                                              .FirstOrDefault(s => s.Masach == ct.Masach);
 
-				if (ct.Matinhtrang == 1 && pms.Hantra.HasValue)
-				{
-					if (DateTime.Compare(DateTime.Now.Date, pms.Hantra.Value.Date) > 0)
-					{
-						ct.Matinhtrang = 3;
-						try
-						{
-							db.Chitietphieumuon.Update(ct);
-							db.SaveChanges();
-						}
-						catch (Exception ex) { }
-					}
-				}
-				ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
-			}
+                if (ct.Matinhtrang == 1 && pms.Hantra.HasValue)
+                {
+                    if (DateTime.Compare(DateTime.Now.Date, pms.Hantra.Value.Date) > 0)
+                    {
+                        ct.Matinhtrang = 3;
+                        try
+                        {
+                            db.Chitietphieumuon.Update(ct);
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
+                ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
+            }
 
-			return View(pms);
+            return View(pms);
         }
 
         public IActionResult dsPhieutrasach()

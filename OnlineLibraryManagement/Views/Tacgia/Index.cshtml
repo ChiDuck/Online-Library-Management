@@ -13,14 +13,17 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Matacgia)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Tentacgia)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Ngaysinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaymat)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quoctich)
@@ -33,15 +36,25 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.Matacgia)
-            </td>
+            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.Tentacgia)
             </td>
+            <td>               
+                @if (item.Ngaysinh != null) @item.Ngaysinh.Value.ToShortDateString() 
+                else
+                {
+                    <p>Không rõ</p>
+                }
+            </td>
             <td>
-                @if (item.Ngaysinh != null) @item.Ngaysinh.Value.ToShortDateString()
-                
+                @if (item.Ngaymat != null) @item.Ngaymat.Value.ToShortDateString()
+                else
+                {
+                    <p>Không rõ</p>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quoctich)

@@ -154,12 +154,12 @@
     function chonSach(id,sl) {
         console.log('@ViewBag.tinhTrang');
         if ('@ViewBag.tinhTrang' == 'True') {
-            window.alert("Có phiếu mượn sách chưa kết thúc hoặc đang chờ phê duyệt! Bạn chỉ được lập 1 phiếu mượn tại một thời điểm.");
+            window.alert("Bạn có phiếu mượn sách đang chờ phê duyệt! Vui đợi phản hồi từ thủ thư trước khi lập phiếu mượn sách mới.");
             return;
         }
 
-        if (@ViewBag.soSachMuon >= 3) {
-            window.alert("Bạn chỉ được mượn tối đa 3 cuốn sách cho mỗi phiếu!");
+        if (@ViewBag.soSachMuon >= 7) {
+            window.alert("Bạn chỉ được mượn tối đa 7 cuốn sách cho mỗi phiếu!");
             return;
         }
 

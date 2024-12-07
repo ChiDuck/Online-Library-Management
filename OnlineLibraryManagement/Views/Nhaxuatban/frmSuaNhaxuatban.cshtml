@@ -12,11 +12,7 @@
     <div class="col-md-4">
         <form asp-action="suaNhaxuatban" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Manxb" class="control-label"></label>
                 <input type="hidden" asp-for="Manxb" class="form-control" />
-                <span asp-validation-for="Manxb" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Tennxb" class="control-label"></label>
                 <input asp-for="Tennxb" class="form-control" />

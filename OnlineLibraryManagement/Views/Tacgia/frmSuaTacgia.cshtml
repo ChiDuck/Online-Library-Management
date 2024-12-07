@@ -12,11 +12,8 @@
     <div class="col-md-4">
         <form asp-action="suaTacgia" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Matacgia" class="control-label"></label>
-                <input type="hidden" asp-for="Matacgia" class="form-control" />
-                <span asp-validation-for="Matacgia" class="text-danger"></span>
-            </div>
+
+            <input type="hidden" asp-for="Matacgia" class="form-control" />
             <div class="form-group">
                 <label asp-for="Tentacgia" class="control-label"></label>
                 <input asp-for="Tentacgia" class="form-control" />
@@ -26,6 +23,11 @@
                 <label asp-for="Ngaysinh" class="control-label"></label>
                 <input type="date" asp-for="Ngaysinh" class="form-control" />
                 <span asp-validation-for="Ngaysinh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ngaymat" class="control-label"></label>
+                <input type="date" asp-for="Ngaymat" class="form-control" />
+                <span asp-validation-for="Ngaymat" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Quoctich" class="control-label"></label>

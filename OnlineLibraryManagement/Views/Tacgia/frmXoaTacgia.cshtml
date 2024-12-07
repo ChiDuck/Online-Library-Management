@@ -10,12 +10,12 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        @* <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Matacgia)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Matacgia)
-        </dd>
+        </dd> *@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Tentacgia)
         </dt>
@@ -26,7 +26,23 @@
             @Html.DisplayNameFor(model => model.Ngaysinh)
         </dt>
         <dd class = "col-sm-10">
-            @Model.Ngaysinh.Value.ToShortDateString()
+            @if (Model.Ngaysinh != null)
+                @Model.Ngaysinh.Value.ToShortDateString()
+            else
+            {
+                <p>Không rõ</p>
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ngaymat)
+        </dt>
+        <dd class = "col-sm-10">
+            @if (Model.Ngaymat != null)
+                @Model.Ngaymat.Value.ToShortDateString()
+            else
+            {
+                <p>Không rõ</p>
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Quoctich)
