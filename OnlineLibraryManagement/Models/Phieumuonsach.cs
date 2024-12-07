@@ -16,15 +16,13 @@ namespace OnlineLibraryManagement.Models
         [Display(Name = "Ngày lập phiếu")]
         public DateTime? Ngaylapphieu { get; set; }
 
-        [Display(Name = "Ngày mượn")]
+        [Display(Name = "Ngày phê duyệt")]
         public DateTime? Ngaypheduyet { get; set; }
 
         [Display(Name = "Hạn trả")]
         public DateTime? Hantra { get; set; }
 
         [Display(Name = "Số lượng sách mượn")]
-        [Required(ErrorMessage = "Vui lòng nhập số lượng")]
-        [Range(1, 3, ErrorMessage = "Chỉ cho được mượn từ 1 đến 3 cuốn sách")]
         public int? Soluongsach { get; set; }
 
         [Display(Name = "Ghi chú")]

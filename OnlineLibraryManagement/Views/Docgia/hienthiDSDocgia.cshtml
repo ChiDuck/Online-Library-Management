@@ -1,0 +1,64 @@
+﻿@model IEnumerable<OnlineLibraryManagement.Models.Docgia>
+
+@{
+    ViewData["Title"] = "Danh sách các độc giả";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Danh sách các độc giả</h1>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Madocgia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tendocgia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaysinh)
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matk)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Madocgia)
+            </td>
+            <td>
+                    @if (item.Tendocgia != null)
+                    {
+                        @item.Tendocgia
+                    }
+            </td>
+            <td>
+                    @if (item.Ngaysinh != null)
+                    {
+                        @item.Ngaysinh.Value.ToShortDateString()
+                    }
+            </td>
+            <td>
+                @if (item.MatkNavigation != null)
+                {
+                        @item.MatkNavigation.Email
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Matk)
+            </td>
+            <td>
+                    <a asp-action="formXemCTDocGia" class="btn btn-primary" asp-route-madocgia="@item.Madocgia">Xem chi tiết</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

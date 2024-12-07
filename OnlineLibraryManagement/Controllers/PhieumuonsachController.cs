@@ -64,7 +64,7 @@ namespace OnlineLibraryManagement.Controllers
             return View(p);
         }
         public IActionResult xacNhanMuonSach([FromBody] CGhichu c)
-        {
+        {  
             Taikhoan tk = MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
             Thuthu tt = db.Thuthu.Where(t => t.Matk == tk.Matk).FirstOrDefault();
             Phieumuonsach p = db.Phieumuonsach.Find(c.Maphieumuon);
@@ -83,7 +83,7 @@ namespace OnlineLibraryManagement.Controllers
                     //update bảng phiếu mượn
                     p.Matinhtrang = 2;
                     p.Ngaypheduyet = DateTime.Now.Date;
-                    p.Hantra = p.Ngaypheduyet.Value.AddDays(14);
+                    p.Hantra = c.Hantra;
                     p.Matt = tt.Matt;
                     db.Phieumuonsach.Update(p);
 

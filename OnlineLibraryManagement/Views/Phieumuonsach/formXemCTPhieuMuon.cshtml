@@ -8,7 +8,10 @@
     QuanLyThuVienContext db = new QuanLyThuVienContext();
 }
 <h1>Chi tiết phiếu mượn</h1>
-<a asp-action="DSPhieuMuon_Thuthu" class="btn btn-primary">Quay lại</a>
+<div>
+    <a asp-action="DSPhieuMuon_Thuthu" class="btn btn-primary">Xem tất cả các phiếu mượn</a>
+</div>
+
 <div>
     <hr />
     <dl class="row">
@@ -36,6 +39,10 @@
             {
                 @Model.Ngaypheduyet.Value.ToShortDateString()
             }
+            else if (Model.Matinhtrang == 1)
+            {
+                @DateTime.Now.ToShortDateString()
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Hantra)
@@ -44,6 +51,10 @@
             @if (Model.Hantra != null)
             {
                 @Model.Hantra.Value.ToShortDateString()
+            }
+            else if (Model.Matinhtrang == 1)
+            {
+                <input type="date" id="Hantra" class="form-control" />
             }
         </dd>
         <dt class="col-sm-2">
@@ -143,7 +154,7 @@
                         if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
                         {
                             string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
-                            <img height="100" width="50" src="@Url.Content(tenFile)" />
+                                    <img height="100" width="50" src="@Url.Content(tenFile)" />
                         }
                     }
                 </td>
@@ -151,7 +162,7 @@
                     @{
                         if (item.MasachNavigation.MaloaiNavigation != null)
                         {
-                            <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
+                                    <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
                         }
                     }
                 </td>
@@ -159,7 +170,7 @@
                     @{
                         if (item.MasachNavigation.ManxbNavigation != null)
                         {
-                            <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
+                                    <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
                         }
                     }
                 </td>
@@ -172,11 +183,11 @@
                             string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
                             if (i == 0)
                             {
-                                <text>@tenTacgia</text>
+                                        <text>@tenTacgia</text>
                             }
                             else if (i >= 1 && i < dsPhienBanSach.Count)
                             {
-                                <text>, @tenTacgia</text>
+                                        <text>, @tenTacgia</text>
                             }
                         }
                     }
@@ -185,7 +196,7 @@
                     @{
                         if (item.MatinhtrangNavigation != null)
                         {
-                            <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
+                                    <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
                         }
                     }
                 </td>
@@ -220,26 +231,45 @@ else if (Model.Matinhtrang == 3)
 
 <script>
     function xacnhanMuonSach() {
-        let maphieu = parseInt(document.getElementById("Maphieu").innerHTML);
-        let ghichu = document.getElementById("Ghichu").value;
-        let data = {
-            Maphieumuon: maphieu,
-            Ghichu: ghichu
-        };
-        const xhttp = new XMLHttpRequest();
-        xhttp.onload = function () {
-            if (JSON.parse(xhttp.responseText) == true) {
-                alert("Xác nhận yêu cầu mượn sách thành công");
-                location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
-            }
-            else {
-                alert("Xác nhận yêu cầu mượn sách thất bại");
-            }
+        let hantra = document.getElementById("Hantra").value;
+        if (!hantra) {
+            alert("Bạn chưa gia hạn ngày trả sách");
+            return;
         }
-        var url = "/Phieumuonsach/xacNhanMuonSach";
-        xhttp.open("POST", url);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send(JSON.stringify(data));
+        let dateNow = new Date();
+        dateNow.setHours(0, 0, 0, 0);
+        let inputDate = new Date(hantra);
+        inputDate.setHours(0, 0, 0, 0);
+        if (inputDate > dateNow)
+        {
+            let maphieu = parseInt(document.getElementById("Maphieu").innerHTML);
+            let ghichu = document.getElementById("Ghichu").value;
+            let data = {
+                Maphieumuon: maphieu,
+                Hantra: hantra,
+                Ghichu: ghichu
+            };
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (JSON.parse(xhttp.responseText) == true) {
+                    alert("Xác nhận yêu cầu mượn sách thành công");
+                    location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+                }
+                else {
+                    alert("Xác nhận yêu cầu mượn sách thất bại");
+                }
+            }
+            var url = "/Phieumuonsach/xacNhanMuonSach";
+            xhttp.open("POST", url);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify(data));
+        }
+        else
+        {
+            alert("Hạn trả không hợp lệ");
+        }
+
+        
     }
 
     function tuchoiMuonSach()

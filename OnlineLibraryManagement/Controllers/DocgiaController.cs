@@ -14,7 +14,7 @@ namespace OnlineLibraryManagement.Controllers
         {
             return View();
         }
-
+        #region Độc giả
         public IActionResult hienThiDSSach()
         {
             List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
@@ -415,5 +415,32 @@ namespace OnlineLibraryManagement.Controllers
             }
             return View(p);
         }
+
+        #endregion
+
+        #region Thủ thư
+        public IActionResult hienthiDSDocgia()
+        {
+           List<Docgia> ds = db.Docgia.ToList();
+           foreach(Docgia d in ds)
+           {
+                d.MatkNavigation = db.Taikhoan.Find(d.Matk);
+           }
+           return View(ds);
+        }
+        public IActionResult formXemCTDocGia(int madocgia)
+        {
+           Docgia d = db.Docgia.Find(madocgia);
+            if (d != null)
+            {
+                d.MatkNavigation = db.Taikhoan.Find(d.Matk);
+            }
+            ViewBag.DSPhieuMuon = db.Phieumuonsach.Include(s => s.MattNavigation)
+                                                  .Include(s => s.MatinhtrangNavigation)
+                                                  .Where(s => s.Madocgia == madocgia)
+                                                  .ToList();
+           return View(d);
+        }
+        #endregion
     }
 }

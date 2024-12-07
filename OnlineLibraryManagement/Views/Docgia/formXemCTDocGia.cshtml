@@ -1,0 +1,162 @@
+﻿@model OnlineLibraryManagement.Models.Docgia
+
+@{
+    ViewData["Title"] = "Chi tiết độc giả";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+@{
+    List<Phieumuonsach> dsPhieuMuon = ViewBag.DSPhieuMuon as List<Phieumuonsach>;
+}
+<h1>Xem chi tiết thông tin của độc giả</h1>
+<div>
+    <a asp-action="hienthiDSDocGia" class="btn btn-primary">Xem tất cả các độc giả</a>
+</div>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Madocgia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Madocgia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tendocgia)
+        </dt>
+        <dd class = "col-sm-10">
+            @if (Model.Tendocgia != null)
+            {
+                @Model.Tendocgia
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ngaysinh)
+        </dt>
+        <dd class = "col-sm-10">
+            @if(Model.Ngaysinh != null)
+            {
+                @Model.Ngaysinh.Value.ToShortDateString()
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Matk)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Matk)
+        </dd>
+        <dt class="col-sm-2">
+            Tên tài khoản
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.MatkNavigation != null)
+            {
+                @Model.MatkNavigation.Tentk
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.MatkNavigation != null)
+            {
+                @Model.MatkNavigation.Email
+            }
+        </dd>
+    </dl>
+</div>
+
+@if (dsPhieuMuon.Count > 0)
+{
+    <div>
+        <h3>Danh sách các phiếu mượn</h3>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Mã phiếu
+                </th>
+                <th>
+                    Ngày lập phiếu
+                </th>
+                <th>
+                    Ngày phê duyệt
+                </th>
+                <th>
+                    Hạn trả
+                </th>
+                <th>
+                    Số lượng sách
+                </th>
+                <th>
+                    Tình trạng
+                </th>
+                <th>
+                    Thủ thư
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Phieumuonsach item in dsPhieuMuon)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Maphieu)
+                    </td>
+                    <td>
+                        @if (item.Ngaylapphieu != null)
+                        {
+                            @item.Ngaylapphieu.Value.ToShortDateString()
+                        }
+                    </td>
+                    <td>
+                        @if (item.Ngaypheduyet != null)
+                        {
+                            @item.Ngaypheduyet.Value.ToShortDateString()
+                        }
+                    </td>
+                    <td>
+                        @if (item.Hantra != null)
+                        {
+                            @item.Hantra.Value.ToShortDateString()
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Soluongsach)
+                    </td>
+                    <td>
+                        @if (item.MatinhtrangNavigation != null)
+                        {
+                            <strong>@item.MatinhtrangNavigation.Tentinhtrang</strong>
+                        }
+                    </td>
+                    <td>
+                        @if (item.MattNavigation != null)
+                        {
+                            @item.MattNavigation.Tentt
+                        }
+                    </td>
+                    <td>
+                        @if (item.MadocgiaNavigation != null)
+                        {
+                            @item.MadocgiaNavigation.Tendocgia
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="Phieumuonsach" asp-action="formXemCTPhieuMuon" class="btn btn-primary" asp-route-maphieumuon="@item.Maphieu">Xem chi tiết</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div>
+        <h3>Độc giả chưa mượn sách tại thư viện</h3>
+    </div>
+}
+
+
+

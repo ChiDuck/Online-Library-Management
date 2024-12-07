@@ -6,6 +6,9 @@
 }
 
 <h1>Thay đổi mật khẩu</h1>
+<div>
+    <a asp-action="Taikhoan">Trở lại</a>
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -26,14 +29,11 @@
                 <input type="password" asp-for="Nhaplaimatkhau" class="form-control" />
                 <span asp-validation-for="Nhaplaimatkhau" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Lưu" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Taikhoan">Trở lại</a>
 </div>
 

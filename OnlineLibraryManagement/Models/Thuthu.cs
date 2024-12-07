@@ -14,8 +14,10 @@ namespace OnlineLibraryManagement.Models
         [Display(Name = "Mã thủ thư ")]
         public int Matt { get; set; }
         [Display(Name = "Tên thủ thư")]
+        [Required(ErrorMessage = "Bạn chưa nhập tên thủ thư")]
         public string? Tentt { get; set; }
         [Display(Name = "Số điện thoại")]
+        [Required(ErrorMessage = "Bạn chưa nhập số điện thoại")]
         public string? Sdt { get; set; }
         [Display(Name = "Mã tài khoản")]
         public int? Matk { get; set; }
