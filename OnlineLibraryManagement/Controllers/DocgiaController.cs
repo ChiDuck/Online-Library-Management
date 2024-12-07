@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OnlineLibraryManagement.Models;
+using System.Collections.Generic;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -40,7 +41,6 @@ namespace OnlineLibraryManagement.Controllers
             if (dsJson != null)
             {
                 ds = JsonConvert.DeserializeObject<List<Sach>>(dsJson);
-                HttpContext.Session.Remove("timkiem");
             }
             else
             {
@@ -51,6 +51,7 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult timSach(string giatricantim)
         {
+            HttpContext.Session.Remove("timkiem");
             List<Sach> dsGoc = db.Sach.ToList();
             List<Sach> dsTimKiem = null;
 
@@ -109,6 +110,7 @@ namespace OnlineLibraryManagement.Controllers
         }
         public IActionResult locSach(int theloai, int nhaxuatban)
         {
+            HttpContext.Session.Remove("timkiem");
             List<Sach> dsLoc = null;
             if (theloai != 0 && nhaxuatban == 0)
             {
@@ -118,10 +120,7 @@ namespace OnlineLibraryManagement.Controllers
                     HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
                     return RedirectToAction("hienThiDSSach");
                 }
-                else
-                {
-                    return RedirectToAction("hienThiDSSach");
-                }
+                return RedirectToAction("hienThiDSSach");
             }
             else if (theloai == 0 && nhaxuatban != 0)
             {
@@ -131,10 +130,7 @@ namespace OnlineLibraryManagement.Controllers
                     HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
                     return RedirectToAction("hienThiDSSach");
                 }
-                else
-                {
-                    return RedirectToAction("hienThiDSSach");
-                }
+                return RedirectToAction("hienThiDSSach");
             }
             else if (theloai != 0 && nhaxuatban != 0)
             {
@@ -144,17 +140,12 @@ namespace OnlineLibraryManagement.Controllers
                     HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
                     return RedirectToAction("hienThiDSSach");
                 }
-                else
-                {
-                    return RedirectToAction("hienThiDSSach");
-                }
-            }
-            else
-            {
-                dsLoc = db.Sach.ToList();
-                HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
                 return RedirectToAction("hienThiDSSach");
             }
+
+            dsLoc = db.Sach.ToList();
+            HttpContext.Session.SetString("timkiem", JsonConvert.SerializeObject(dsLoc));
+            return RedirectToAction("hienThiDSSach");
         }
 
 
@@ -282,7 +273,7 @@ namespace OnlineLibraryManagement.Controllers
             else
             {
                 //  MySessions.Set(HttpContext.Session, "slToiDa", true);
-                return RedirectToAction("hienthiDSSach");
+                return RedirectToAction("hienThiDSSach");
             }
 
             if (!checkFlag("dangLapPhieu")) //flag chọn sách lần đầu tiên -> khởi tạo phiếu mượn
@@ -305,7 +296,7 @@ namespace OnlineLibraryManagement.Controllers
             MySessions.Set(HttpContext.Session, "lapPMS", pms);
             MySessions.Set(HttpContext.Session, "dsSach", dsSach);
 
-            return RedirectToAction("hienthiDSSach");
+            return RedirectToAction("hienThiDSSach");
         }
 
         public IActionResult xoaSach(int id)

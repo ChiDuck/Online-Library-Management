@@ -27,6 +27,9 @@ namespace OnlineLibraryManagement.Models
         [Range(1, 3, ErrorMessage = "Chỉ cho được mượn từ 1 đến 3 cuốn sách")]
         public int? Soluongsach { get; set; }
 
+        [Display(Name = "Ghi chú")]
+        public string? Ghichu { get; set; }
+
         [Display(Name = "Tình trạng")]
         public int? Matinhtrang { get; set; }
 
@@ -36,8 +39,6 @@ namespace OnlineLibraryManagement.Models
         [Display(Name = "Độc giả")]
         public int? Madocgia { get; set; }
 
-        [Display(Name = "Ghi chú")]
-        public string? Ghichu { get; set; }
 
         public virtual Docgia? MadocgiaNavigation { get; set; }
         public virtual Tinhtrangphieu? MatinhtrangNavigation { get; set; }

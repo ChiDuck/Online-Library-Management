@@ -91,6 +91,9 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Logout()
         {
+            MySessions.Set(HttpContext.Session, "dangLapPhieu", false);
+            HttpContext.Session.Remove("lapPMS");
+            HttpContext.Session.Remove("dsSach");
             HttpContext.Session.Remove("tk");
             return RedirectToAction("Index");
         }
