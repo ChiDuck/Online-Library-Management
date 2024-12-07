@@ -11,6 +11,8 @@ namespace OnlineLibraryManagement.MyModels
         public string? Tentacgia { get; set; }
         [Display(Name = "Ngày sinh")]
         public DateTime? Ngaysinh { get; set; }
+        [Display(Name = "Ngày mất")]
+        public DateTime? Ngaymat { get; set; }
         [Display(Name = "Quốc tịch")]
         public string? Quoctich { get; set; }
 
@@ -21,6 +23,7 @@ namespace OnlineLibraryManagement.MyModels
                 Matacgia = tg.Matacgia,
                 Tentacgia = tg.Tentacgia,
                 Ngaysinh = tg.Ngaysinh,
+                Ngaymat = tg.Ngaymat,
                 Quoctich = tg.Quoctich
             };
         }
@@ -32,6 +35,7 @@ namespace OnlineLibraryManagement.MyModels
                 Matacgia = ctg.Matacgia,
                 Tentacgia = ctg.Tentacgia,
                 Ngaysinh = ctg.Ngaysinh,
+                Ngaymat = ctg.Ngaymat,
                 Quoctich = ctg.Quoctich
             };
         }

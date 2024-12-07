@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OnlineLibraryManagement.Models
+﻿namespace OnlineLibraryManagement.Models
 {
     public partial class Phienbansach
     {
