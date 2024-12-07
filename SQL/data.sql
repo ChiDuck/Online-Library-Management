@@ -168,8 +168,8 @@ INSERT INTO PHIEUTRASACH VALUES		-- Ngày lập, số lượng trả, ghi chú, 
 ('2024-11-17', 2, null, 1, 1),
 ('2024-11-4' , 1, null, 2, 1)
 
-INSERT INTO PHIEUGIAHAN VALUES		-- Ngày lập, ngày duyệt, hạn mới, lần ghan, ghi chú, lý do, mã phiếu mượn, mã tthu
-('2024-11-14','2024-11-14','2024-11-17', 1, N'Không trả phạt giờ',N'Xin muộn 2 ngày', 1, 1)	
+INSERT INTO PHIEUGIAHAN VALUES		-- Ngày lập, ngày duyệt, hạn mới, lần ghan, ghi chú, lý do,mã tình trạng, mã phiếu mượn, mã tthu
+('2024-11-14','2024-11-14','2024-11-17', 1, N'Không trả phạt giờ',N'Xin muộn 2 ngày', 3, 1, 1)	
 
 select * from SACH
 select * from PHIEUMUONSACH

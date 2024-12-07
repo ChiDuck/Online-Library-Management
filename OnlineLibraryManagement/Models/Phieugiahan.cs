@@ -12,10 +12,12 @@ namespace OnlineLibraryManagement.Models
         public int? Langiahan { get; set; }
         public string? Ghichu { get; set; }
         public string? Lydo { get; set; }
+        public int? Matinhtrang { get; set; }
         public int? Maphieumuon { get; set; }
         public int? Matt { get; set; }
 
         public virtual Phieumuonsach? MaphieumuonNavigation { get; set; }
+        public virtual Tinhtrangphieu? MatinhtrangNavigation { get; set; }
         public virtual Thuthu? MattNavigation { get; set; }
     }
 }
