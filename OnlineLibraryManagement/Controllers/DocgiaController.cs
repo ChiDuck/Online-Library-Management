@@ -33,13 +33,19 @@ namespace OnlineLibraryManagement.Controllers
             }
             ViewBag.soSachMuon = dsSach != null ? dsSach.Count : 0;
 
+            // Kiểm tra xem có phiếu mượn đang chờ phê duyệt không
             int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
             if (db.Phieumuonsach.Any(t => t.Madocgia == mdg && t.Matinhtrang == 1))
             {
                 MySessions.Set(HttpContext.Session, "tinhTrang", true);
             }
+            else
+            {
+                MySessions.Set(HttpContext.Session, "tinhTrang", false);
+            }
             ViewBag.tinhTrang = checkFlag("tinhTrang");
 
+            //Trả về danh sách tìm kiếm hoặc lọc
             List<Sach> ds = db.Sach.ToList();
             string dsJson = HttpContext.Session.GetString("timkiem");
             if (dsJson != null)
@@ -276,11 +282,7 @@ namespace OnlineLibraryManagement.Controllers
             List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
             if (dsSach == null) dsSach = new List<Sach>();
             if (dsSach.Count < 7) dsSach.Add(sach);
-            else
-            {
-                //  MySessions.Set(HttpContext.Session, "slToiDa", true);
-                return RedirectToAction("hienThiDSSach");
-            }
+            else return RedirectToAction("hienThiDSSach");
 
             if (!checkFlag("dangLapPhieu")) //flag chọn sách lần đầu tiên -> khởi tạo phiếu mượn
             {
@@ -337,10 +339,7 @@ namespace OnlineLibraryManagement.Controllers
             db.Phieumuonsach.Add(pms);
             db.SaveChanges();
 
-            Phieumuonsach phieumoi = db.Phieumuonsach
-                .Where(t => t.Madocgia == pms.Madocgia)
-                .OrderByDescending(t => t.Ngaylapphieu)
-                .FirstOrDefault();
+            Phieumuonsach phieumoi = db.Phieumuonsach.Find(pms.Maphieu);
 
             foreach (Sach s in dsSach)
             {
@@ -437,27 +436,33 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult themPhieugiahan([FromBody]CGhichu x)
         {
             int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
-
+            Phieumuonsach pms = db.Phieumuonsach.Where(k => k.Maphieu == x.Maphieu && k.Madocgia == mdg).FirstOrDefault();
             int lanGH = 0;
-            if (db.Phieumuonsach.Where(k => k.Maphieu == x.Maphieu && k.Madocgia == mdg).FirstOrDefault() != null)
+           
+            if (pms != null)
             {
-                lanGH = db.Phieugiahan.Where(t => t.Maphieumuon == x.Maphieu).Count();
-                if (lanGH >= 2) 
+                if (db.Phieugiahan.Where(t => t.Matinhtrang == 1 && t.Maphieumuon == x.Maphieu).Count() > 0)
                 {
-                    return Json("toida");
-                }  
+                    return Json("chogiahan");
+                }
+                switch (pms.Matinhtrang)
+                { 
+                    case 1: return Json("chuaduyet");
+                    case 4: return Json("tuchoi");
+                }
+                lanGH = db.Phieugiahan.Where(t => t.Matinhtrang == 2 && t.Maphieumuon == x.Maphieu).Count();
+                if (lanGH >= 2) return Json("toida");
             }
-            else
-            {
-                return Json("khongco");
-            }
+            else return Json("khongco");
 
-            Phieugiahan p = new Phieugiahan();
-            p.Ngaylapphieu = DateTime.Now.Date;
-            p.Langiahan = lanGH++;
-            p.Matinhtrang = 1;
-            p.Maphieumuon = x.Maphieu;
-            p.Lydo = x.Ghichu;
+            Phieugiahan p = new()
+            {
+                Ngaylapphieu = DateTime.Now.Date,
+                Langiahan = lanGH,
+                Matinhtrang = 1,
+                Maphieumuon = x.Maphieu,
+                Lydo = x.Ghichu
+            };
 
             db.Phieugiahan.Add(p);
             db.SaveChanges();

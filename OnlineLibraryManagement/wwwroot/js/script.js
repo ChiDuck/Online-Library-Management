@@ -6,21 +6,39 @@ function taoPhieu() {
 
     let maphieumuon = document.getElementById("maphieumuon").value;
     let lydo = document.getElementById("lydo").value;
+    let textma = document.getElementById("textma");
+
+    if (maphieumuon == "") {
+        textma.innerHTML = "Vui lòng nhập mã phiếu mượn";
+        return;
+    }
 
     let data = { Maphieu: maphieumuon, Ghichu: lydo }
     const xhttp = new XMLHttpRequest();
 
     xhttp.onload = function () {
-        if (JSON.parse(xhttp.responseText) == true) {
-            alert("Yêu cầu gia hạn đã được gửi! Vui lòng chờ phê duyệt của Admin");
-            location.href = "/Docgia/dsPhieugiahan";
+        switch (JSON.parse(xhttp.responseText))
+        {
+            case true:
+                alert("Yêu cầu gia hạn đã được gửi! Vui lòng chờ phê duyệt của Admin");
+                break;
+            case "toida":
+                alert("Gia hạn không thành công: Phiếu mượn đạt số lần gia hạn tối đa");
+                break;
+            case "khongco": 
+                alert("Gia hạn không thành công: Mã phiếu không đúng");
+                break;
+            case "chuaduyet": 
+                alert("Gia hạn không thành công: Phiếu mượn chưa được duyệt");
+                break;
+            case "tuchoi": 
+                alert("Gia hạn không thành công: Phiếu mượn đã bị từ chối");
+                break;
+            case "chogiahan": 
+                alert("Gia hạn không thành công: Phiếu mượn đang có yêu cầu gia hạn chưa duyệt");
+                break;
         }
-        else if (JSON.parse(xhttp.responseText) == "toida") {
-            alert("Phiếu mượn đã đạt số lần gia hạn tối đa");
-        }
-        else if (JSON.parse(xhttp.responseText) == "khongco") {
-            alert("Mã phiếu không đúng");
-        }
+        location.href = "/Docgia/dsPhieugiahan";
     }
 
     modalInstance.hide();
