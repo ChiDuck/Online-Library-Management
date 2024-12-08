@@ -17,6 +17,24 @@ namespace OnlineLibraryManagement.Controllers
             List<Phieumuonsach> ds = db.Phieumuonsach.OrderByDescending(s => s.Ngaylapphieu).ToList();
             foreach (Phieumuonsach item in ds)
             {
+                if (item.Matinhtrang == 2 && item.Hantra.HasValue)
+                {
+                    if (DateTime.Compare(DateTime.Now.Date, item.Hantra.Value.Date) > 0) //Ngày thực tế > hạn trả => Trễ hạn
+                    {
+                        try
+                        {
+
+                            item.Matinhtrang = 5;
+                            List<Chitietphieumuon> dsCTPhieuMuon = db.Chitietphieumuon.Where(x => x.Maphieu == item.Maphieu).ToList();
+                            foreach (Chitietphieumuon ct in dsCTPhieuMuon)
+                            {
+                                ct.Matinhtrang = 4;
+                            }    
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
                 item.MadocgiaNavigation = db.Docgia.Find(item.Madocgia);
                 item.MattNavigation = db.Thuthu.Find(item.Matt);
                 item.MatinhtrangNavigation = db.Tinhtrangphieu.Find(item.Matinhtrang);
@@ -34,40 +52,9 @@ namespace OnlineLibraryManagement.Controllers
             ViewBag.DSCTPhieuMuon = db.Chitietphieumuon.Where(x => x.Maphieu == maphieumuon).ToList();
             foreach (Chitietphieumuon ct in ViewBag.DSCTPhieuMuon)
             {
-                ct.MasachNavigation = db.Sach.Find(ct.Masach);
                 ct.MasachNavigation = db.Sach.Include(s => s.MaloaiNavigation)
                                              .Include(s => s.ManxbNavigation)
-                                             .FirstOrDefault(s => s.Masach == ct.MasachNavigation.Masach);
-                //ct.MasachNavigation.MaloaiNavigation = db.Theloai.Find(ct.MasachNavigation.Maloai);
-                //ct.MasachNavigation.ManxbNavigation = db.Nhaxuatban.Find(ct.MasachNavigation.Manxb);
-
-                //Xét trường hợp cuốn sách trễ hạn
-                if (ct.Matinhtrang == 2 && p.Hantra.HasValue)
-                {
-                    if (DateTime.Compare(DateTime.Now.Date, p.Hantra.Value.Date) > 0) //Ngày thực tế > hạn trả => Trễ hạn
-                    {
-                        ct.Matinhtrang = 4;
-                        try
-                        {
-                            db.Chitietphieumuon.Update(ct);
-                            db.SaveChanges();
-                        }
-                        catch (Exception ex) { }
-                    }
-                }
-                else if (ct.Matinhtrang == 4 && p.Hantra.HasValue)
-                {
-                    if (DateTime.Compare(DateTime.Now.Date, p.Hantra.Value.Date) <= 0) //Ngày thực tế <= hạn trả => Đang mượn
-                    {
-                        ct.Matinhtrang = 2;
-                        try
-                        {
-                            db.Chitietphieumuon.Update(ct);
-                            db.SaveChanges();
-                        }
-                        catch (Exception ex) { }
-                    }
-                }
+                                             .FirstOrDefault(s => s.Masach == ct.Masach);
                 ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
             }
             return View(p);

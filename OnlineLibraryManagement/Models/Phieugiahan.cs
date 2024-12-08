@@ -18,7 +18,7 @@ namespace OnlineLibraryManagement.Models
         [Display(Name = "Hạn trả mới")]
         public DateTime? Hantramoi { get; set; }
         
-        [Display(Name = "Lần gia hạn")]
+        [Display(Name = "Số lần đã gia hạn")]
         public int? Langiahan { get; set; }
         
         [Display(Name = "Ghi chú của thủ thư")]

@@ -43,12 +43,25 @@ namespace OnlineLibraryManagement.Controllers
                     p.Ngaypheduyet = DateTime.Now.Date;
                     p.Hantramoi = c.Hantra;
                     p.Ghichu = c.Ghichu;
+                    p.Langiahan += 1;
                     p.Matinhtrang = 2;
                     p.Matt = tt.Matt;
 
                     p.MaphieumuonNavigation = db.Phieumuonsach.Find(p.Maphieumuon);
                     p.MaphieumuonNavigation.Hantra = c.Hantra;
-                   
+
+
+                    if (p.MaphieumuonNavigation.Matinhtrang == 5)
+                    {
+                        p.MaphieumuonNavigation.Matinhtrang = 2;
+                        List<Chitietphieumuon> dsCTPM = db.Chitietphieumuon.Where(x => x.Maphieu == p.MaphieumuonNavigation.Maphieu).ToList();
+                        foreach (Chitietphieumuon ct in dsCTPM)
+                        {
+                            if (ct.Matinhtrang == 4)
+                                ct.Matinhtrang = 2;
+                        }
+                    }
+                    
                     db.SaveChanges();
                     return Json(true);
                 }
@@ -71,6 +84,7 @@ namespace OnlineLibraryManagement.Controllers
                 {
                     p.Matinhtrang = 4;
                     p.Ngaypheduyet = DateTime.Now.Date;
+                    p.Langiahan += 1;
                     p.Ghichu = c.Ghichu;
                     p.Matt = tt.Matt;
 

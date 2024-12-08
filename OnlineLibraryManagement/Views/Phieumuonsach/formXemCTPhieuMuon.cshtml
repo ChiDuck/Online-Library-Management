@@ -216,7 +216,7 @@
         <input type="button" value="Từ chối" onclick="tuchoiMuonSach('@Model.Maphieu')" class="btn btn-danger" />
     </div>
 }
-else if (Model.Matinhtrang == 2)
+else if (Model.Matinhtrang == 2 || Model.Matinhtrang == 5)
 {
     <div>
         <a asp-controller="Phieutrasach" asp-action="formLapPhieuTra" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-success">Lập phiếu trả</a>
