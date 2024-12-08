@@ -48,7 +48,8 @@ INSERT INTO TINHTRANGPHIEU VALUES
 (N'Chờ phê duyệt'),		--1
 (N'Đã chấp nhận'),		--2
 (N'Đã kết thúc'),		--3
-(N'Từ chối')			--4
+(N'Từ chối'),			--4
+(N'Trễ hạn')			--5
 
 INSERT INTO DOCGIA VALUES
 (N'Nguyễn Đức', '2003-2-16', 2),

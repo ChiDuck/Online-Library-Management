@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OnlineLibraryManagement.Models;
+using OnlineLibraryManagement.MyModels;
 using System.Collections.Generic;
 
 namespace OnlineLibraryManagement.Controllers
@@ -111,6 +112,7 @@ namespace OnlineLibraryManagement.Controllers
             }
             return RedirectToAction("hienThiDSSach");
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult locSach(int theloai, int nhaxuatban)
         {
@@ -420,6 +422,49 @@ namespace OnlineLibraryManagement.Controllers
             return View(p);
         }
 
+        public IActionResult dsPhieugiahan()
+        {
+            int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
+            List<Phieugiahan> ds = db.Phieugiahan
+                .OrderByDescending(t => t.Ngaylapphieu)
+                .Where(t => t.MaphieumuonNavigation.Madocgia == mdg)
+                .Include(t => t.MatinhtrangNavigation)
+                .Include(t => t.MattNavigation)
+                .ToList();
+            return View(ds);
+        }
+
+        public IActionResult themPhieugiahan([FromBody]CGhichu x)
+        {
+            int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
+
+            int lanGH = 0;
+            if (db.Phieumuonsach.Where(k => k.Maphieu == x.Maphieu && k.Madocgia == mdg).FirstOrDefault() != null)
+            {
+                lanGH = db.Phieugiahan.Where(t => t.Maphieumuon == x.Maphieu).Count();
+                if (lanGH >= 2) 
+                {
+                    return Json("toida");
+                }  
+            }
+            else
+            {
+                return Json("khongco");
+            }
+
+            Phieugiahan p = new Phieugiahan();
+            p.Ngaylapphieu = DateTime.Now.Date;
+            p.Langiahan = lanGH++;
+            p.Matinhtrang = 1;
+            p.Maphieumuon = x.Maphieu;
+            p.Lydo = x.Ghichu;
+
+            db.Phieugiahan.Add(p);
+            db.SaveChanges();
+
+            return Json(true);
+        }
+
         #endregion
 
         #region Thủ thư
@@ -448,5 +493,7 @@ namespace OnlineLibraryManagement.Controllers
            return View(d);
         }
         #endregion
+
+       
     }
 }

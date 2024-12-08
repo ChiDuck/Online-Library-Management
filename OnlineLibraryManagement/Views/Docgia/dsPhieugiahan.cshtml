@@ -1,0 +1,117 @@
+﻿@model IEnumerable<OnlineLibraryManagement.Models.Phieugiahan>
+
+@{
+    ViewData["Title"] = "Danh sách phiếu gia hạn";
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+}
+
+<h1>Danh sách phiếu gia hạn của bạn</h1>
+
+<p>
+    <a asp-action="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">Tạo yêu cầu gia hạn</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaylapphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaypheduyet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hantramoi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Langiahan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lydo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ghichu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matinhtrang)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maphieumuon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matt)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maphieu)
+            </td>
+            <td>
+                @item.Ngaylapphieu.Value.ToShortDateString()
+            </td>
+            <td>
+                @if (item.Ngaypheduyet != null) @item.Ngaypheduyet.Value.ToShortDateString()
+            </td>
+            <td>
+                @if (item.Hantramoi != null) @item.Hantramoi.Value.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Langiahan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lydo)
+            </td>
+            <td>
+                @if (item.Ghichu != null) @item.Ghichu
+            </td>
+            <td>
+                @if (item.MatinhtrangNavigation != null)
+                {
+                    <strong>@item.MatinhtrangNavigation.Tentinhtrang</strong>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maphieumuon)
+            </td>
+            <td>
+                    @if (item.MattNavigation != null) @item.MattNavigation.Tentt
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="container">
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yêu cầu gia hạn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Mã phiếu mượn muốn gia hạn</label>
+                        <input type="number" class="form-control" id="maphieumuon" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class ="form-label">Lý do (Không bắt buộc)</label>
+                        <input class="form-control" id="lydo"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" value="Tạo phiếu" id="taoPhieu" onclick="taoPhieu()" class="btn btn-primary"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/script.js"></script>
+
+
