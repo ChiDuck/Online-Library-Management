@@ -11,12 +11,6 @@ namespace OnlineLibraryManagement.Controllers
     public class PhieumuonsachController : Controller
     {
         QuanLyThuVienContext db = new QuanLyThuVienContext();
-        #region Độc giả
-        public IActionResult Index()
-        {
-            return View();
-        }
-        #endregion
         #region Thủ thư
         public IActionResult DSPhieuMuon_Thuthu()
         {
@@ -61,6 +55,19 @@ namespace OnlineLibraryManagement.Controllers
                         catch (Exception ex) { }
                     }
                 }
+                else if (ct.Matinhtrang == 4 && p.Hantra.HasValue)
+                {
+                    if (DateTime.Compare(DateTime.Now.Date, p.Hantra.Value.Date) <= 0) //Ngày thực tế <= hạn trả => Đang mượn
+                    {
+                        ct.Matinhtrang = 2;
+                        try
+                        {
+                            db.Chitietphieumuon.Update(ct);
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
                 ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
             }
             return View(p);
@@ -69,13 +76,13 @@ namespace OnlineLibraryManagement.Controllers
         {  
             Taikhoan tk = MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
             Thuthu tt = db.Thuthu.Where(t => t.Matk == tk.Matk).FirstOrDefault();
-            Phieumuonsach p = db.Phieumuonsach.Find(c.Maphieumuon);
+            Phieumuonsach p = db.Phieumuonsach.Find(c.Maphieu);
             if (p != null && p.Matinhtrang == 1) //Nếu tìm thấy phiếu mượn và có tình trạng đang chờ phản hồi
             {
                 try
                 {
                     //update bảng CTPM
-                    List<Chitietphieumuon> dsCTPM = db.Chitietphieumuon.Where(ct => ct.Maphieu == c.Maphieumuon).ToList();
+                    List<Chitietphieumuon> dsCTPM = db.Chitietphieumuon.Where(ct => ct.Maphieu == c.Maphieu).ToList();
                     foreach (Chitietphieumuon ct in dsCTPM)
                     {
                         ct.Matinhtrang = 2;
@@ -94,17 +101,19 @@ namespace OnlineLibraryManagement.Controllers
                     return Json(true);
                 }
                 catch (Exception e)
-                { }
+                {
+                    return Json(false);
+                }
             }
 
-            return View("formXemCTPhieuMuon");
+            return Json(false);
 
         }
         public IActionResult tuChoiMuonSach([FromBody] CGhichu c)
         {
             Taikhoan tk = MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
             Thuthu tt = db.Thuthu.Where(t => t.Matk == tk.Matk).FirstOrDefault();
-            Phieumuonsach p = db.Phieumuonsach.Find(c.Maphieumuon);
+            Phieumuonsach p = db.Phieumuonsach.Find(c.Maphieu);
             if (p != null && p.Matinhtrang == 1)
             {
                 try
@@ -117,7 +126,7 @@ namespace OnlineLibraryManagement.Controllers
                     db.Phieumuonsach.Update(p);
 
                     //update bảng sách
-                    List<Chitietphieumuon> dsCTPM = db.Chitietphieumuon.Where(ct => ct.Maphieu == c.Maphieumuon).ToList();
+                    List<Chitietphieumuon> dsCTPM = db.Chitietphieumuon.Where(ct => ct.Maphieu == c.Maphieu).ToList();
                     foreach (Chitietphieumuon ct in dsCTPM)
                     {
                         ct.Matinhtrang = null;

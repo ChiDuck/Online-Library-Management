@@ -19,8 +19,7 @@
             @Html.DisplayNameFor(model => model.Maphieu)
         </dt>
         <dd class="col-sm-10">
-@*             <input class="border-0" readonly id="Maphieu" value="@Model.Maphieu"/> *@
-            <p id="Maphieu">@Model.Maphieu</p>
+            @Html.DisplayFor(model => model.Maphieu)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ngaylapphieu)
@@ -41,7 +40,8 @@
             }
             else if (Model.Matinhtrang == 1)
             {
-                @DateTime.Now.ToShortDateString()
+                string x = "Chờ phê duyệt (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)";
+                @x
             }
         </dd>
         <dt class="col-sm-2">
@@ -79,6 +79,11 @@
             @if (Model.MattNavigation != null)
             {
                 @Model.MattNavigation.Tentt
+            }
+            else if (Model.Matinhtrang == 1)
+            {
+                string x = "Chưa có (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)";
+                @x
             }
         </dd>
         <dt class="col-sm-2">
@@ -207,10 +212,8 @@
 @if (Model.Matinhtrang == 1)
 {
     <div>
-      @*   <a asp-controller="Phieumuonsach" asp-action="xacNhanMuonSach" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-success">Xác nhận</a> |
-        <a asp-controller="Phieumuonsach" asp-action="tuChoiMuonSach" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-danger">Từ chối</a> *@
-        <input type="button" value="Xác nhận" onclick="xacnhanMuonSach()" class="btn btn-success" /> |
-        <input type="button" value="Từ chối" onclick="tuchoiMuonSach()" class="btn btn-danger" />
+        <input type="button" value="Xác nhận" onclick="xacnhanMuonSach('@Model.Maphieu')" class="btn btn-success" /> |
+        <input type="button" value="Từ chối" onclick="tuchoiMuonSach('@Model.Maphieu')" class="btn btn-danger" />
     </div>
 }
 else if (Model.Matinhtrang == 2)
@@ -230,70 +233,73 @@ else if (Model.Matinhtrang == 3)
 }
 
 <script>
-    function xacnhanMuonSach() {
+    function xacnhanMuonSach(id) {
         let hantra = document.getElementById("Hantra").value;
         if (!hantra) {
             alert("Bạn chưa gia hạn ngày trả sách");
             return;
         }
-        let dateNow = new Date();
-        dateNow.setHours(0, 0, 0, 0);
-        let inputDate = new Date(hantra);
-        inputDate.setHours(0, 0, 0, 0);
-        if (inputDate > dateNow)
+        var xacnhan = window.confirm("Bạn có chắc chắn muốn xác nhận yêu cầu này?");
+        if (xacnhan)
         {
-            let maphieu = parseInt(document.getElementById("Maphieu").innerHTML);
+            let dateNow = new Date();
+            dateNow.setHours(0, 0, 0, 0);
+            let inputDate = new Date(hantra);
+            inputDate.setHours(0, 0, 0, 0);
+            if (inputDate > dateNow) {
+                let ghichu = document.getElementById("Ghichu").value;
+                let data = {
+                    Maphieu: id,
+                    Hantra: hantra,
+                    Ghichu: ghichu
+                };
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    if (JSON.parse(xhttp.responseText) == true) {
+                        alert("Xác nhận yêu cầu mượn sách thành công");
+                        location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+                    }
+                    else {
+                        alert("Xác nhận yêu cầu mượn sách thất bại");
+                    }
+                }
+                var url = "/Phieumuonsach/xacNhanMuonSach";
+                xhttp.open("POST", url);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(JSON.stringify(data));
+            }
+            else {
+                alert("Hạn trả không hợp lệ");
+            }
+        }
+    }
+
+    function tuchoiMuonSach(id)
+    {
+        var xacnhan = window.confirm("Bạn có chắc chắn muốn từ chối yêu cầu này?");
+        if (xacnhan)
+        {
             let ghichu = document.getElementById("Ghichu").value;
             let data = {
-                Maphieumuon: maphieu,
-                Hantra: hantra,
+                Maphieu: id,
                 Ghichu: ghichu
             };
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
                 if (JSON.parse(xhttp.responseText) == true) {
-                    alert("Xác nhận yêu cầu mượn sách thành công");
+                    alert("Từ chối yêu cầu mượn sách thành công");
                     location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
                 }
                 else {
-                    alert("Xác nhận yêu cầu mượn sách thất bại");
+                    alert("Từ chối yêu cầu mượn sách thất bại");
                 }
             }
-            var url = "/Phieumuonsach/xacNhanMuonSach";
+            var url = "/Phieumuonsach/tuChoiMuonSach";
             xhttp.open("POST", url);
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.send(JSON.stringify(data));
         }
-        else
-        {
-            alert("Hạn trả không hợp lệ");
-        }
-
         
-    }
-
-    function tuchoiMuonSach()
-    {
-        let maphieu = parseInt(document.getElementById("Maphieu").innerHTML);
-        let ghichu = document.getElementById("Ghichu").value;
-        let data = {
-            Maphieumuon: maphieu,
-            Ghichu: ghichu
-        };
-        const xhttp = new XMLHttpRequest();
-        xhttp.onload = function () {
-            if (JSON.parse(xhttp.responseText) == true) {
-                alert("Từ chối yêu cầu mượn sách thành công");
-                location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
-            }
-            else {
-                alert("Từ chối yêu cầu mượn sách thất bại");
-            }
-        }
-        var url = "/Phieumuonsach/tuChoiMuonSach";
-        xhttp.open("POST", url);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send(JSON.stringify(data));
     }
 </script>
 

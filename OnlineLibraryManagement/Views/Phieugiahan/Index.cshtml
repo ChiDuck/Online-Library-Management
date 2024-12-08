@@ -1,0 +1,85 @@
+﻿@model IEnumerable<OnlineLibraryManagement.Models.Phieugiahan>
+
+@{
+    ViewData["Title"] = "Phiếu gia hạn";
+    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+}
+
+<h1>Danh sách phiếu gia hạn</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaylapphieu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngaypheduyet)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hantramoi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matinhtrang)
+            </th>
+            <th>
+                Độc giả
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ghichu)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maphieu)
+            </td>
+            <td>
+                @item.Ngaylapphieu.Value.ToShortDateString()
+            </td>
+            <td>
+                    @if (item.Ngaypheduyet != null)
+                    {
+                        @item.Ngaypheduyet.Value.ToShortDateString()
+                    }
+                    else
+                    {
+                        <p>Chờ phê duyệt</p>
+                    }
+            </td>
+            <td>
+                    @if (item.Hantramoi != null)
+                    {
+                        @item.Hantramoi.Value.ToShortDateString()
+                    }
+            </td>
+            <td>
+                    <strong>@item.MatinhtrangNavigation.Tentinhtrang</strong>
+            </td>
+            <td>
+                    @item.MaphieumuonNavigation.MadocgiaNavigation.Tendocgia
+            </td>
+            <td>
+                    @if (item.MattNavigation != null)
+                    {
+                        @item.MattNavigation.Tentt
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ghichu)
+             </td>
+            <td>
+                <a asp-action="formXemCTPhieuGiahan" class="btn btn-primary" asp-route-maphieugiahan="@item.Maphieu">Xem chi tiết</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

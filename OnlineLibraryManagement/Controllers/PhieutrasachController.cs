@@ -11,7 +11,7 @@ namespace OnlineLibraryManagement.Controllers
         QuanLyThuVienContext db = new QuanLyThuVienContext();
         public IActionResult Index()
         {
-            List<Phieutrasach> ds = db.Phieutrasach.ToList();
+            List<Phieutrasach> ds = db.Phieutrasach.OrderByDescending(s => s.Ngaylapphieu).ToList();
             foreach (Phieutrasach item in ds)
             {
                 item.MaphieumuonNavigation = db.Phieumuonsach.Find(item.Maphieumuon);

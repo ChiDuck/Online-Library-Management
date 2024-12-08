@@ -6,7 +6,7 @@ namespace OnlineLibraryManagement.Models
     {
         [Display(Name = "Mã phiếu")]
         public int Maphieu { get; set; }
-        [Display(Name = "Ngày lập phiếu")]
+        [Display(Name = "Ngày trả")]
         public DateTime? Ngaylapphieu { get; set; }
         [Display(Name = "Số sách trả")]
         public int? Sosachtra { get; set; }

@@ -33,6 +33,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Madocgia)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ghichu)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -53,6 +56,10 @@
                     @if (item.Ngaypheduyet != null)
                     {
                         @item.Ngaypheduyet.Value.ToShortDateString()
+                    }
+                    else
+                    {
+                        <p>Chờ phê duyệt</p>
                     }
                 </td>
                 <td>
@@ -80,6 +87,16 @@
                     @if (item.MadocgiaNavigation!= null)
                     {
                         @item.MadocgiaNavigation.Tendocgia
+                    }
+                </td>
+                <td>
+                    @if (string.IsNullOrEmpty(item.Ghichu))
+                    {
+                       <p>Không có</p>
+                    }
+                    else
+                    {
+                        @item.Ghichu
                     }
                 </td>
                 <td>
