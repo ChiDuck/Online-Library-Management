@@ -25,6 +25,9 @@
                 @Html.DisplayNameFor(model => model.Matinhtrang)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Maphieumuon)
+            </th>
+            <th>
                 Độc giả
             </th>
             <th>
@@ -63,6 +66,9 @@
             </td>
             <td>
                     <strong>@item.MatinhtrangNavigation.Tentinhtrang</strong>
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Maphieumuon)
             </td>
             <td>
                     @item.MaphieumuonNavigation.MadocgiaNavigation.Tendocgia

@@ -78,10 +78,9 @@ namespace OnlineLibraryManagement.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = "Lỗi!!!";
+                TempData["Message"] = "Lập phiếu trả sách thất bại";
+                return RedirectToAction("Index");
             }
-            TempData["Message"] = "Lập phiếu trả sách thất bại";
-            return RedirectToAction("Index");
         }
         public IActionResult formXemCTPhieuTra(int maphieutra)
         {

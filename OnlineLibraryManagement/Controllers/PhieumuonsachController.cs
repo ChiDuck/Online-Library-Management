@@ -138,6 +138,13 @@ namespace OnlineLibraryManagement.Controllers
             }
             return Json(false);
         }
+        public IActionResult kiemtraPhieuGiaHan(int id)
+        {
+            int dem = db.Phieugiahan.Where(x => x.Maphieumuon == id && x.Matinhtrang == 1).Count();
+            if (dem > 0)
+                return Json(true);
+            return Json(false);
+        }
         #endregion
 
     }

@@ -159,7 +159,7 @@
                         if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
                         {
                             string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
-                                    <img height="100" width="50" src="@Url.Content(tenFile)" />
+                                        <img height="100" width="50" src="@Url.Content(tenFile)" />
                         }
                     }
                 </td>
@@ -167,7 +167,7 @@
                     @{
                         if (item.MasachNavigation.MaloaiNavigation != null)
                         {
-                                    <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
+                                        <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
                         }
                     }
                 </td>
@@ -175,7 +175,7 @@
                     @{
                         if (item.MasachNavigation.ManxbNavigation != null)
                         {
-                                    <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
+                                        <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
                         }
                     }
                 </td>
@@ -188,11 +188,11 @@
                             string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
                             if (i == 0)
                             {
-                                        <text>@tenTacgia</text>
+                                            <text>@tenTacgia</text>
                             }
                             else if (i >= 1 && i < dsPhienBanSach.Count)
                             {
-                                        <text>, @tenTacgia</text>
+                                            <text>, @tenTacgia</text>
                             }
                         }
                     }
@@ -201,7 +201,7 @@
                     @{
                         if (item.MatinhtrangNavigation != null)
                         {
-                                    <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
+                                        <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
                         }
                     }
                 </td>
@@ -218,9 +218,7 @@
 }
 else if (Model.Matinhtrang == 2 || Model.Matinhtrang == 5)
 {
-    <div>
-        <a asp-controller="Phieutrasach" asp-action="formLapPhieuTra" asp-route-maphieumuon="@Model.Maphieu" class="btn btn-success">Lập phiếu trả</a>
-    </div>
+    <input type="button" value="Lập phiếu trả" onclick="kiemtraGiaHan('@Model.Maphieu')" class="btn btn-success" />
 }
 else if (Model.Matinhtrang == 3)
 {
@@ -263,7 +261,7 @@ else if (Model.Matinhtrang == 3)
                         alert("Xác nhận yêu cầu mượn sách thất bại");
                     }
                 }
-                var url = "/Phieumuonsach/xacNhanMuonSach";
+                const url = "/Phieumuonsach/xacNhanMuonSach";
                 xhttp.open("POST", url);
                 xhttp.setRequestHeader("Content-Type", "application/json");
                 xhttp.send(JSON.stringify(data));
@@ -294,12 +292,27 @@ else if (Model.Matinhtrang == 3)
                     alert("Từ chối yêu cầu mượn sách thất bại");
                 }
             }
-            var url = "/Phieumuonsach/tuChoiMuonSach";
+            const url = "/Phieumuonsach/tuChoiMuonSach";
             xhttp.open("POST", url);
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.send(JSON.stringify(data));
         }
         
+    }
+
+    function kiemtraGiaHan(id) { 
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            if (JSON.parse(xhttp.responseText) == false) {
+                location.href = "/Phieutrasach/formLapPhieuTra?maphieumuon=" + id;
+            }
+            else {
+                alert("Có yêu cầu gia hạn cho phiếu mượn này chưa được phê duyệt");
+            }
+        }
+        const url = "/Phieumuonsach/kiemtraPhieuGiaHan/" + id;
+        xhttp.open("GET", url);
+        xhttp.send();
     }
 </script>
 
