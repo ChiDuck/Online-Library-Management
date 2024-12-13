@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Sach\" />
-    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\img\NewFolder\" />
   </ItemGroup>
 
 </Project>

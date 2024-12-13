@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<OnlineLibraryManagement.Models.Sach>
 
 @{
-    ViewData["Title"] = "hienThiDSSach";
+    ViewData["Title"] = "Tủ sách";
     Layout = "~/Views/Shared/_ReaderLayout.cshtml";
 }
 @{
@@ -9,8 +9,8 @@
     SelectList selectListTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
     SelectList selectListNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
 }
-<h1>Các cuốn sách đang có trong thư viện</h1>
-<div class="row">
+<h2 class="text-center mb-3">- SÁCH -</h2>
+<div class="row mb-3">
     <div class="col-5">
         <form asp-action="timSach" method="post">
                 <label class="control-label">Tìm sách</label>
@@ -36,29 +36,24 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 </div>
 
-<table class="table">
-    <thead>
+<table class="table border border-dark table-hover">
+    <thead class="align-middle table-bordered" style="background-color:rgb(98, 127, 217)">
         <tr>
-            <th>
+			<th></th>
+			<th>
                 @Html.DisplayNameFor(model => model.Tensach)
             </th>
-            <th>
+			<th>
+				@Html.DisplayNameFor(model => model.Maloai)
+			</th>
+			<th>
+				Tác giả
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Manxb)
+			</th>
+			<th>
                 @Html.DisplayNameFor(model => model.Soluong)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Namxuatban)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Anhbia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Maloai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Manxb)
-            </th>
-            <th>
-               Tác giả
             </th>
             <th></th>
         </tr>
@@ -66,25 +61,19 @@
     <tbody>
         @foreach (var item in Model) {
             string idSach = "chon" + item.Masach;
-
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Tensach)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Soluong)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Namxuatban)
-                </td>
-                <td>
-                    @{
-                        if (!string.IsNullOrEmpty(item.Anhbia))
-                        {
-                            string tenFile = "~/img/" + item.Anhbia;
-                                    <img height="100" width="50" src="@Url.Content(tenFile)" />
-                        }
-                    }
+				<td>
+					@{
+						if (!string.IsNullOrEmpty(item.Anhbia))
+						{
+							string tenFile = "~/img/" + item.Anhbia;
+							<img height="150" width="100" src="@Url.Content(tenFile)" class="rounded"/>
+						}
+					}
+				</td>
+				<td>
+                    <b>@Html.DisplayFor(modelItem => item.Tensach)</b><br /><br />
+                    Năm XB: @Html.DisplayFor(modelItem => item.Namxuatban)
                 </td>
                 <td>
                     @{
@@ -95,7 +84,25 @@
                         }
                     }
                 </td>
-                <td>
+				<td>
+					@{
+						List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.Masach).ToList();
+						for (int i = 0; i < dsPhienBanSach.Count; i++)
+						{
+							Phienbansach p = dsPhienBanSach[i];
+							string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+							if (i == 0)
+							{
+								<text>@tenTacgia</text>
+							}
+							else if (i >= 1 && i < dsPhienBanSach.Count)
+							{
+								<text>, @tenTacgia</text>
+							}
+						}
+					}
+				</td>
+				<td>
                     @{
                         Nhaxuatban nxb = db.Nhaxuatban.Find(item.Manxb);
                         if (nxb != null)
@@ -105,22 +112,7 @@
                     }
                 </td>
                 <td>
-                    @{
-                        List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.Masach).ToList();
-                        for (int i = 0; i < dsPhienBanSach.Count; i++)
-                        {
-                            Phienbansach p = dsPhienBanSach[i];
-                            string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
-                            if (i == 0)
-                            {
-                                        <text>@tenTacgia</text>
-                            }
-                            else if (i >= 1 && i < dsPhienBanSach.Count)
-                            {
-                                        <text>, @tenTacgia</text>
-                            }
-                        }
-                    }
+                    @Html.DisplayFor(modelItem => item.Soluong)
                 </td>
                 <td>
                     @{
@@ -131,16 +123,16 @@
                                 List<Sach> dsSach = ViewBag.dsSach;
                                 if (dsSach.Find(x => x.Masach == item.Masach) != null)
                                 {
-                                            <input type="button" value="Đã chọn" class="btn btn-secondary" disabled/>
+                                    <input type="button" value="Đã chọn" class="btn btn-secondary" disabled/>
                                 }
                                 else
                                 {
-                                            <input type="button" value="Chọn" id="@idSach" class="btn btn-primary" onclick="chonSach('@item.Masach')" />
+                                     <input type="button" value="Chọn" id="@idSach" class="btn btn-primary" onclick="chonSach('@item.Masach')" />
                                 }
                             } 
                             else
                             {
-                                        <input type="button" value="Chọn" id="@idSach" class="btn btn-primary" onclick="chonSach('@item.Masach')" />
+                                <input type="button" value="Chọn" id="@idSach" class="btn btn-primary" onclick="chonSach('@item.Masach')" />
                             }
                         }
                     }
@@ -168,12 +160,7 @@
         const xhttp = new XMLHttpRequest();
 
         xhttp.onload = function() {
-            if (chon.value == "Chọn") {
-                chon.value = "Đã chọn";
-                chon.disabled = true;
-                chon.classList = "btn btn-secondary"
-            }
-            window.location.reload();
+            location.reload();
         }
 
         const url = "/Docgia/chonSach/" + id;

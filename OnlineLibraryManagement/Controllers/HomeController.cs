@@ -20,7 +20,9 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Index()
         {
-            return View();
+			List<Sach> ds = db.Sach.Where(t => t.Namxuatban == DateTime.Now.Year).ToList();
+			ViewBag.dsSachMoi = ds;
+			return View();
         }
 
         public IActionResult Privacy()
@@ -38,17 +40,18 @@ namespace OnlineLibraryManagement.Controllers
 
         public async Task<IActionResult> loginMethodAsync(Taikhoan a)
         {
-            Taikhoan tk = db.Taikhoan.Where(t => t.Tentk == a.Tentk).FirstOrDefault();
+            Taikhoan tk = db.Taikhoan.FirstOrDefault(t => t.Tentk == a.Tentk);
             if (tk != null)
             {
                 if (tk.Matkhau == a.Matkhau)
                 {
                     MySessions.Set(HttpContext.Session, "taikhoan", tk);
+                    Thuthu tt = db.Thuthu.FirstOrDefault(t => t.Matk == tk.Matk);
                     if (tk.Loaitk == false)
                     {
                         var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.Name, "Admin"),
+                            new Claim(ClaimTypes.Name, tt.Tentt != null ? tt.Tentt : "Admin"),
                             new Claim(ClaimTypes.Role, "Thuthu")
                         };
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -59,18 +62,19 @@ namespace OnlineLibraryManagement.Controllers
 
                     else
                     {
+                        Docgia dg = db.Docgia.FirstOrDefault(t => t.Matk == tk.Matk);
+
                         var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.Name, "User"),
+                            new Claim(ClaimTypes.Name, dg.Tendocgia != null ? dg.Tendocgia : "User"),
                             new Claim(ClaimTypes.Role, "Docgia")
                         };
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
-                        Docgia dg = db.Docgia.Where(t => t.Matk == tk.Matk).FirstOrDefault();
                         dg.MatkNavigation = null;
                         MySessions.Set(HttpContext.Session, "madocgia", dg.Madocgia);
-                        return View("~/Views/Docgia/Index.cshtml");
+                        return RedirectToAction("Index","Docgia"); 
                     }
                 }
                 ModelState.AddModelError("Matkhau", "Sai tên hoặc mật khẩu.");
@@ -118,6 +122,16 @@ namespace OnlineLibraryManagement.Controllers
 
         public async Task<IActionResult> LogoutAsync()
         {
+            List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
+            if (dsSach != null)
+            {
+                foreach (Sach sach in dsSach)
+                {
+                    sach.Soluong++;
+                    db.Update(sach);
+                }
+                db.SaveChanges();
+            }
             MySessions.Set(HttpContext.Session, "dangLapPhieu", false);
             HttpContext.Session.Remove("lapPMS");
             HttpContext.Session.Remove("dsSach");

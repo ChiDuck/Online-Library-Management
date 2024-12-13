@@ -172,7 +172,8 @@ INSERT INTO PHIEUTRASACH VALUES		-- Ngày lập, số lượng trả, ghi chú, 
 INSERT INTO PHIEUGIAHAN VALUES		-- Ngày lập, ngày duyệt, hạn mới, lần ghan, ghi chú, lý do,mã tình trạng, mã phiếu mượn, mã tthu
 ('2024-11-14','2024-11-14','2024-11-17', 1, N'Không trả phạt giờ',N'Xin muộn 2 ngày', 2, 1, 1)
 
-select * from PHIEUMUONSACH
+select * from DOCGIA
+select * from TAIKHOAN
 select CHITIETPHIEUMUON.* from CHITIETPHIEUMUON join PHIEUMUONSACH on CHITIETPHIEUMUON.MAPHIEU = PHIEUMUONSACH.MAPHIEU
 where PHIEUMUONSACH.MAPHIEU = 3
 

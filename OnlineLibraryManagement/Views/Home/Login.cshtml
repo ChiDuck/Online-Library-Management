@@ -1,7 +1,7 @@
 ﻿@model OnlineLibraryManagement.Models.Taikhoan
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Đăng nhập";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,11 +11,6 @@
     <div class="col-md-4">
         <form asp-action="loginMethod" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           @*  <div class="form-group">
-                <label asp-for="Matk" class="control-label"></label>
-                <input asp-for="Matk" class="form-control" />
-                <span asp-validation-for="Matk" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="Tentk" class="control-label"></label>
                 <input asp-for="Tentk" class="form-control" />
@@ -26,16 +21,6 @@
                 <input asp-for="Matkhau" class="form-control" />
                 <span asp-validation-for="Matkhau" class="text-danger"></span>
             </div>
-@*             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>@*  
-            <div class="form-group">
-                <label asp-for="Loaitk" class="control-label"></label>
-                <input asp-for="Loaitk" class="form-control" />
-                <span asp-validation-for="Loaitk" class="text-danger"></span>
-            </div> *@
             <br />
             <div class="form-group">
                 <input type="submit" value="Đăng nhập" class="btn btn-primary" />

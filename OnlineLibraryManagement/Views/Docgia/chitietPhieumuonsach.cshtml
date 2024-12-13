@@ -73,20 +73,16 @@
 <br />
 <h3>Chi tiết danh sách</h3>
 <br />
-<table class="table">
-    <thead>
+<table class="table border border-dark table-hover">
+    <thead class="align-middle table-bordered" style="background-color:rgb(98, 127, 217)">
         <tr>
             <th>
-                Ảnh bìa
             </th>
             <th>
-                Tên sách
+                Tiêu đề
             </th>
             <th>
                 Thể loại
-            </th>
-            <th>
-                Năm xuất bản
             </th>
             <th>
                 Tác giả
@@ -108,12 +104,13 @@
                         if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
                         {
                             string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
-                            <img height="100" width="50" src="@Url.Content(tenFile)" />
+                            <img height="150" width="100" src="@Url.Content(tenFile)" class="rounded" />
                         }
                     }
                 </td>
                 <td>
-                    @item.MasachNavigation.Tensach
+                    <b>@item.MasachNavigation.Tensach</b><br /><br />
+                    Năm XB: @item.MasachNavigation.Namxuatban
                 </td>
                 <td>
                     @{
@@ -122,9 +119,6 @@
                             <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
                         }
                     }
-                </td>
-                <td>
-                    @item.MasachNavigation.Namxuatban
                 </td>
                 <td>
                     @{
@@ -144,15 +138,15 @@
                         }
                     }
                 </td>
-				<td>
-					@{
-						if (item.MasachNavigation.ManxbNavigation != null)
-						{
-							<p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
-						}
-					}
-				</td>
-				<td>
+                <td>
+                    @{
+                        if (item.MasachNavigation.ManxbNavigation != null)
+                        {
+                            <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
+                        }
+                    }
+                </td>
+                <td>
                     @{
                         if (item.MatinhtrangNavigation != null)
                         {

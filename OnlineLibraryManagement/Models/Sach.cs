@@ -13,7 +13,7 @@ namespace OnlineLibraryManagement.Models
         [Display(Name = "Mã sách")]
         public int Masach { get; set; }
 
-        [Display(Name = "Tên sách")]
+        [Display(Name = "Tiêu đề")]
         [Required(ErrorMessage = "Bạn chưa nhập tên sách")]
         public string? Tensach { get; set; }
 

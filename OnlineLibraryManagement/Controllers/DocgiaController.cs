@@ -12,12 +12,14 @@ namespace OnlineLibraryManagement.Controllers
     public class DocgiaController : Controller
     {
         QuanLyThuVienContext db = new QuanLyThuVienContext();
+
         #region Độc giả
         [Authorize(Roles = "Docgia")]
         public IActionResult Index()
         {
             return View();
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult hienThiDSSach()
         {
@@ -58,9 +60,11 @@ namespace OnlineLibraryManagement.Controllers
             }
             return View(ds);
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult timSach(string giatricantim)
         {
+            if (string.IsNullOrEmpty(giatricantim))
             HttpContext.Session.Remove("timkiem");
             List<Sach> dsGoc = db.Sach.ToList();
             List<Sach> dsTimKiem = null;
@@ -165,6 +169,7 @@ namespace OnlineLibraryManagement.Controllers
         {
             return MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
         }
+
         [Authorize(Roles = "Docgia")]
         public bool checkFlag(string s)
         {
@@ -175,6 +180,7 @@ namespace OnlineLibraryManagement.Controllers
                 return MySessions.Get<bool>(HttpContext.Session, s);
             }
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult Taikhoan()
         {
@@ -182,6 +188,7 @@ namespace OnlineLibraryManagement.Controllers
             dg.MatkNavigation = tk();
             return View(dg);
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult frmSuaTaikhoan(int id)
         {
@@ -189,18 +196,21 @@ namespace OnlineLibraryManagement.Controllers
             dg.MatkNavigation = tk();
             return View(dg);
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult suaTaikhoan(Docgia dg)
         {
             Taikhoan x = tk();
-            x.Email = dg.MatkNavigation.Email;
-            MySessions.Set(HttpContext.Session, "taikhoan", x);
-
-            dg.MatkNavigation = tk();
-            if (db.Taikhoan.Any(t => t.Email == dg.MatkNavigation.Email))
+            
+            if (x.Email != dg.MatkNavigation.Email)
             {
-                ModelState.AddModelError("MatkNavigation.Email", "Email đã tồn tại.");
-                return View("frmSuaTaikhoan");
+                if (db.Taikhoan.Any(t => t.Email == dg.MatkNavigation.Email))
+                {
+                    ModelState.AddModelError("MatkNavigation.Email", "Email đã tồn tại.");
+                    return View("frmSuaTaikhoan");
+                }
+                x.Email = dg.MatkNavigation.Email;
+                MySessions.Set(HttpContext.Session, "taikhoan", x);
             }
             if (string.IsNullOrEmpty(dg.MatkNavigation.Email))
             {
@@ -212,15 +222,18 @@ namespace OnlineLibraryManagement.Controllers
                 ModelState.AddModelError("Ngaysinh", "Ngày sinh lớn hơn ngày hiện tại");
                 return View("frmSuaTaikhoan");
             }
+            dg.MatkNavigation = tk();
             db.Docgia.Update(dg);
             db.SaveChanges();
             return RedirectToAction("Taikhoan");
         }
+
         [Authorize(Roles = "Docgia")]
-        public IActionResult frmDoiMatkhau(int id)
+        public IActionResult frmDoiMatkhau()
         {
             return View();
         }
+
         [Authorize(Roles = "Docgia")]
         [ValidateAntiForgeryToken]
         public IActionResult doiMatkhau(Taikhoan tkmoi)
@@ -249,6 +262,7 @@ namespace OnlineLibraryManagement.Controllers
             MySessions.Set(HttpContext.Session, "taikhoan", t);
             return RedirectToAction("Taikhoan");
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult dsPhieumuonsach()
         {
@@ -274,6 +288,7 @@ namespace OnlineLibraryManagement.Controllers
                 .ToList();
             return View(dspms);
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult chonSach(int id)
         {
@@ -281,7 +296,13 @@ namespace OnlineLibraryManagement.Controllers
             Phieumuonsach pms = new Phieumuonsach();
             List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
             if (dsSach == null) dsSach = new List<Sach>();
-            if (dsSach.Count < 7) dsSach.Add(sach);
+            if (dsSach.Count < 7)
+            {
+                sach.Soluong--;     // trừ số lượng sách
+				db.Sach.Update(sach);
+				db.SaveChanges();
+				dsSach.Add(sach);
+            }
             else return RedirectToAction("hienThiDSSach");
 
             if (!checkFlag("dangLapPhieu")) //flag chọn sách lần đầu tiên -> khởi tạo phiếu mượn
@@ -298,7 +319,6 @@ namespace OnlineLibraryManagement.Controllers
                 pms.Soluongsach++;
             }
 
-            sach.Soluong--;     // trừ số lượng sách
             db.Sach.Update(sach);
             db.SaveChanges();
             MySessions.Set(HttpContext.Session, "lapPMS", pms);
@@ -306,6 +326,7 @@ namespace OnlineLibraryManagement.Controllers
 
             return RedirectToAction("hienThiDSSach");
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult xoaSach(int id)
         {
@@ -324,12 +345,25 @@ namespace OnlineLibraryManagement.Controllers
             db.SaveChanges();
             return RedirectToAction("dsPhieumuonsach");
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult huyPhieu()
         {
-            removeSessions();
+			List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
+            if (dsSach != null)
+            {
+                foreach (Sach sach in dsSach)
+                {
+                    sach.Soluong++;
+                    db.Update(sach);
+                }
+                db.SaveChanges();
+            }
+            db.SaveChanges();
+			removeSessions();
             return RedirectToAction("dsPhieumuonsach");
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult taoPhieu()
         {
@@ -354,6 +388,7 @@ namespace OnlineLibraryManagement.Controllers
 
             return RedirectToAction("dsPhieumuonsach");
         }
+
         [Authorize(Roles = "Docgia")]
         public void removeSessions()
         {
@@ -361,6 +396,7 @@ namespace OnlineLibraryManagement.Controllers
             HttpContext.Session.Remove("lapPMS");
             HttpContext.Session.Remove("dsSach");
         }
+
         [Authorize(Roles = "Docgia")]
         public IActionResult chitietPhieumuonsach(int id)
         {

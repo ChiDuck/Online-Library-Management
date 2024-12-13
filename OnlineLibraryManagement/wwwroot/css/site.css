@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.nav-item {
+    transition: transform 0.3s ease;
+}
+
+.nav-item:hover {
+    transform: scale(1.1);
+}

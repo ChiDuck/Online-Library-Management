@@ -48,3 +48,26 @@ function taoPhieu() {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify(data));
 }
+
+// Scroll Button (Sach moi)
+function scrollBack() {
+    document.getElementById("bookContainer").scrollBy({ left: -300, behavior: "smooth" });
+}
+
+function scrollRight() {
+    document.getElementById("bookContainer").scrollBy({ left: 300, behavior: "smooth" });
+}
+
+// Ask before closing application/web page
+//window.addEventListener('beforeunload', function (e) {
+//    this.confirm('Cảnh báo: Phiếu mượn đang lập sẽ không được lưu lại. Bạn chắc chắn muốn thoát?');
+//    if ('@(Session["dangLapPhieu"] != null ? Session["dangLapPhieu"].ToString() : "False")' == 'True') {
+//        var close = this.confirm('Cảnh báo: Phiếu mượn đang lập sẽ không được lưu lại. Bạn chắc chắn muốn thoát?');
+//        if (close == 'True') {
+//            const xhttp = new XMLHttpRequest();
+//            const url = "/Docgia/huyPhieu";
+//            xhttp.open("GET", url);
+//            xhttp.send();
+//        }
+//    }
+//})
