@@ -37,6 +37,12 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult frmXoaTacgia(int id)
         {
             Tacgia tg = db.Tacgia.Find(id);
+            bool flag = true;
+            if (db.Phienbansach.Where(x => x.Matacgia == id).Count() > 0)
+            {
+                flag = false;
+            }
+            ViewBag.flag = flag;
             return View(CTacgia.chuyenDoi(tg));
         }
 
@@ -52,7 +58,7 @@ namespace OnlineLibraryManagement.Controllers
             catch
             {
                 ErrorViewModel error = new ErrorViewModel();
-                error.RequestId = "Không thể xóa tác giả này!";
+                error.RequestId = "Đã xảy ra lỗi khi xóa tác giả này!!!";
                 return View("Error", error);
             }
         }

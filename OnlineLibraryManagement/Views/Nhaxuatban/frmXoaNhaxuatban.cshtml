@@ -5,7 +5,14 @@
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 
-<h1>Xóa nhà xuất bản</h1>
+@if (ViewBag.flag == true)
+{
+    <h1>Xóa nhà xuất bản</h1>
+}
+else
+{
+    <h1>Bạn không thể xóa nhà xuất bản này</h1>
+}
 
 <div>
     <hr />
@@ -35,11 +42,19 @@
             @Html.DisplayFor(model => model.Diachi)
         </dd>
     </dl>
-
-    <h3>Bạn có chắc chắn muốn xóa @Html.DisplayFor(model => model.Tennxb)?</h3>
-    <form asp-action="xoaNhaxuatban" method="post">
-        <input type="hidden" name="id" value="@Model.Manxb" />
-        <input type="submit" value="Xóa" class="btn btn-danger" />
+    @if (ViewBag.flag == true)
+    {
+        <h3>Bạn có chắc chắn muốn xóa @Model.Tennxb?</h3>
+        <form asp-action="xoaNhaxuatban" method="post">
+            <input type="hidden" name="id" value="@Model.Manxb" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-primary">Trở lại</a>
+        </form>
+    }
+    else
+    {
+        <h3>Đã tồn tại cuốn sách thuộc quyền xuất bản của @Model.Tennxb</h3>
         <a asp-action="Index" class="btn btn-primary">Trở lại</a>
-    </form>
+    }
+    
 </div>

@@ -37,6 +37,12 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult frmXoaTheloai(int id)
         {
             Theloai tl = db.Theloai.Find(id);
+            bool flag = true;
+            if (db.Sach.Where(x => x.Maloai == id).Count() > 0)
+            {
+                flag = false;
+            }
+            ViewBag.flag = flag;
             return View(CTheloai.chuyenDoi(tl));
         }
 
@@ -52,7 +58,7 @@ namespace OnlineLibraryManagement.Controllers
             catch
             {
                 ErrorViewModel error = new ErrorViewModel();
-                error.RequestId = "Không thể xóa thể loại này!";
+                error.RequestId = "Đã xảy ra lỗi khi xóa thể loại này!!!";
                 return View("Error", error);
             }
         }

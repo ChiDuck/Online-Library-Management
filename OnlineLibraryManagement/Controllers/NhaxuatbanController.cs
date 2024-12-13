@@ -37,6 +37,12 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult frmXoaNhaxuatban(int id)
         {
             Nhaxuatban nxb = db.Nhaxuatban.Find(id);
+            bool flag = true;
+            if (db.Sach.Where(x => x.Manxb == id).Count() > 0)
+            {
+                flag = false;
+            }
+            ViewBag.flag = flag;
             return View(CNhaxuatban.chuyenDoi(nxb));
         }
 
@@ -52,7 +58,7 @@ namespace OnlineLibraryManagement.Controllers
             catch
             {
                 ErrorViewModel error = new ErrorViewModel();
-                error.RequestId = "Không thể xóa nhà xuất bản này!";
+                error.RequestId = "Đã xảy ra lỗi khi xóa nhà xuất bản này!!!";
                 return View("Error", error);
             }
         }

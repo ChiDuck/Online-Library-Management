@@ -4,6 +4,11 @@
     ViewData["Title"] = "Thay đổi thông tin sách";
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
+@{
+    QuanLyThuVienContext db = new QuanLyThuVienContext();
+    SelectList DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+    SelectList DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+}
 
 <h1>Thay đổi thông tin sách</h1>
 <div>
@@ -40,12 +45,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Maloai" class="control-label"></label>
-                <select asp-for="Maloai" asp-items="@ViewBag.DSTheLoai" class="form-select"></select>
+                <select asp-for="Maloai" asp-items="@DSTheLoai" class="form-select"></select>
                 <span asp-validation-for="Maloai" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Manxb" class="control-label"></label>
-                <select asp-for="Manxb" asp-items="@ViewBag.DSNhaXuatBan" class="form-select"></select>
+                <select asp-for="Manxb" asp-items="@DSNhaXuatBan" class="form-select"></select>
                 <span asp-validation-for="Manxb" class="text-danger"></span>
             </div>
             <br />

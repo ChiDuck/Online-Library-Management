@@ -42,16 +42,14 @@ namespace OnlineLibraryManagement.Controllers
             {
 
                 //kiểm tra năm xuất bản
-                if (s.Namxuatban < 1970 || s.Namxuatban > DateTime.Now.Year)
+                if (s.Namxuatban > DateTime.Now.Year)
                 {
                     book.Soluong = s.Soluong;
                     book.Namxuatban = s.Namxuatban;
                     book.Manxb = s.Manxb;
                     book.Maloai = s.Maloai;
                     MySessions.Set<Sach>(HttpContext.Session, "sach", book);
-                    ModelState.AddModelError("Namxuatban", "Sách đã quá cũ. Vui lòng nhập đầu sách có năm xuất bản mới hơn năm 1970 và nhỏ hơn hoặc bằng năm hiện tại");
-                    ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-                    ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+                    ModelState.AddModelError("Namxuatban", "Vui lòng nhập năm xuất bản nhỏ hơn hoặc bằng năm hiện tại");
                     return View("formThemSach", book);
                 }
 
@@ -86,8 +84,6 @@ namespace OnlineLibraryManagement.Controllers
 
                 else
                 {
-                    ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-                    ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
                     return RedirectToAction("formThemSach");
                 }
                 db.Sach.Add(s);
@@ -105,8 +101,6 @@ namespace OnlineLibraryManagement.Controllers
                 book.Manxb = s.Manxb;
                 book.Maloai = s.Maloai;
                 MySessions.Set<Sach>(HttpContext.Session, "sach", book);
-                ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
                 return View("formThemSach", book);
             }
 
@@ -127,8 +121,6 @@ namespace OnlineLibraryManagement.Controllers
                                .Include(s => s.Phienbansach)
                                .ThenInclude(p => p.MatacgiaNavigation)
                                .FirstOrDefault(s => s.Masach == id);
-            ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-            ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
             return View(sach);
         }
         public IActionResult suaSach(Sach s, IFormFile fileImg)
@@ -136,12 +128,10 @@ namespace OnlineLibraryManagement.Controllers
             ModelState.Remove("fileImg");
             if (ModelState.IsValid)
             {
-                if (s.Namxuatban < 1970 || s.Namxuatban > DateTime.Now.Year)
+                if (s.Namxuatban > DateTime.Now.Year)
                 {
-                    ModelState.AddModelError("Namxuatban", "Vui lòng nhập đầu sách có năm xuất bản mới hơn và nhỏ hơn hoặc bằng năm hiện tại");
+                    ModelState.AddModelError("Namxuatban", "Vui lòng nhập năm xuất bản nhỏ hơn hoặc bằng năm hiện tại");
                     Sach book = db.Sach.Include(s => s.MaloaiNavigation).Include(a => a.ManxbNavigation).Include(a => a.Phienbansach).ThenInclude(p => p.MatacgiaNavigation).FirstOrDefault(a => a.Masach == s.Masach);
-                    ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-                    ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
                     return View("formSuaSach", book);
 
                 }
@@ -170,8 +160,6 @@ namespace OnlineLibraryManagement.Controllers
                               .Include(a => a.Phienbansach)
                               .ThenInclude(a => a.MatacgiaNavigation)
                               .FirstOrDefault(a => a.Masach == s.Masach);
-                ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
                 return View("formSuaSach", sach);
             }
         }
@@ -191,6 +179,12 @@ namespace OnlineLibraryManagement.Controllers
                               .FirstOrDefault(s => s.Masach == id);
             if (sach != null)
             {
+                bool flag = true;
+                if (db.Chitietphieumuon.Where(x => x.Masach == id).Count() > 0)
+                {
+                    flag = false;
+                }
+                ViewBag.flag = flag;
                 return View(sach);
             }
             else
@@ -215,7 +209,7 @@ namespace OnlineLibraryManagement.Controllers
             catch (Exception e)
             {
                 ErrorViewModel err = new ErrorViewModel();
-                err.RequestId = e.Message;
+                err.RequestId = "Đã xảy ra lỗi khi xóa cuốn sách này!!!";
                 return View("Error", err);
             }
         }
@@ -268,9 +262,6 @@ namespace OnlineLibraryManagement.Controllers
                 s.Phienbansach.Add(pb);
             }
             MySessions.Set<Sach>(HttpContext.Session, "sach", s);
-
-            ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-            ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
             return View("formThemSach", s);
         }
         public IActionResult xoaTacgia(int matacgia)
@@ -283,8 +274,6 @@ namespace OnlineLibraryManagement.Controllers
                     s.Phienbansach.Remove(a);
                 }
                 MySessions.Set<Sach>(HttpContext.Session, "sach", s);
-                ViewBag.DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-                ViewBag.DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
                 return View("formThemSach", s);
             }
             else

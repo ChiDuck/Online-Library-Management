@@ -5,9 +5,17 @@
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 
-<h1>Xóa sách</h1>
+@if (ViewBag.flag == true)
+{
+    <h1>Xóa sách</h1>
+    <h3>Bạn chắc chắn muốn xóa cuốn sách này?</h3>
+}
+else
+{
+    <h1>Bạn không thể xóa cuốn sách này</h1>
+    <h3>Đã tồn tại dữ liệu phiếu mượn sách cho cuốn sách này</h3>
+}
 
-<h3>Bạn chắc chắn muốn xóa cuốn sách này?</h3>
 <div>
     <hr />
     <dl class="row">
@@ -128,10 +136,17 @@
             </tbody>
         </table>
     </div>
-    
-    <form asp-action="xoaSach">
-        <input type="hidden" name="masach" value="@Model.Masach" />
-        <input type="submit" value="Xóa" class="btn btn-danger" /> |
-        <a class="btn btn-success" asp-action="Index">Quay lại</a>
-    </form>
+    @if (ViewBag.flag == true)
+    {
+        <form asp-action="xoaSach">
+            <input type="hidden" name="masach" value="@Model.Masach" />
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            <a class="btn btn-success" asp-action="Index">Quay lại</a>
+        </form>
+    }
+    else
+    {
+        <a class="btn btn-success" asp-action="Index">Quay lại danh sách</a>
+    }
+
 </div>

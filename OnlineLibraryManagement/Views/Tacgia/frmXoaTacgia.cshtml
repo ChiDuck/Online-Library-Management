@@ -5,7 +5,14 @@
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 
-<h1>Xóa tác giả</h1>
+@if (ViewBag.flag == true)
+{
+    <h1>Xóa tác giả</h1>
+}
+else
+{
+    <h1>Bạn không thể xóa tác giả này</h1>
+}
 
 <div>
     <hr />
@@ -51,11 +58,19 @@
             @Html.DisplayFor(model => model.Quoctich)
         </dd>
     </dl>
-
-    <h3>Bạn có chắc chắn muốn xóa tác giả @Model.Tentacgia ?</h3>
-    <form asp-action="xoaTacgia" method="post">
-        <input type="hidden" name="id" value="@Model.Matacgia" />
-        <input type="submit" value="Xóa" class="btn btn-danger" />
+    @if (ViewBag.flag == true)
+    {
+        <h3>Bạn có chắc chắn muốn xóa tác giả @Model.Tentacgia ?</h3>
+        <form asp-action="xoaTacgia" method="post">
+            <input type="hidden" name="id" value="@Model.Matacgia" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-primary">Trở lại</a>
+        </form>
+    }
+    else
+    {
+        <h3>Đã tồn tại cuốn sách thuộc sở hữu của tác giả @Model.Tentacgia</h3>
         <a asp-action="Index" class="btn btn-primary">Trở lại</a>
-    </form>
+    }
+   
 </div>
