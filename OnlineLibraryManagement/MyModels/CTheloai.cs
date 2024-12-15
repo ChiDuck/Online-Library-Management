@@ -9,8 +9,9 @@ namespace OnlineLibraryManagement.MyModels
 
         [Display(Name = "Mã thể loại")]
         public int Maloai { get; set; }
+
         [Display(Name = "Tên thể loại")]
-        [Required(ErrorMessage = "Tên thể loại không thể bỏ trống")]
+        [Required(ErrorMessage = "Vui lòng nhập tên cho thể loại")]
         public string? Tenloai { get; set; }
 
         public static CTheloai chuyenDoi(Theloai tl)

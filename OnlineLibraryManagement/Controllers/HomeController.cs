@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using OnlineLibraryManagement.Models;
 using System.Diagnostics;
@@ -20,9 +20,9 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult Index()
         {
-			List<Sach> ds = db.Sach.Where(t => t.Namxuatban == DateTime.Now.Year).ToList();
-			ViewBag.dsSachMoi = ds;
-			return View();
+            List<Sach> ds = db.Sach.Where(t => t.Namxuatban == DateTime.Now.Year).Take(8).ToList();
+            ViewBag.dsSachMoi = ds;
+            return View();
         }
 
         public IActionResult Privacy()
@@ -74,7 +74,7 @@ namespace OnlineLibraryManagement.Controllers
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
                         dg.MatkNavigation = null;
                         MySessions.Set(HttpContext.Session, "madocgia", dg.Madocgia);
-                        return RedirectToAction("Index","Docgia"); 
+                        return RedirectToAction("Index", "Docgia");
                     }
                 }
                 ModelState.AddModelError("Matkhau", "Sai tên hoặc mật khẩu.");
@@ -90,7 +90,8 @@ namespace OnlineLibraryManagement.Controllers
 
         public IActionResult signupMethod(Taikhoan tk)
         {
-            ModelState.Clear();
+            ModelState.Remove(nameof(tk.Matkhaucu));
+            //ModelState.Clear();
             if (ModelState.IsValid)
             {
                 if (!db.Taikhoan.Any(t => t.Tentk == tk.Tentk))
@@ -109,12 +110,12 @@ namespace OnlineLibraryManagement.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("Email", "Email đã tồn tại.");
+                        ModelState.AddModelError("Email", "Email đã tồn tại");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("Tentk", "Tên tài khoản đã tồn tại.");
+                    ModelState.AddModelError("Tentk", "Tên tài khoản đã tồn tại");
                 }
             }
             return View("Signup");

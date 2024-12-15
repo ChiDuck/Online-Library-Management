@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OnlineLibraryManagement.Models;
 using OnlineLibraryManagement.MyModels;
-using System.Collections.Generic;
 
 namespace OnlineLibraryManagement.Controllers
 {
@@ -17,6 +16,8 @@ namespace OnlineLibraryManagement.Controllers
         [Authorize(Roles = "Docgia")]
         public IActionResult Index()
         {
+            List<Sach> ds = db.Sach.Where(t => t.Namxuatban == DateTime.Now.Year).ToList();
+            ViewBag.dsSachMoi = ds;
             return View();
         }
 
@@ -65,7 +66,7 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult timSach(string giatricantim)
         {
             if (string.IsNullOrEmpty(giatricantim))
-            HttpContext.Session.Remove("timkiem");
+                HttpContext.Session.Remove("timkiem");
             List<Sach> dsGoc = db.Sach.ToList();
             List<Sach> dsTimKiem = null;
 
@@ -201,7 +202,7 @@ namespace OnlineLibraryManagement.Controllers
         public IActionResult suaTaikhoan(Docgia dg)
         {
             Taikhoan x = tk();
-            
+
             if (x.Email != dg.MatkNavigation.Email)
             {
                 if (db.Taikhoan.Any(t => t.Email == dg.MatkNavigation.Email))
@@ -241,14 +242,16 @@ namespace OnlineLibraryManagement.Controllers
             ModelState.Remove(nameof(tkmoi.Tentk));
             ModelState.Remove(nameof(tkmoi.Email));
 
-            if (!ModelState.IsValid)
-            {
-                return View("frmDoiMatkhau");
-            }
+            if (!ModelState.IsValid) return View("frmDoiMatkhau");
 
             Taikhoan t = tk();
             if (t.Matkhau == tkmoi.Matkhaucu)
             {
+                if (tkmoi.Matkhaucu == tkmoi.Matkhau)
+                {
+                    ModelState.AddModelError("Matkhau", "Mật khẩu mới phải khác mật khẩu cũ");
+                    return View("frmDoiMatkhau");
+                }
                 t.Matkhau = tkmoi.Matkhau;
             }
             else
@@ -296,19 +299,12 @@ namespace OnlineLibraryManagement.Controllers
             Phieumuonsach pms = new Phieumuonsach();
             List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
             if (dsSach == null) dsSach = new List<Sach>();
-            if (dsSach.Count < 7)
-            {
-                sach.Soluong--;     // trừ số lượng sách
-				db.Sach.Update(sach);
-				db.SaveChanges();
-				dsSach.Add(sach);
-            }
+            if (dsSach.Count < 7) dsSach.Add(sach);
             else return RedirectToAction("hienThiDSSach");
 
             if (!checkFlag("dangLapPhieu")) //flag chọn sách lần đầu tiên -> khởi tạo phiếu mượn
             {
                 MySessions.Set(HttpContext.Session, "dangLapPhieu", true);
-
                 pms.Ngaylapphieu = DateTime.Now.Date;
                 pms.Soluongsach = 1;
                 pms.Madocgia = MySessions.Get<int>(HttpContext.Session, "madocgia");
@@ -319,8 +315,6 @@ namespace OnlineLibraryManagement.Controllers
                 pms.Soluongsach++;
             }
 
-            db.Sach.Update(sach);
-            db.SaveChanges();
             MySessions.Set(HttpContext.Session, "lapPMS", pms);
             MySessions.Set(HttpContext.Session, "dsSach", dsSach);
 
@@ -330,8 +324,6 @@ namespace OnlineLibraryManagement.Controllers
         [Authorize(Roles = "Docgia")]
         public IActionResult xoaSach(int id)
         {
-            Sach sach = db.Sach.Find(id);
-
             Phieumuonsach pms = MySessions.Get<Phieumuonsach>(HttpContext.Session, "lapPMS");
             pms.Soluongsach--;
             MySessions.Set(HttpContext.Session, "lapPMS", pms);
@@ -340,27 +332,13 @@ namespace OnlineLibraryManagement.Controllers
             dsSach.RemoveAll(t => t.Masach == id);
             MySessions.Set(HttpContext.Session, "dsSach", dsSach);
 
-            sach.Soluong++;
-            db.Sach.Update(sach);
-            db.SaveChanges();
             return RedirectToAction("dsPhieumuonsach");
         }
 
         [Authorize(Roles = "Docgia")]
         public IActionResult huyPhieu()
         {
-			List<Sach> dsSach = MySessions.Get<List<Sach>>(HttpContext.Session, "dsSach");
-            if (dsSach != null)
-            {
-                foreach (Sach sach in dsSach)
-                {
-                    sach.Soluong++;
-                    db.Update(sach);
-                }
-                db.SaveChanges();
-            }
-            db.SaveChanges();
-			removeSessions();
+            removeSessions();
             return RedirectToAction("dsPhieumuonsach");
         }
 
@@ -377,6 +355,9 @@ namespace OnlineLibraryManagement.Controllers
 
             foreach (Sach s in dsSach)
             {
+                s.Soluong--;
+                db.Sach.Update(s);
+
                 Chitietphieumuon ctpm = new Chitietphieumuon();
                 ctpm.Maphieu = phieumoi.Maphieu;
                 ctpm.Masach = s.Masach;
@@ -469,12 +450,12 @@ namespace OnlineLibraryManagement.Controllers
             return View(ds);
         }
 
-        public IActionResult themPhieugiahan([FromBody]CGhichu x)
+        public IActionResult themPhieugiahan([FromBody] CGhichu x)
         {
             int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
             Phieumuonsach pms = db.Phieumuonsach.Where(k => k.Maphieu == x.Maphieu && k.Madocgia == mdg).FirstOrDefault();
             int lanGH = 0;
-           
+
             if (pms != null)
             {
                 if (db.Phieugiahan.Where(t => t.Matinhtrang == 1 && t.Maphieumuon == x.Maphieu).Count() > 0)
@@ -482,7 +463,7 @@ namespace OnlineLibraryManagement.Controllers
                     return Json("chogiahan");
                 }
                 switch (pms.Matinhtrang)
-                { 
+                {
                     case 1: return Json("chuaduyet");
                     case 4: return Json("tuchoi");
                 }
@@ -512,17 +493,17 @@ namespace OnlineLibraryManagement.Controllers
         [Authorize(Roles = "Thuthu")]
         public IActionResult hienthiDSDocgia()
         {
-           List<Docgia> ds = db.Docgia.ToList();
-           foreach(Docgia d in ds)
-           {
+            List<Docgia> ds = db.Docgia.ToList();
+            foreach (Docgia d in ds)
+            {
                 d.MatkNavigation = db.Taikhoan.Find(d.Matk);
-           }
-           return View(ds);
+            }
+            return View(ds);
         }
         [Authorize(Roles = "Thuthu")]
         public IActionResult formXemCTDocGia(int madocgia)
         {
-           Docgia d = db.Docgia.Find(madocgia);
+            Docgia d = db.Docgia.Find(madocgia);
             if (d != null)
             {
                 d.MatkNavigation = db.Taikhoan.Find(d.Matk);
@@ -531,10 +512,10 @@ namespace OnlineLibraryManagement.Controllers
                                                   .Include(s => s.MatinhtrangNavigation)
                                                   .Where(s => s.Madocgia == madocgia)
                                                   .ToList();
-           return View(d);
+            return View(d);
         }
         #endregion
 
-       
+
     }
 }

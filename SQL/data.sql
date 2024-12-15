@@ -120,7 +120,7 @@ INSERT INTO SACH VALUES
 ('FAUST',								8,	2023,	'faust.jpg',						11, 5),						--8
 (N'Ông Già Và Biển Cả',					12, 2023,	'onggia.jpg',						11, 5),						--9
 (N'Khôn ngoan hơn thuật toán',			15, 2024,	'nxbtre_full_26032024_040303.jpg',	5,	4),						--10
-(N'Hành Trang Lập Trình - Những Kỹ Năng Lập Trình Viên Chuyên Nghiệp Cần Có', 10, 2020, N'laptrinh.jpg', 12, 6),	--11
+(N'Hành Trang Lập Trình - Kỹ Năng Lập Trình Viên', 10, 2020, N'laptrinh.jpg', 12, 6),	--11
 (N'VŨ TRỤ TRONG VỎ HẠT DẺ',				10, 2022,	'nxbtre_vutru.jpg',					12, 4),						--12
 (N'Nghệ Thuật Tư Duy Dựa Trên Dữ Liệu', 8,	2022,	'nxbtre_full_27472022_114749.jpg',	12,	4),						--13
 (N'Ngày xưa có một chuyện tình',		10, 2024,	'nxbtre_full_06022024_040257.jpg',	10, 4),						--14
@@ -173,6 +173,7 @@ INSERT INTO PHIEUGIAHAN VALUES		-- Ngày lập, ngày duyệt, hạn mới, lầ
 ('2024-11-14','2024-11-14','2024-11-17', 1, N'Không trả phạt giờ',N'Xin muộn 2 ngày', 2, 1, 1)
 
 select * from DOCGIA
+select * from SACH
 select * from TAIKHOAN
 select CHITIETPHIEUMUON.* from CHITIETPHIEUMUON join PHIEUMUONSACH on CHITIETPHIEUMUON.MAPHIEU = PHIEUMUONSACH.MAPHIEU
 where PHIEUMUONSACH.MAPHIEU = 3

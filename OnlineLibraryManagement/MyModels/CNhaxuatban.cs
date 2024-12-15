@@ -8,6 +8,7 @@ namespace OnlineLibraryManagement.MyModels
         [Display(Name = "Mã NXB")]
         public int Manxb { get; set; }
         [Display(Name = "Tên NXB")]
+        [Required(ErrorMessage = "Vui lòng nhập tên NXB")]
         public string? Tennxb { get; set; }
         [Display(Name = "Email")]
         public string? Email { get; set; }

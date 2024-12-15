@@ -26,13 +26,14 @@ namespace OnlineLibraryManagement.Models
         [NotMapped]
         [Display(Name = "Nhập lại mật khẩu mới")]
         [Required(ErrorMessage = "Vui lòng nhập lại mật khẩu mới")]
-        [Compare("Matkhau", ErrorMessage = "Mật khẩu không khớp.")]
+        [Compare("Matkhau", ErrorMessage = "Mật khẩu không trùng khớp")]
         [DataType(DataType.Password)]
         public string? Nhaplaimatkhau { get; set; }
 
-        [Required(ErrorMessage = "Vui lòng nhập email", AllowEmptyStrings = false)]
         [EmailAddress]
+        [Required(ErrorMessage = "Vui lòng nhập email", AllowEmptyStrings = false)]
         public string? Email { get; set; }
+
         public bool? Loaitk { get; set; }
 
         public virtual Docgia? Docgia { get; set; }
