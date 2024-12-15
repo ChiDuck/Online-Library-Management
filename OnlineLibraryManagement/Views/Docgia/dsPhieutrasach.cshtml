@@ -1,55 +1,51 @@
 ﻿@model IEnumerable<OnlineLibraryManagement.Models.Phieutrasach>
 
 @{
-    ViewData["Title"] = "dsPhieutrasach";
+    ViewData["Title"] = "Phiếu trả sách";
     Layout = "~/Views/Shared/_ReaderLayout.cshtml";
 }
 
-<h1>Danh sách phiếu trả sách của bạn</h1>
+<h2 class="text-center mt-5 mb-3">- Phiếu trả sách -</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Maphieu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ngaylapphieu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sosachtra)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ghichu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Matt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) {
+<div class="p-3 rounded-3 shadow bg-light">
+    <table class="table rounded-3 overflow-hidden table-hover">
+        <thead class="align-middle text-light table-bordered" style="background-color:#627fd9">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Maphieu)
-                </td>
-                <td>
-                    @item.Ngaylapphieu.Value.ToShortDateString()
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sosachtra)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ghichu)
-                </td>
-                <td>
-                    @item.MattNavigation.Tentt
-                </td>
-                <td>
-                    <a asp-action="chitietPhieutrasach" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
-                </td>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Maphieu)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Ngaylapphieu)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Sosachtra)
+                </th>
+				<th>
+					@Html.DisplayNameFor(model => model.Matt)
+				</th>
+                <th class="text-center border-start"></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                <tr class="align-middle">
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Maphieu)
+                    </td>
+                    <td class="text-center">
+                        @item.Ngaylapphieu.Value.ToShortDateString()
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Sosachtra)
+                    </td>
+                    <td>
+                        @item.MattNavigation.Tentt
+                    </td>
+                    <td class="text-center border-start">
+                        <a asp-action="chitietPhieutrasach" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

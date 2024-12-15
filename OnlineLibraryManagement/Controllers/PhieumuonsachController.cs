@@ -29,7 +29,7 @@ namespace OnlineLibraryManagement.Controllers
                             foreach (Chitietphieumuon ct in dsCTPhieuMuon)
                             {
                                 ct.Matinhtrang = 4;
-                            }    
+                            }
                             db.SaveChanges();
                         }
                         catch (Exception ex) { }
@@ -60,7 +60,7 @@ namespace OnlineLibraryManagement.Controllers
             return View(p);
         }
         public IActionResult xacNhanMuonSach([FromBody] CGhichu c)
-        {  
+        {
             Taikhoan tk = MySessions.Get<Taikhoan>(HttpContext.Session, "taikhoan");
             Thuthu tt = db.Thuthu.Where(t => t.Matk == tk.Matk).FirstOrDefault();
             Phieumuonsach p = db.Phieumuonsach.Find(c.Maphieu);

@@ -8,7 +8,7 @@ namespace OnlineLibraryManagement.Models
         public int Maphieu { get; set; }
         [Display(Name = "Ngày trả")]
         public DateTime? Ngaylapphieu { get; set; }
-        [Display(Name = "Số sách trả")]
+        [Display(Name = "Số lượng trả")]
         public int? Sosachtra { get; set; }
         [Display(Name = "Ghi chú")]
         public string? Ghichu { get; set; }

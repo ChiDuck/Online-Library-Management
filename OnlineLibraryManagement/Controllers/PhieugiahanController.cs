@@ -61,7 +61,7 @@ namespace OnlineLibraryManagement.Controllers
                                 ct.Matinhtrang = 2;
                         }
                     }
-                    
+
                     db.SaveChanges();
                     return Json(true);
                 }

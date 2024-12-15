@@ -26,7 +26,9 @@
             @Html.DisplayNameFor(model => model.Ngaysinh)
         </dt>
         <dd class = "col-sm-10">
-            @Model.Ngaysinh.Value.ToShortDateString()
+            @{
+                if (Model.Ngaysinh != null) @Model.Ngaysinh.Value.ToShortDateString()
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.MatkNavigation.Email)

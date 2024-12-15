@@ -10,7 +10,7 @@ namespace OnlineLibraryManagement.Models
             Phieugiahan = new HashSet<Phieugiahan>();
         }
 
-        [Display(Name = "Mã phiếu mượn")]
+        [Display(Name = "Mã phiếu")]
         public int Maphieu { get; set; }
 
         [Display(Name = "Ngày lập phiếu")]
@@ -22,7 +22,7 @@ namespace OnlineLibraryManagement.Models
         [Display(Name = "Hạn trả")]
         public DateTime? Hantra { get; set; }
 
-        [Display(Name = "Số lượng sách mượn")]
+        [Display(Name = "Số lượng sách")]
         public int? Soluongsach { get; set; }
 
         [Display(Name = "Ghi chú")]

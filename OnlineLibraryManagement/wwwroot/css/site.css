@@ -17,6 +17,8 @@ body {
   margin-bottom: 60px;
 }
 
+/*---------------------------------------*/
+
 .nav-item {
     transition: transform 0.3s ease;
 }
@@ -24,3 +26,56 @@ body {
 .nav-item:hover {
     transform: scale(1.1);
 }
+
+.table {
+    margin-bottom:0;
+    --bs-table-hover-bg: rgba(0,0,0,0);
+}
+
+.table-hover tbody tr:hover {
+    background-color:rgba(0,0,0,0.08);
+}
+.table-hover tbody tr {
+    transition: background-color 0.5s ease-in-out;
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background-color: #d1b956;
+    border-color: #d1b956;
+}
+
+    .btn-primary:hover,
+    .btn-primary:active,
+    .btn-primary:focus {
+        background-color: #c2ab4c;
+        border-color: #c2ab4c;
+    }
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 .25rem #e0c992;
+}
+
+.btn-primary:active:focus {
+    box-shadow: 0 0 0 .25rem #e0c992;
+}
+
+td:last-child .btn{
+    margin-left:0.5em;
+}
+
+.shadowhover {
+    transition: box-shadow 0.3s ease-out;
+}
+
+.shadowhover:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+body {
+    background-color: #f7eddf;
+}
+

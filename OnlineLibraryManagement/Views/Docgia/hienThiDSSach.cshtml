@@ -9,16 +9,16 @@
     SelectList selectListTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
     SelectList selectListNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
 }
-<h2 class="text-center mb-3">- SÁCH -</h2>
-<div class="row mb-3">
-    <div class="col-5">
+<h2 class="text-center mt-5 mb-3">- SÁCH -</h2>
+<div class="d-inline-flex gap-3 mb-3 p-3 rounded-3 bg-light shadow-sm shadowhover">
+    <div class="border-end">
         <form asp-action="timSach" method="post">
-                <label class="control-label">Tìm sách</label>
+                <label class="control-label">Tìm kiếm</label>
                 <input style="width:350px" type="text" name="giatricantim" placeholder="Tên sách, năm xuất bản hoặc tên tác giả" />
                 <input type="submit" value="Tìm" class="btn btn-primary mx-3" />
         </form>
-    </div>
-    <div class="col-7">
+    </div>      
+    <div>
         <form asp-action="locSach" method="post">
             <label>Thể loại</label>
             <select asp-items="@selectListTheLoai" name="theloai">
@@ -35,9 +35,9 @@
 <div>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 </div>
-
-<table class="table border border-dark table-hover">
-    <thead class="align-middle table-bordered" style="background-color:rgb(98, 127, 217)">
+<div class="p-3 rounded-3 shadow bg-light">
+<table class="table rounded-3 overflow-hidden table-hover">
+        <thead class="align-middle text-light table-bordered" style="background-color:#627fd9">
         <tr>
 			<th></th>
 			<th>
@@ -52,10 +52,10 @@
 			<th>
 				@Html.DisplayNameFor(model => model.Manxb)
 			</th>
-			<th>
+                <th class="text-center">
                 @Html.DisplayNameFor(model => model.Soluong)
             </th>
-            <th></th>
+                <th class="border-start"></th>
         </tr>
     </thead>
     <tbody>
@@ -72,7 +72,7 @@
 					}
 				</td>
 				<td>
-                    <b>@Html.DisplayFor(modelItem => item.Tensach)</b><br /><br />
+                    <b>@Html.DisplayFor(modelItem => item.Tensach)</b><br />
                     Năm XB: @Html.DisplayFor(modelItem => item.Namxuatban)
                 </td>
                 <td>
@@ -94,10 +94,12 @@
 							if (i == 0)
 							{
 								<text>@tenTacgia</text>
+                                <br/>
 							}
 							else if (i >= 1 && i < dsPhienBanSach.Count)
 							{
-								<text>, @tenTacgia</text>
+                                <text> @tenTacgia</text>
+                                <br />
 							}
 						}
 					}
@@ -111,10 +113,10 @@
                         }
                     }
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Soluong)
                 </td>
-                <td>
+                    <td class="align-middle border-start">
                     @{
                         if (item.Soluong > 0)
                         {
@@ -141,7 +143,7 @@
         }
     </tbody>
 </table>
-
+</div>
 <script>
     function chonSach(id,sl) {
         console.log('@ViewBag.tinhTrang');

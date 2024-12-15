@@ -1,7 +1,41 @@
 ﻿@{
-    ViewData["Title"] = "Đăng nhập";
+    ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_ReaderLayout.cshtml";
 }
-<div class="text-center">
-    <h1 class="display-4">Trang chủ của layout độc giả</h1>
+<div style="margin:0 -6.97em">
+    <img src="~/img/bg/istockphoto-154.jpg" class="img-fluid" style="width:100%; height:18em" />
+    <h1 class="position-absolute start-50 translate-middle text-white display-1" style="margin-top:-1.3em; font-size:7rem">STU-LIB</h1>
 </div>
+
+<div class="text-center">
+    <h2 class="display-5 mt-5">Chào mừng bạn đến với website quản lý thư viện STU</h2>
+    <br />
+    <div class="mt-5 mb-5">
+        <h3 class="display-6">- Sách mới -</h3>
+    </div>
+    <div class="container position-relative">
+        <div class="d-flex overflow-hidden ms-5" style="max-width: 100%">
+            <!-- Horizontal Scrollable Container -->
+            <div class="d-flex flex-nowrap scroll-container" id="bookContainer" style="overflow-x:hidden">
+                @foreach (Sach item in ViewBag.dsSachMoi)
+                {
+                    <!-- Book Item -->
+                    <div class="card flex-shrink-0 rounded-3 p-1" style="width: 240px; margin-right:4.6rem">
+                        @if (!string.IsNullOrEmpty(item.Anhbia))
+                        {
+                            string tenFile = "~/img/" + item.Anhbia;
+                            <img height="350" src="@Url.Content(tenFile)" class="card-img-top" alt="@item.Tensach" />
+                        }
+                        <div class="card-body">
+                            <h6 class="card-title">@item.Tensach</h6>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <button class="btn btn-secondary rounded-circle position-absolute start-0 top-50 translate-middle-y" onclick="scrollBack()">&lt;</button>
+        <button class="btn btn-secondary rounded-circle position-absolute end-0 top-50 translate-middle-y" onclick="scrollRight()">&gt;</button>
+    </div>
+</div>
+
+<script src="~/js/script.js"></script>
