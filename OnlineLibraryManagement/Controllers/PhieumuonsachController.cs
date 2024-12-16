@@ -14,7 +14,7 @@ namespace OnlineLibraryManagement.Controllers
         #region Thủ thư
         public IActionResult DSPhieuMuon_Thuthu()
         {
-            List<Phieumuonsach> ds = db.Phieumuonsach.OrderByDescending(s => s.Ngaylapphieu).ToList();
+            List<Phieumuonsach> ds = db.Phieumuonsach.OrderByDescending(s => s.Maphieu).ToList();
             foreach (Phieumuonsach item in ds)
             {
                 if (item.Matinhtrang == 2 && item.Hantra.HasValue)

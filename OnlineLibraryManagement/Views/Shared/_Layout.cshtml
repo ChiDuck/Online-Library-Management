@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - STU-Lib</title>
+    <title>@ViewData["Title"] - STU-LIB</title>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OnlineLibraryManagement.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header class="sticky-top">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow" style="background-color:rgb(98, 127, 217)">
             <div class="container-fluid">
-                <a class="navbar-brand text-light fw-bold me-4" asp-area="" asp-controller="Home" asp-action="Index">STU-LIB</a>
+                <div class="navbar-brand text-light fw-bold me-4" asp-area="" asp-controller="Home" asp-action="Index">STU-LIB</div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -44,19 +44,20 @@
                             </a>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" style="padding-bottom:13em">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted mt-auto">
         <div class="container">
+            <h5 class="mb-0"><b>STU-LIB</b></h5>
+            <p>Thư viện điện tử</p>
             &copy; 2024 - Đặng Minh Nghĩa & Nguyễn Chí Đức
         </div>
     </footer>

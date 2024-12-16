@@ -5,86 +5,86 @@
     Layout = "~/Views/Shared/_ReaderLayout.cshtml";
 }
 
-<h1>Danh sách phiếu gia hạn của bạn</h1>
+<h2 class="text-center mt-5 mb-3">- Phiếu gia hạn -</h2>
 
-<p>
-    <a asp-action="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">Tạo yêu cầu gia hạn</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Maphieu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ngaylapphieu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ngaypheduyet)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hantramoi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Langiahan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lydo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ghichu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Matinhtrang)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Maphieumuon)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Matt)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Maphieu)
-            </td>
-            <td>
-                @item.Ngaylapphieu.Value.ToShortDateString()
-            </td>
-            <td>
-                @if (item.Ngaypheduyet != null) @item.Ngaypheduyet.Value.ToShortDateString()
-            </td>
-            <td>
-                @if (item.Hantramoi != null) @item.Hantramoi.Value.ToShortDateString()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Langiahan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lydo)
-            </td>
-            <td>
-                @if (item.Ghichu != null) @item.Ghichu
-            </td>
-            <td>
-                @if (item.MatinhtrangNavigation != null)
-                {
-                    <strong>@item.MatinhtrangNavigation.Tentinhtrang</strong>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Maphieumuon)
-            </td>
-            <td>
-                    @if (item.MattNavigation != null) @item.MattNavigation.Tentt
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+<a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#formModal">Tạo yêu cầu gia hạn</a>
+
+<div class="p-3 mt-3 rounded-3 shadow bg-light">
+    <table class="table rounded-3 overflow-hidden table-hover">
+        <thead class="align-middle text-light table-bordered" style="background-color:#627fd9">
+            <tr>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Maphieu)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Ngaylapphieu)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Ngaypheduyet)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Hantramoi)
+                </th>
+                <th class="text-center">
+					@Html.DisplayNameFor(model => model.Maphieumuon)
+				</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Matinhtrang)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Matt)
+                </th>
+                <th class="border-start">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                <tr class="align-middle">
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Maphieu)
+                    </td>
+                    <td class="text-center">
+                        @item.Ngaylapphieu.Value.ToShortDateString()
+                    </td>
+                    <td class="text-center">
+                        @if (item.Ngaypheduyet != null) @item.Ngaypheduyet.Value.ToShortDateString()
+                        else
+                        {
+                            <text>--/--</text>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (item.Hantramoi != null) @item.Hantramoi.Value.ToShortDateString()
+                        else
+                        {
+                            <text>--/--</text>
+                        }
+                    </td>
+                    <td class="text-center">
+					    @Html.DisplayFor(modelItem => item.Maphieumuon)
+				    </td>
+                    <td>
+                        @if (item.MatinhtrangNavigation != null)
+                        {
+                            <b>@item.MatinhtrangNavigation.Tentinhtrang</b>
+                        }
+                    </td>
+                    <td>
+                        @if (item.MattNavigation != null) @item.MattNavigation.Tentt
+                        else
+                        {
+                            <div class="text-center me-5">#</div>
+                        }
+                    </td>
+                    <td class="text-center border-start" style="width: 12em">
+                        <a asp-action="chitietPhieugiahan" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <!-- Modal -->
 <div class="container">
@@ -95,24 +95,23 @@
                     <h5 class="modal-title">Yêu cầu gia hạn</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body ms-4 me-4">
                     <div class="mb-3">
                         <label class="form-label">Mã phiếu mượn muốn gia hạn</label>
                         <input type="number" class="form-control" id="maphieumuon">
                         <p class="text-danger" id="textma"></p>
                     </div>
-                    <div class="mb-3">
+                    <div>
                         <label class ="form-label">Lý do (Không bắt buộc)</label>
                         <input class="form-control" id="lydo"/>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <input type="button" value="Tạo phiếu" id="taoPhieu" onclick="taoPhieu()" class="btn btn-primary"/>
+                <div class="modal-footer border-0">
+                    <input type="button" value="Tạo phiếu" id="taoPhieu" onclick="taoPhieu()" class="btn btn-primary me-4 mb-3"/>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@* <script src="~/js/script.js"></script> *@
 
 

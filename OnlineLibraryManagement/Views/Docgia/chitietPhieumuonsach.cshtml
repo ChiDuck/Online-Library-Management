@@ -5,7 +5,24 @@
     Layout = "~/Views/Shared/_ReaderLayout.cshtml";
 }
 
-<h3 class="mt-5 mb-3">Chi tiết phiếu mượn sách</h3>
+@{
+    QuanLyThuVienContext db = new QuanLyThuVienContext();
+}
+
+<div class="mt-5 d-flex">
+    <h3>Chi tiết phiếu mượn sách</h3>
+    <a asp-action="dsPhieumuonsach" class="btn bg-light ms-auto shadow-sm btnback">
+        <i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+	</a>
+    @{
+		if (Model.Matinhtrang == 3)
+		{
+			int maphieutra = db.Phieutrasach.FirstOrDefault(x => x.Maphieumuon == Model.Maphieu).Maphieu;
+			<a asp-action="chitietPhieutrasach" asp-route-id="@maphieutra" class="btn btn-success ms-2">Xem phiếu trả</a>
+		}
+	}
+</div>
+
 <hr />
 <dl class="row ms-0 p-3 rounded-3 shadow bg-light" style="width:25em">
         <dt class="col-sm-5 text-end border-end">
@@ -36,13 +53,11 @@
             @Html.DisplayNameFor(model => model.Hantra)
         </dt>
         <dd class="col-sm-7">
-            @{
-                if (Model.Hantra != null) @Model.Hantra.Value.ToShortDateString()
+            @if (Model.Hantra != null) @Model.Hantra.Value.ToShortDateString()
                 else 
                 {
                     <text>--/--</text>
-                }
-            }
+                }         
         </dd>
         <dt class="col-sm-5 text-end border-end">
             @Html.DisplayNameFor(model => model.Soluongsach)
@@ -76,9 +91,6 @@
 		</dd>
 	</dl>
 
-@{
-    QuanLyThuVienContext db = new QuanLyThuVienContext();
-}
 <div class="p-3 mt-4 rounded-3 shadow bg-light">
     <h4>Chi tiết danh sách</h4>
     <br />
@@ -170,14 +182,4 @@
         </tbody>
     </table>
 </div>
-<br />
-<div>
-    <a asp-action="dsPhieumuonsach" class="btn btn-primary me-1">Trở lại danh sách</a>
-    @{
-        if (Model.Matinhtrang == 3)
-        {
-            int maphieutra = db.Phieutrasach.FirstOrDefault(x => x.Maphieumuon == Model.Maphieu).Maphieu;
-            <a asp-action="chitietPhieutrasach" asp-route-id="@maphieutra" class="btn btn-success">Xem phiếu trả</a>
-        }
-    }
-</div>
+    

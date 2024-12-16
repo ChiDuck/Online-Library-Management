@@ -65,8 +65,8 @@ namespace OnlineLibraryManagement.Controllers
         [Authorize(Roles = "Docgia")]
         public IActionResult timSach(string giatricantim)
         {
-            if (string.IsNullOrEmpty(giatricantim))
-                HttpContext.Session.Remove("timkiem");
+            if (string.IsNullOrEmpty(giatricantim)) HttpContext.Session.Remove("timkiem");
+
             List<Sach> dsGoc = db.Sach.ToList();
             List<Sach> dsTimKiem = null;
 
@@ -121,6 +121,7 @@ namespace OnlineLibraryManagement.Controllers
                 }
 
             }
+            HttpContext.Session.Remove("timkiem");
             return RedirectToAction("hienThiDSSach");
         }
 
@@ -284,7 +285,7 @@ namespace OnlineLibraryManagement.Controllers
 
             int madg = MySessions.Get<int>(HttpContext.Session, "madocgia");
             List<Phieumuonsach> dspms = db.Phieumuonsach
-                .OrderByDescending(x => x.Ngaylapphieu)
+                .OrderByDescending(x => x.Maphieu)
                 .Where(x => x.Madocgia == madg)
                 .Include(x => x.MatinhtrangNavigation)
                 .Include(x => x.MattNavigation)
@@ -465,6 +466,7 @@ namespace OnlineLibraryManagement.Controllers
                 switch (pms.Matinhtrang)
                 {
                     case 1: return Json("chuaduyet");
+                    case 3: return Json("ketthuc");
                     case 4: return Json("tuchoi");
                 }
                 lanGH = db.Phieugiahan.Where(t => t.Matinhtrang == 2 && t.Maphieumuon == x.Maphieu).Count();
@@ -487,6 +489,11 @@ namespace OnlineLibraryManagement.Controllers
             return Json(true);
         }
 
+        public IActionResult chitietPhieugiahan(int id)
+        {
+            Phieugiahan p = db.Phieugiahan.Find(id);
+            return View(p);
+        }
         #endregion
 
         #region Thủ thư

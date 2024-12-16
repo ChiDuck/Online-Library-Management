@@ -1,0 +1,91 @@
+﻿@model OnlineLibraryManagement.Models.Phieugiahan
+
+@{
+    ViewData["Title"] = "chitietPhieugiahan";
+    Layout = "~/Views/Shared/_ReaderLayout.cshtml";
+}
+
+<div class="mt-5 d-flex">
+    <h3>Chi tiết phiếu gia hạn</h3>
+    <a asp-action="dsPhieugiahan" class="btn rounded-pill bg-light ms-auto shadow-sm btnback">
+        <i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+    </a>
+</div>
+
+<hr />
+<dl class="row ms-0 p-3 rounded-3 shadow bg-light" style="width:30em">
+    <dt class="col-sm-5 text-end border-end">
+            @Html.DisplayNameFor(model => model.Maphieu)
+    </dt>
+    <dd class = "col-sm-7">
+        @Model.Maphieu
+    </dd>
+    <dt class = "col-sm-5 text-end border-end">
+        @Html.DisplayNameFor(model => model.Ngaylapphieu)
+    </dt>
+    <dd class = "col-sm-7">
+        @Model.Ngaylapphieu.Value.ToShortDateString()
+    </dd>
+    <dt class = "col-sm-5 text-end border-end">
+        @Html.DisplayNameFor(model => model.Ngaypheduyet)
+    </dt>
+    <dd class = "col-sm-7">
+        @if (Model.Ngaypheduyet != null)
+            @Model.Ngaypheduyet.Value.ToShortDateString()
+		else
+		{
+			<text>--/--</text>
+		} 
+    </dd>
+    <dt class = "col-sm-5 text-end border-end">
+        @Html.DisplayNameFor(model => model.Hantramoi)
+    </dt>
+    <dd class = "col-sm-7">
+        @if (Model.Hantramoi != null)
+            @Model.Hantramoi.Value.ToShortDateString()
+        else
+        {
+            <text>--/--</text>
+        }   
+    </dd>
+    <dt class = "col-sm-5 text-end border-end">
+        @Html.DisplayNameFor(model => model.Langiahan)
+    </dt>
+    <dd class = "col-sm-7">
+        @Model.Langiahan
+	</dd>
+	<dt class="col-sm-5 text-end border-end">
+		@Html.DisplayNameFor(model => model.Maphieumuon)
+	</dt>
+	<dd class="col-sm-7">
+		@Model.Maphieumuon
+	</dd>
+	<dt class="col-sm-5 text-end border-end">
+		@Html.DisplayNameFor(model => model.Matinhtrang)
+	</dt>
+	<dd class="col-sm-7">
+		@Model.Matinhtrang
+	</dd>
+	<dt class="col-sm-5 text-end border-end">
+		@Html.DisplayNameFor(model => model.Matt)
+	</dt>
+	<dd class="col-sm-7">
+        @if (Model.Matt != null) @Model.Matt
+        else
+        {
+            <text>#</text>
+        }  
+	</dd>
+	<dt class="col-sm-5 text-end border-end">
+		@Html.DisplayNameFor(model => model.Lydo)
+	</dt>
+	<dd class="col-sm-7">
+		@Model.Lydo
+	</dd>
+    <dt class = "col-sm-5 text-end border-end">
+        @Html.DisplayNameFor(model => model.Ghichu)
+    </dt>
+    <dd class = "col-sm-7">
+        @Model.Ghichu
+    </dd> 
+</dl>

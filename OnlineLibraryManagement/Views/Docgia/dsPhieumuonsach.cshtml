@@ -14,7 +14,6 @@
     if (!ViewBag.dangLapPhieu)
     {
         <a asp-action="timSach" class="btn btn-success">Lập phiếu mượn sách</a>
-        <br />
     }
     else {
         <div class="p-3 rounded-3 shadow bg-light">
@@ -111,9 +110,8 @@
         </div>
     }
 }
-<br />
 
-<div class="p-3 rounded-3 shadow bg-light">
+<div class="p-3 mt-4 rounded-3 shadow bg-light">
     <table class="table rounded-3 overflow-hidden table-hover">
         <thead class="align-middle text-light table-bordered" style="background-color:#627fd9">
         <tr>
@@ -153,9 +151,17 @@
                 </td>
                 <td class="text-center">
                     @if (item.Ngaypheduyet != null) @item.Ngaypheduyet.Value.ToShortDateString()
+                    else
+                    {
+                        <text>--/--</text>
+                    }
                 </td>
                 <td class="text-center">
                     @if (item.Hantra != null) @item.Hantra.Value.ToShortDateString()
+                    else
+                    {
+                        <text>--/--</text>
+                    }
                 </td>
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Soluongsach)
@@ -167,9 +173,13 @@
                     }
                 </td>
                 <td>
-                    @if (item.MattNavigation != null) @item.MattNavigation.Tentt                 
+                    @if (item.MattNavigation != null) @item.MattNavigation.Tentt
+                    else
+                    {
+                        <div class="text-center me-5">#</div>
+                    }
                 </td>
-                <td class="text-center border-start">
+                    <td class="text-center border-start" style="width: 12em">
                     <a asp-action="chitietPhieumuonsach" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
                 </td>
             </tr>

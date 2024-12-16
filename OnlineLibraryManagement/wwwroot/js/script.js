@@ -37,6 +37,9 @@ function taoPhieu() {
             case "chogiahan": 
                 alert("Gia hạn không thành công: Phiếu mượn đang có yêu cầu gia hạn chưa duyệt");
                 break;
+            case "ketthuc": 
+                alert("Gia hạn không thành công: Phiếu mượn đã kết thúc");
+                break;
         }
         location.href = "/Docgia/dsPhieugiahan";
     }
@@ -57,17 +60,3 @@ function scrollBack() {
 function scrollRight() {
     document.getElementById("bookContainer").scrollBy({ left: 300, behavior: "smooth" });
 }
-
-// Ask before closing application/web page
-//window.addEventListener('beforeunload', function (e) {
-//    this.confirm('Cảnh báo: Phiếu mượn đang lập sẽ không được lưu lại. Bạn chắc chắn muốn thoát?');
-//    if ('@(Session["dangLapPhieu"] != null ? Session["dangLapPhieu"].ToString() : "False")' == 'True') {
-//        var close = this.confirm('Cảnh báo: Phiếu mượn đang lập sẽ không được lưu lại. Bạn chắc chắn muốn thoát?');
-//        if (close == 'True') {
-//            const xhttp = new XMLHttpRequest();
-//            const url = "/Docgia/huyPhieu";
-//            xhttp.open("GET", url);
-//            xhttp.send();
-//        }
-//    }
-//})
