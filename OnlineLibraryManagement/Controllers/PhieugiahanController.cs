@@ -70,7 +70,7 @@ namespace OnlineLibraryManagement.Controllers
                     return Json(false);
                 }
             }
-            return Json(false);
+            return Json("Độc giả đã hủy yêu cầu gia hạn");
         }
         public IActionResult tuChoiGiaHan([FromBody] CGhichu c)
         {
@@ -96,7 +96,7 @@ namespace OnlineLibraryManagement.Controllers
                     return Json(false);
                 }
             }
-            return Json(false);
+            return Json("Độc giả đã hủy yêu cầu gia hạn");
         }
 
     }

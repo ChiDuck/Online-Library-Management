@@ -154,6 +154,10 @@
                         alert("Xác nhận yêu cầu gia hạn thành công");
                         location.href = "/Phieugiahan/Index";
                     }
+                    else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu gia hạn") {
+                        alert("Độc giả đã hủy yêu cầu gia hạn");
+                        location.href = "/Phieugiahan/Index";
+                    }
                     else {
                         alert("Xác nhận yêu cầu gia hạn thất bại");
                     }
@@ -181,6 +185,10 @@
             xhttp.onload = function () {
                 if (JSON.parse(xhttp.responseText) == true) {
                     alert("Từ chối yêu cầu gia hạn thành công");
+                    location.href = "/Phieugiahan/Index";
+                }
+                else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu gia hạn") {
+                    alert("Độc giả đã hủy yêu cầu gia hạn");
                     location.href = "/Phieugiahan/Index";
                 }
                 else {

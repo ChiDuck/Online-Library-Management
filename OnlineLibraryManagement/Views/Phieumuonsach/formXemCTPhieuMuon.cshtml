@@ -159,7 +159,7 @@
                         if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
                         {
                             string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
-                                        <img height="100" width="50" src="@Url.Content(tenFile)" />
+                                            <img height="100" width="50" src="@Url.Content(tenFile)" />
                         }
                     }
                 </td>
@@ -167,7 +167,7 @@
                     @{
                         if (item.MasachNavigation.MaloaiNavigation != null)
                         {
-                                        <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
+                                            <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
                         }
                     }
                 </td>
@@ -175,7 +175,7 @@
                     @{
                         if (item.MasachNavigation.ManxbNavigation != null)
                         {
-                                        <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
+                                            <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
                         }
                     }
                 </td>
@@ -188,11 +188,11 @@
                             string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
                             if (i == 0)
                             {
-                                            <text>@tenTacgia</text>
+                                                <text>@tenTacgia</text>
                             }
                             else if (i >= 1 && i < dsPhienBanSach.Count)
                             {
-                                            <text>, @tenTacgia</text>
+                                                <text>, @tenTacgia</text>
                             }
                         }
                     }
@@ -201,7 +201,7 @@
                     @{
                         if (item.MatinhtrangNavigation != null)
                         {
-                                        <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
+                                            <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
                         }
                     }
                 </td>
@@ -257,6 +257,10 @@ else if (Model.Matinhtrang == 3)
                         alert("Xác nhận yêu cầu mượn sách thành công");
                         location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
                     }
+                    else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu mượn sách") {
+                        alert("Độc giả đã hủy yêu cầu mượn sách");
+                        location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+                    }
                     else {
                         alert("Xác nhận yêu cầu mượn sách thất bại");
                     }
@@ -286,6 +290,10 @@ else if (Model.Matinhtrang == 3)
             xhttp.onload = function () {
                 if (JSON.parse(xhttp.responseText) == true) {
                     alert("Từ chối yêu cầu mượn sách thành công");
+                    location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+                }
+                else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu mượn sách") {
+                    alert("Độc giả đã hủy yêu cầu mượn sách");
                     location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
                 }
                 else {

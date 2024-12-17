@@ -93,7 +93,7 @@ namespace OnlineLibraryManagement.Controllers
                 }
             }
 
-            return Json(false);
+            return Json("Độc giả đã hủy yêu cầu mượn sách");
 
         }
         public IActionResult tuChoiMuonSach([FromBody] CGhichu c)
@@ -136,7 +136,7 @@ namespace OnlineLibraryManagement.Controllers
                     return Json(false);
                 }
             }
-            return Json(false);
+            return Json("Độc giả đã hủy yêu cầu mượn sách");
         }
         public IActionResult kiemtraPhieuGiaHan(int id)
         {
