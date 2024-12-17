@@ -413,6 +413,32 @@ namespace OnlineLibraryManagement.Controllers
             return View(pms);
         }
         [Authorize(Roles = "Docgia")]
+        public IActionResult huyPhieuMuon(int id)
+        {
+
+            Phieumuonsach phieumuon = db.Phieumuonsach.Find(id);
+            if (phieumuon != null && phieumuon.Matinhtrang == 1)
+            {
+                phieumuon.Chitietphieumuon = db.Chitietphieumuon.Where(x => x.Maphieu == id).ToList();
+                try
+                {
+                    foreach (Chitietphieumuon item in phieumuon.Chitietphieumuon)
+                    {
+                        Sach s = db.Sach.Find(item.Masach);
+                        s.Soluong++;
+                        db.Sach.Update(s);
+                        db.Chitietphieumuon.Remove(item);
+                    }
+                    db.Phieumuonsach.Remove(phieumuon);
+                    db.SaveChanges();
+                    return Json(true);
+                }
+                catch (Exception ex)
+                { }
+            }
+            return Json(false);
+        }
+        [Authorize(Roles = "Docgia")]
         public IActionResult dsPhieutrasach()
         {
             int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
@@ -438,7 +464,7 @@ namespace OnlineLibraryManagement.Controllers
             }
             return View(p);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult dsPhieugiahan()
         {
             int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
@@ -450,7 +476,7 @@ namespace OnlineLibraryManagement.Controllers
                 .ToList();
             return View(ds);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult themPhieugiahan([FromBody] CGhichu x)
         {
             int mdg = MySessions.Get<int>(HttpContext.Session, "madocgia");
@@ -488,11 +514,30 @@ namespace OnlineLibraryManagement.Controllers
 
             return Json(true);
         }
-
+        [Authorize(Roles = "Docgia")]
         public IActionResult chitietPhieugiahan(int id)
         {
             Phieugiahan p = db.Phieugiahan.Find(id);
             return View(p);
+        }
+        [Authorize(Roles = "Docgia")]
+        public IActionResult huyPhieuGiaHan(int id)
+        {
+
+            Phieugiahan phieuGH = db.Phieugiahan.Find(id);
+            if (phieuGH != null && phieuGH.Matinhtrang == 1)
+            {
+                try
+                {
+                   
+                    db.Phieugiahan.Remove(phieuGH);
+                    db.SaveChanges();
+                    return Json(true);
+                }
+                catch (Exception ex)
+                { }
+            }
+            return Json(false);
         }
         #endregion
 

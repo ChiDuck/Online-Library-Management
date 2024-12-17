@@ -180,10 +180,36 @@
                     }
                 </td>
                     <td class="text-center border-start" style="width: 12em">
-                    <a asp-action="chitietPhieumuonsach" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
+                    <a asp-action="chitietPhieumuonsach" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a> 
+                    @if(item.Matinhtrang == 1)
+                    {
+                        <input type="button" value="Hủy yêu cầu" onclick="huyPhieuMuon('@item.Maphieu')" class="btn btn-danger" />
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
 </div>
+<script>
+    function huyPhieuMuon(id) {
+        var xacnhan = window.confirm("Bạn có chắc chắn muốn hủy yêu cầu này?");
+        if (xacnhan) 
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (JSON.parse(xhttp.responseText) == true) {
+                    alert("Hủy yêu cầu mượn sách thành công");
+                    location.href = "/Docgia/dsPhieumuonsach";
+                }
+                else {
+                    alert("Hủy yêu cầu mượn sách thất bại");
+                    location.href = "/Docgia/dsPhieumuonsach";
+                }
+            }
+            const url = "/Docgia/huyPhieuMuon/" + id;
+            xhttp.open("GET", url);
+            xhttp.send();
+        }
+    }
+</script>
