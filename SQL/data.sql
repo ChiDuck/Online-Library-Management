@@ -173,7 +173,7 @@ INSERT INTO PHIEUGIAHAN VALUES		-- Ngày lập, ngày duyệt, hạn mới, lầ
 ('2024-11-14','2024-11-14','2024-11-17', 1, N'Không trả phạt giờ',N'Xin muộn 2 ngày', 2, 1, 1)
 
 select * from DOCGIA
-select * from SACH
+select * from TAIKHOAN
 select * from PHIEUGIAHAN
 select CHITIETPHIEUMUON.* from CHITIETPHIEUMUON join PHIEUMUONSACH on CHITIETPHIEUMUON.MAPHIEU = PHIEUMUONSACH.MAPHIEU
 where PHIEUMUONSACH.MAPHIEU = 3

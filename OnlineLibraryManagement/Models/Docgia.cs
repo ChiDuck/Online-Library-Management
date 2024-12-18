@@ -12,6 +12,7 @@ namespace OnlineLibraryManagement.Models
         [Display(Name = "Mã độc giả")]
         public int Madocgia { get; set; }
         [Display(Name = "Tên độc giả")]
+        [StringLength(30)]
         public string? Tendocgia { get; set; }
         [Display(Name = "Ngày sinh")]
         public DateTime? Ngaysinh { get; set; }

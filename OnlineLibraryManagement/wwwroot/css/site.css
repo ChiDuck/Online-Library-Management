@@ -41,8 +41,8 @@ html {
 
 .btn {
     border-radius: 50rem;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 1.3em;
+    padding-right: 1.3em;
 }
 
 .btn-primary {
@@ -108,3 +108,22 @@ footer {
 * {
     font-family: Bahnschrift, Arial;
 }
+
+@font-face {
+    font-family: 'TitleFont';
+    src: url('../font/MPLUSRounded1c-Medium.ttf') format('truetype');
+}
+
+.title {
+    font-family: TitleFont, Bahnschrift;
+}
+
+.fa-trash {
+    transform: translate(0,1.5px);
+}
+ .longtext {
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+ }

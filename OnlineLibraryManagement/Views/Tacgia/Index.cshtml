@@ -1,69 +1,80 @@
 ﻿@model IEnumerable<OnlineLibraryManagement.MyModels.CTacgia>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 
-<h1>Danh sách tác giả</h1>
+<h1 class="mt-4 mb-4">Danh sách tác giả</h1>
 
 <p>
-    <a asp-action="frmThemTacgia" class="btn btn-primary">Thêm tác giả</a>
+	<a asp-action="frmThemTacgia" class="btn btn-success" style="padding-left:1em">
+		<i class="fa-solid fa-plus me-2" style="color: #ffffff;"></i>Thêm tác giả
+	</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            @* <th>
-                @Html.DisplayNameFor(model => model.Matacgia)
-            </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.Tentacgia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ngaysinh)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ngaymat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quoctich)
-            </th>
-            <th>
-                Tác vụ
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.Matacgia)
-            </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.Tentacgia)
-            </td>
-            <td>               
-                @if (item.Ngaysinh != null) @item.Ngaysinh.Value.ToShortDateString() 
-                else
-                {
-                    <p>Không rõ</p>
-                }
-            </td>
-            <td>
-                @if (item.Ngaymat != null) @item.Ngaymat.Value.ToShortDateString()
-                else
-                {
-                    <p>Không rõ</p>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quoctich)
-            </td>
-            <td>
-                <a asp-action="frmSuaTacgia" asp-route-id="@item.Matacgia" class="btn btn-primary">Sửa</a>
-                <a asp-action="frmXoaTacgia" asp-route-id="@item.Matacgia" class="btn btn-danger">Xóa</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="p-3 bg-light">
+	<table class="table overflow-hidden border-top table-hover">
+		<thead class="border-top border-dark align-middle table-bordered">
+			<tr>
+				<th class="text-center">
+					@Html.DisplayNameFor(model => model.Matacgia)
+				</th>
+				<th class="ps-5">
+					@Html.DisplayNameFor(model => model.Tentacgia)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Ngaysinh)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Ngaymat)
+				</th>
+				<th class="ps-5">
+					@Html.DisplayNameFor(model => model.Quoctich)
+				</th>
+				<th class="text-center border-start">
+					Tác vụ
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td class="text-center">
+						@Html.DisplayFor(modelItem => item.Matacgia)
+					</td>
+					<td class="ps-5">
+						@Html.DisplayFor(modelItem => item.Tentacgia)
+					</td>
+					<td>
+						@if (item.Ngaysinh != null)
+							@item.Ngaysinh.Value.ToShortDateString()
+						else
+						{
+							<p>Không rõ</p>
+						}
+					</td>
+					<td>
+						@if (item.Ngaymat != null)
+							@item.Ngaymat.Value.ToShortDateString()
+						else
+						{
+							<p>Không rõ</p>
+						}
+					</td>
+					<td class="ps-5">
+						@Html.DisplayFor(modelItem => item.Quoctich)
+					</td>
+					<td class="text-center border-start">
+						<a asp-action="frmSuaTacgia" asp-route-id="@item.Matacgia" class="btn btn-primary me-2">
+							<i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+						</a>
+						<a asp-action="frmXoaTacgia" asp-route-id="@item.Matacgia" class="btn btn-danger">
+							<i class="fa-solid fa-trash" style="color: #ffffff"></i>
+						</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

@@ -1,55 +1,64 @@
 ﻿@model IEnumerable<OnlineLibraryManagement.MyModels.CNhaxuatban>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 
-<h1>Danh sách nhà xuất bản</h1>
+<h1 class="mt-4 mb-4">Danh sách nhà xuất bản</h1>
 
 <p>
-    <a asp-action="frmThemNhaxuatban" class="btn btn-primary">Thêm nhà xuất bản</a>
+	<a asp-action="frmThemNhaxuatban" class="btn btn-success" style="padding-left:1em">
+		<i class="fa-solid fa-plus me-2" style="color: #ffffff;"></i>Thêm nhà xuất bản
+	</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-           @*  <th>
-                @Html.DisplayNameFor(model => model.Manxb)
-            </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.Tennxb)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Diachi)
-            </th>
-            <th>
-                Tác vụ
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-           @*  <td>
-                @Html.DisplayFor(modelItem => item.Manxb)
-            </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.Tennxb)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Diachi)
-            </td>
-            <td>
-                <a asp-action="frmSuaNhaxuatban" asp-route-id="@item.Manxb" class="btn btn-primary">Sửa</a>
-                <a asp-action="frmXoaNhaxuatban" asp-route-id="@item.Manxb" class="btn btn-danger">Xóa</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="p-3 bg-light">
+	<table class="table overflow-hidden border-top table-hover">
+		<thead class="border-top border-dark align-middle table-bordered">
+			<tr>
+				<th class="text-center">
+					@Html.DisplayNameFor(model => model.Manxb)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Tennxb)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Email)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Diachi)
+				</th>
+				<th class="text-center border-start" style="width: 7em">
+					Tác vụ
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td class="text-center">
+						@Html.DisplayFor(modelItem => item.Manxb)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Tennxb)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Email)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Diachi)
+					</td>
+					<td class="text-center border-start">
+						<a asp-action="frmSuaNhaxuatban" asp-route-id="@item.Manxb" class="btn btn-primary mb-2">
+							<i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+						</a>
+						<a asp-action="frmXoaNhaxuatban" asp-route-id="@item.Manxb" class="btn btn-danger">
+							<i class="fa-solid fa-trash" style="color: #ffffff"></i>
+						</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

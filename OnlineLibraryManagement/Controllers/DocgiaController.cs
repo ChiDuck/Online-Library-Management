@@ -529,7 +529,7 @@ namespace OnlineLibraryManagement.Controllers
             {
                 try
                 {
-                   
+
                     db.Phieugiahan.Remove(phieuGH);
                     db.SaveChanges();
                     return Json(true);

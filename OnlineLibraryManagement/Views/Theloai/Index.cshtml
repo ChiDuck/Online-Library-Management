@@ -1,42 +1,52 @@
 ﻿@model IEnumerable<OnlineLibraryManagement.MyModels.CTheloai>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Thể loại";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 
-<h1>Danh sách thể loại</h1>
+<h1 class="mt-4 mb-4">Danh sách thể loại</h1>
+
 <p>
-    <a asp-action="frmThemTheloai" class="btn btn-primary">Thêm thể loại</a>
+	<a asp-action="frmThemTheloai" class="btn btn-success" style="padding-left:1em">
+		<i class="fa-solid fa-plus me-2" style="color: #ffffff;"></i>Thêm thể loại
+	</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Maloai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tenloai)
-            </th>
-            <th>
-                Tác vụ
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Maloai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tenloai)
-            </td>
-            <td>
-                <a asp-action="frmSuaTheloai" asp-route-id="@item.Maloai" class="btn btn-primary">Sửa</a>
-                <a asp-action="frmXoaTheloai" asp-route-id="@item.Maloai" class="btn btn-danger">Xóa</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="p-3 bg-light text-center">
+	<table class="table overflow-hidden border-top table-hover">
+		<thead class="border-top border-dark align-middle table-bordered">
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.Maloai)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Tenloai)
+				</th>
+				<th class="text-center">
+					Tác vụ
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Maloai)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Tenloai)
+					</td>
+					<td>
+						<a asp-action="frmSuaTheloai" asp-route-id="@item.Maloai" class="btn btn-primary me-2">
+							<i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+						</a>
+						<a asp-action="frmXoaTheloai" asp-route-id="@item.Maloai" class="btn btn-danger">
+							<i class="fa-solid fa-trash" style="color: #ffffff"></i>
+						</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

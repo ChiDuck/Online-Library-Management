@@ -7,104 +7,114 @@
 @{
     QuanLyThuVienContext db = new QuanLyThuVienContext();
 }
-<h1>Danh sách các đầu sách</h1>
+<h1 class="mt-4 mb-4">Danh sách các đầu sách</h1>
 
 <p>
-    <a asp-action="formChonTacGia" class="btn btn-primary">Thêm sách mới</a>
+    <a asp-action="formChonTacGia" class="btn btn-success" style="padding-left:1em">
+        <i class="fa-solid fa-plus me-2" style="color: #ffffff;"></i>Thêm sách mới
+    </a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Masach)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tensach)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Soluong)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Namxuatban)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Anhbia)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Maloai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Manxb)
-            </th>
-            <th>
-                Tác giả
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Masach)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tensach)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Soluong)
-            </td>
+<div class="p-3 bg-light">
+    <table class="table overflow-hidden border-top table-hover">
+        <thead class="border-top border-dark align-middle table-bordered">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Masach)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tensach)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Soluong)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Namxuatban)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Anhbia)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Maloai)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Manxb)
+                </th>
+                <th>
+                    Tác giả
+                </th>
+                <th class="text-center border-start" style="width: 7em">Tác vụ</th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Namxuatban)
+                    @Html.DisplayFor(modelItem => item.Masach)
                 </td>
-             <td>
-                    @{
-                        if (!string.IsNullOrEmpty(item.Anhbia))
-                        {
-                            string tenFile = "~/img/" + item.Anhbia;
-                            <img height="100" width="50" src="@Url.Content(tenFile)" />
-                        }
-                    }
-            </td>
-            <td>
-                    @{
-                        if (item.MaloaiNavigation != null)
-                        {
-                            <p>@item.MaloaiNavigation.Tenloai</p>
-                        }
-                    }
-            </td>
-            <td>
-                    @{
-                        if (item.ManxbNavigation != null)
-                        {
-                            <p>@item.ManxbNavigation.Tennxb</p>
-                        }
-                    }
-            </td>
-            <td>
-                    @{
-                        List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.Masach).ToList();
-                        for (int i = 0; i < dsPhienBanSach.Count; i++)
-                        {
-                            Phienbansach p = dsPhienBanSach[i];
-                            string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
-                            if (i == 0)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tensach)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluong)
+                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Namxuatban)
+                    </td>
+                 <td>
+                        @{
+                            if (!string.IsNullOrEmpty(item.Anhbia))
                             {
-                                <text>@tenTacgia</text>
-                            }
-                            else if (i >= 1 && i < dsPhienBanSach.Count)
-                            {
-                                <text>, @tenTacgia</text>
+                                string tenFile = "~/img/" + item.Anhbia;
+                                <img height="100" width="50" src="@Url.Content(tenFile)" />
                             }
                         }
-                    }
-            </td>
-            <td>
-                  <a asp-action="formSuaSach" class="btn btn-primary" asp-route-id="@item.Masach">Sửa</a>
-                  <a asp-action="formXoaSach" class="btn btn-danger" asp-route-id="@item.Masach">Xóa</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </td>
+                <td>
+                        @{
+                            if (item.MaloaiNavigation != null)
+                            {
+                                <p>@item.MaloaiNavigation.Tenloai</p>
+                            }
+                        }
+                </td>
+                <td>
+                        @{
+                            if (item.ManxbNavigation != null)
+                            {
+                                <p>@item.ManxbNavigation.Tennxb</p>
+                            }
+                        }
+                </td>
+                <td>
+                        @{
+                            List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.Masach).ToList();
+                            for (int i = 0; i < dsPhienBanSach.Count; i++)
+                            {
+                                Phienbansach p = dsPhienBanSach[i];
+                                string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+                                if (i == 0)
+                                {
+                                    <text>@tenTacgia</text>
+                                    <br />
+                                }
+                                else if (i >= 1 && i < dsPhienBanSach.Count)
+                                {
+                                    <text> @tenTacgia</text>
+                                    <br />
+                                }
+                            }
+                        }
+                </td>
+                <td class="align-middle border-start text-center">
+                    <a asp-action="formSuaSach" class="btn btn-primary mb-2" asp-route-id="@item.Masach">
+                        <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+                    </a>
+                    <a asp-action="formXoaSach" class="btn btn-danger" asp-route-id="@item.Masach">
+                        <i class="fa-solid fa-trash" style="color: #ffffff"></i>
+                    </a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>

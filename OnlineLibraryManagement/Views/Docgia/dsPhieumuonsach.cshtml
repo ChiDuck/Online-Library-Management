@@ -112,8 +112,8 @@
 }
 
 <div class="p-3 mt-4 rounded-3 shadow bg-light">
-    <table class="table rounded-3 overflow-hidden table-hover">
-        <thead class="align-middle text-light table-bordered" style="background-color:#627fd9">
+	<table class="table rounded-3 overflow-hidden table-hover align-middle">
+        <thead class="text-light table-bordered" style="background-color:#627fd9">
         <tr>
                 <th class="text-center">
                 @Html.DisplayNameFor(model => model.Maphieu)
@@ -142,7 +142,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="align-middle">
+            <tr>
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Maphieu)
                 </td>
