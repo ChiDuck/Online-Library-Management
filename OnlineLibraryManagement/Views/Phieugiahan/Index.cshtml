@@ -89,3 +89,9 @@
 }
     </tbody>
 </table>
+@if (TempData["Message"] != null)
+{
+    <script>
+        alert('@Html.Raw(TempData["Message"])');
+    </script>
+}

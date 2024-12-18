@@ -12,7 +12,7 @@ namespace OnlineLibraryManagement.Controllers
         private QuanLyThuVienContext db = new QuanLyThuVienContext();
         public IActionResult Index()
         {
-            List<Phieugiahan> ds = db.Phieugiahan.OrderByDescending(s => s.Ngaylapphieu).ToList();
+            List<Phieugiahan> ds = db.Phieugiahan.OrderByDescending(s => s.Ngaylapphieu).ThenBy(s => s.Matinhtrang).ToList();
             foreach (Phieugiahan item in ds)
             {
                 item.MattNavigation = db.Thuthu.Find(item.Matt);
@@ -29,7 +29,9 @@ namespace OnlineLibraryManagement.Controllers
                                           .Include(s => s.MaphieumuonNavigation)
                                           .ThenInclude(x => x.MadocgiaNavigation)
                                           .FirstOrDefault(s => s.Maphieu == maphieugiahan);
-            return View(p);
+            if (p != null) return View(p);
+            TempData["Message"] = "Độc giả đã hủy yêu cầu. Phiếu gia hạn không tồn tại để xem";
+            return RedirectToAction("Index");
         }
         public IActionResult xacNhanGiaHan([FromBody] CGhichu c)
         {

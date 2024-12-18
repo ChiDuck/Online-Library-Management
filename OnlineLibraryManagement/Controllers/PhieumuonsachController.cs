@@ -14,7 +14,7 @@ namespace OnlineLibraryManagement.Controllers
         #region Thủ thư
         public IActionResult DSPhieuMuon_Thuthu()
         {
-            List<Phieumuonsach> ds = db.Phieumuonsach.OrderByDescending(s => s.Maphieu).ToList();
+            List<Phieumuonsach> ds = db.Phieumuonsach.OrderByDescending(s => s.Ngaylapphieu).ThenBy(s => s.Matinhtrang).ToList();
             foreach (Phieumuonsach item in ds)
             {
                 if (item.Matinhtrang == 2 && item.Hantra.HasValue)
@@ -48,16 +48,20 @@ namespace OnlineLibraryManagement.Controllers
                                               .Include(s => s.MattNavigation)
                                               .Include(s => s.MatinhtrangNavigation)
                                               .FirstOrDefault(s => s.Maphieu == maphieumuon);
-
-            ViewBag.DSCTPhieuMuon = db.Chitietphieumuon.Where(x => x.Maphieu == maphieumuon).ToList();
-            foreach (Chitietphieumuon ct in ViewBag.DSCTPhieuMuon)
+            if (p != null)
             {
-                ct.MasachNavigation = db.Sach.Include(s => s.MaloaiNavigation)
-                                             .Include(s => s.ManxbNavigation)
-                                             .FirstOrDefault(s => s.Masach == ct.Masach);
-                ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
+                ViewBag.DSCTPhieuMuon = db.Chitietphieumuon.Where(x => x.Maphieu == maphieumuon).ToList();
+                foreach (Chitietphieumuon ct in ViewBag.DSCTPhieuMuon)
+                {
+                    ct.MasachNavigation = db.Sach.Include(s => s.MaloaiNavigation)
+                                                 .Include(s => s.ManxbNavigation)
+                                                 .FirstOrDefault(s => s.Masach == ct.Masach);
+                    ct.MatinhtrangNavigation = db.Tinhtrangmuon.Find(ct.Matinhtrang);
+                }
+                return View(p);
             }
-            return View(p);
+            TempData["Message"] = "Độc giả đã hủy yêu cầu. Phiếu mượn không tồn tại để xem";
+            return RedirectToAction("DSPhieuMuon_Thuthu");
         }
         public IActionResult xacNhanMuonSach([FromBody] CGhichu c)
         {
