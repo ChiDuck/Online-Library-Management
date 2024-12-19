@@ -73,7 +73,7 @@ function themTacgia() {
     if (ngaymat == "") ngaymat = null;
     let data = { Tentacgia: tentg, Ngaysinh: ngaysinh, Ngaymat: ngaymat, Quoctich: quoctich }
     console.log(data);
-    if (tentg.trim() === "") {
+    if (tentg.trim() == "") {
         document.getElementById("validten").innerHTML = "Vui lòng nhập tên tác giả";
         return;
     }
