@@ -2,12 +2,12 @@
 
 namespace OnlineLibraryManagement.Models
 {
-    public partial class Tacgia
-    {
-        public Tacgia()
-        {
-            Phienbansach = new HashSet<Phienbansach>();
-        }
+	public partial class Tacgia
+	{
+		public Tacgia()
+		{
+			Phienbansach = new HashSet<Phienbansach>();
+		}
 
 		[Display(Name = "Mã tác giả")]
 		public int Matacgia { get; set; }
@@ -26,5 +26,5 @@ namespace OnlineLibraryManagement.Models
 		public string? Quoctich { get; set; }
 
 		public virtual ICollection<Phienbansach> Phienbansach { get; set; }
-    }
+	}
 }
