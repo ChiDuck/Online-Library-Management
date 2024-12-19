@@ -200,9 +200,9 @@ namespace OnlineLibraryManagement.Controllers
                 {
                     db.Phienbansach.Remove(p);
                 }
-                xoaAnh(s.Anhbia);
                 db.Sach.Remove(s);
                 db.SaveChanges();
+                xoaAnh(s.Anhbia);
                 return RedirectToAction("Index");
             }
             catch (Exception e)
