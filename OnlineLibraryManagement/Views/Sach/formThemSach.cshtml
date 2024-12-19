@@ -1,150 +1,151 @@
 ﻿@model OnlineLibraryManagement.Models.Sach
 @{
-    ViewData["Title"] = "Thêm sách";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Thêm sách";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 @{
-    QuanLyThuVienContext db = new QuanLyThuVienContext();
-    SelectList DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-    SelectList DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+	QuanLyThuVienContext db = new QuanLyThuVienContext();
+	SelectList DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+	SelectList DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
 }
 
-<h1>Thêm sách mới</h1>
-<div>
-    <a asp-action="Index" class="btn btn-success">Xem danh sách các sách</a>
+<div class="mt-5 d-flex">
+	<h2 style="margin-bottom:0">Thêm sách mới</h2>
+	<a asp-action="Index" class="btn bg-light ms-auto">
+		<i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+	</a>
 </div>
 <hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="themSach" id="formThemSach" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-@*             <div class="form-group">
-                <label asp-for="Masach" class="control-label"></label>
-                <input type="hidden" asp-for="Masach" class="form-control" />
-                <span asp-validation-for="Masach" class="text-danger"></span>
-            </div> *@
-            <br />
-            @{
-                if (Model != null)
-                {
-                    <div>
-                        <h3>Danh sách tác giả</h3>
-                        <input type="button" class="btn btn-primary" value="Chọn thêm tác giả" onclick="sendData()" />
-                        <br />
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Tên tác giả
-                                    </th>
-                                    <th>
-                                        Ngày sinh
-                                    </th>
-                                    <th>
-                                        Quốc tịch
-                                    </th>
-                                    <th>
-                                        Vai trò
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.Phienbansach)
-                                {
-                                    <tr>
-                                        <td>
-                                            @item.MatacgiaNavigation.Tentacgia
-                                        </td>
-                                        <td>
-                                            @{
-                                                if (@item.MatacgiaNavigation.Ngaysinh != null)
-                                                {
-                                                    <p>@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()</p>
-                                                }
+<div class="row mx-auto pt-4 pb-4 bg-light" style="width:45em">
+	<div class="col-1"></div>
+	<div class="col">
+		<form asp-action="themSach" id="formThemSach" method="post" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<br />
+			@{
+				if (Model != null)
+				{
+					<div class="bg-white p-3">
+						<div class="d-flex">
+							<h4>Danh sách tác giả</h4>
+							<input type="button" class="btn btn-primary ms-auto" value="Thêm tác giả" onclick="sendData()" />
+						</div>
+						<table class="table table-bordered mt-2">
+							<thead>
+								<tr>
+									<th>
+										Tên tác giả
+									</th>
+									<th>
+										Ngày sinh
+									</th>
+									<th>
+										Quốc tịch
+									</th>
+									<th>
+										Vai trò
+									</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var item in Model.Phienbansach)
+								{
+									<tr>
+										<td>
+											@item.MatacgiaNavigation.Tentacgia
+										</td>
+										<td>
+											@if (@item.MatacgiaNavigation.Ngaysinh != null)
+											{
+												<text>@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()</text>
+											}
+										</td>
+										<td>
+											@item.MatacgiaNavigation.Quoctich
+										</td>
+										<td>
+											@item.Vaitro
+										</td>
+										<td class="text-center">
+											<a asp-action="xoaTacGia" asp-route-matacgia="@item.Matacgia" class="btn btn-danger">
+												<i class="fa-solid fa-trash" style="color: #ffffff"></i>
+											</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				}
+			}
+			<div class="form-group mt-3">
+				<label asp-for="Tensach" class="control-label"></label>
+				<input asp-for="Tensach" class="form-control" />
+				<span asp-validation-for="Tensach" class="text-danger"></span>
+			</div>
 
-                                            }
-                                        </td>
-                                        <td>
-                                            @item.MatacgiaNavigation.Quoctich
-                                        </td>
-                                        <td>
-                                            @item.Vaitro
-                                        </td>
-                                        <td>
-                                            <a asp-action="xoaTacGia" asp-route-matacgia="@item.Matacgia" class="btn btn-danger">Xóa</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
-            }
-            <div class="form-group">
-                <label asp-for="Tensach" class="control-label"></label>
-                <input asp-for="Tensach"  class="form-control" />
-                <span asp-validation-for="Tensach" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Soluong" class="control-label"></label>
-                <input type="number"  asp-for="Soluong" class="form-control" />
-                <span asp-validation-for="Soluong" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Namxuatban" class="control-label"></label>
-                <input type="number"  asp-for="Namxuatban" class="form-control" />
-                <span asp-validation-for="Namxuatban" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Anhbia" class="control-label"></label>
-                <input type="file" name="fileImg" class="form-control" />
-                <span asp-validation-for="Anhbia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Maloai" class="control-label"></label>
-                <select asp-for="Maloai" asp-items="@DSTheLoai" class="form-select"></select>
-                <span asp-validation-for="Maloai" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Manxb" class="control-label"></label>
-                <select asp-for="Manxb" asp-items="@DSNhaXuatBan" class="form-select"></select>
-                <span asp-validation-for="Manxb" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="form-group">
-                <input type="submit" value="Thêm mới" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+			<div class="form-group text-nowrap d-flex justify-content-evenly gap-3 mt-3">
+				<label asp-for="Soluong" class="control-label mt-2"></label>
+				<input type="number" asp-for="Soluong" class="form-control" />
+				<span asp-validation-for="Soluong" class="text-danger"></span>
+
+				<label asp-for="Namxuatban" class="control-label mt-2"></label>
+				<input type="number" asp-for="Namxuatban" class="form-control" />
+				<span asp-validation-for="Namxuatban" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-3">
+				<label asp-for="Anhbia" class="control-label"></label>
+				<input type="file" name="fileImg" class="form-control" />
+				<span asp-validation-for="Anhbia" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-3">
+				<label asp-for="Maloai" class="control-label"></label>
+				<select asp-for="Maloai" asp-items="@DSTheLoai" class="form-select"></select>
+				<span asp-validation-for="Maloai" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-3">
+				<label asp-for="Manxb" class="control-label"></label>
+				<select asp-for="Manxb" asp-items="@DSNhaXuatBan" class="form-select"></select>
+				<span asp-validation-for="Manxb" class="text-danger"></span>
+			</div>
+			<br />
+			<div class="form-group text-center">
+				<input type="submit" value="Thêm mới" class="btn btn-success " />
+			</div>
+		</form>
+	</div>
+	<div class="col-1"></div>
 </div>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }
 <script>
-    function sendData() {
-        let tensach = document.forms["formThemSach"]["Tensach"].value;
-        let soluong = document.forms["formThemSach"]["Soluong"].value;
-        let namxuatban = document.forms["formThemSach"]["Namxuatban"].value;
-        let maloai = document.forms["formThemSach"]["Maloai"].value;
-        let manxb = document.forms["formThemSach"]["Manxb"].value;
-        let data = {
-            Tensach: tensach,
-            Soluong: soluong,
-            Namxuatban: namxuatban,
-            Maloai: maloai,
-            Manxb: manxb
-        };
-        const xhttp = new XMLHttpRequest();
-        xhttp.onload = function () {
-            if (JSON.parse(xhttp.responseText) == true) {
-                location.href = "/Sach/formChonTacGia";
-            }
-        }
-        var url = "/Sach/getData";
-        xhttp.open("POST", url);
-        xhttp.setRequestHeader("Content-Type", "application/json");
+	function sendData() {
+		let tensach = document.forms["formThemSach"]["Tensach"].value;
+		let soluong = document.forms["formThemSach"]["Soluong"].value;
+		let namxuatban = document.forms["formThemSach"]["Namxuatban"].value;
+		let maloai = document.forms["formThemSach"]["Maloai"].value;
+		let manxb = document.forms["formThemSach"]["Manxb"].value;
+		let data = {
+			Tensach: tensach,
+			Soluong: soluong,
+			Namxuatban: namxuatban,
+			Maloai: maloai,
+			Manxb: manxb
+		};
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function () {
+			if (JSON.parse(xhttp.responseText) == true) {
+				location.href = "/Sach/formChonTacGia";
+			}
+		}
+		var url = "/Sach/getData";
+		xhttp.open("POST", url);
+		xhttp.setRequestHeader("Content-Type", "application/json");
 
-        xhttp.send(JSON.stringify(data));
-    }
+		xhttp.send(JSON.stringify(data));
+	}
 </script>

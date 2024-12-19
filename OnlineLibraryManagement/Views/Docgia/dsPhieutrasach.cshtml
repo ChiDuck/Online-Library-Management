@@ -26,7 +26,7 @@
 				<th>
 					@Html.DisplayNameFor(model => model.Matt)
 				</th>
-                <th class="border-start"></th>
+                <th class="border-start" style="width: 7em"></th>
             </tr>
         </thead>
         <tbody>
@@ -47,8 +47,10 @@
                     <td>
                         @item.MattNavigation.Tentt
                     </td>
-                    <td class="text-center border-start" style="width: 12em">
-                        <a asp-action="chitietPhieutrasach" asp-route-id="@item.Maphieu" class="btn btn-primary">Xem chi tiết</a>
+                    <td class="text-center border-start">
+                        <a asp-action="chitietPhieutrasach" asp-route-id="@item.Maphieu" class="btn btn-primary">
+                            <i class="fa-solid fa-circle-info fa-lg" style="color: #ffffff;"></i>
+                        </a>
                     </td>
                 </tr>
             }

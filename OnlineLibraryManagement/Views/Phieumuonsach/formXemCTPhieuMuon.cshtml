@@ -1,326 +1,327 @@
 ﻿@model OnlineLibraryManagement.Models.Phieumuonsach
 
 @{
-    ViewData["Title"] = "Chi tiết phiếu mượn";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Chi tiết phiếu mượn";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 @{
-    QuanLyThuVienContext db = new QuanLyThuVienContext();
+	QuanLyThuVienContext db = new QuanLyThuVienContext();
 }
-<h1>Chi tiết phiếu mượn</h1>
-<div>
-    <a asp-action="DSPhieuMuon_Thuthu" class="btn btn-primary">Xem tất cả các phiếu mượn</a>
-</div>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Maphieu)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Maphieu)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ngaylapphieu)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Ngaylapphieu != null)
-            {
-                @Model.Ngaylapphieu.Value.ToShortDateString()
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ngaypheduyet)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Ngaypheduyet != null)
-            {
-                @Model.Ngaypheduyet.Value.ToShortDateString()
-            }
-            else if (Model.Matinhtrang == 1)
-            {
-                string x = "Chờ phê duyệt (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)";
-                @x
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hantra)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Hantra != null)
-            {
-                @Model.Hantra.Value.ToShortDateString()
-            }
-            else if (Model.Matinhtrang == 1)
-            {
-                <input type="date" id="Hantra" class="form-control" />
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Soluongsach)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Soluongsach)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Matinhtrang)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.MatinhtrangNavigation != null)
-            {
-                @Model.MatinhtrangNavigation.Tentinhtrang
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Matt)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.MattNavigation != null)
-            {
-                @Model.MattNavigation.Tentt
-            }
-            else if (Model.Matinhtrang == 1)
-            {
-                string x = "Chưa có (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)";
-                @x
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Madocgia)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.MadocgiaNavigation.Tendocgia
-        </dd>
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ghichu)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Matinhtrang == 1)
-            {
-                <input id="Ghichu" placeholder="Nhập ghi chú (nếu có)" value="@Model.Ghichu" class="form-control" />
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(Model.Ghichu))
-                {
-                    <p>Không có</p>
-                }
-                else
-                {
-                    @Model.Ghichu
-                }
-            }
-        </dd>
-    </dl>
+<div class="mt-5 d-flex">
+	<h2 style="margin-bottom:0">Chi tiết phiếu mượn</h2>
+	<a asp-action="DSPhieuMuon_Thuthu" class="btn bg-light ms-auto">
+		<i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+	</a>
 </div>
-
-<h3>Các cuốn sách độc giả mượn</h3>
 <hr />
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Tên sách
-            </th>
-            <th>
-                Năm xuất bản
-            </th>
-            <th>
-                Ảnh bìa
-            </th>
-            <th>
-                Thể loại
-            </th>
-            <th>
-                Nhà xuất bản
-            </th>
-            <th>
-                Tác giả
-            </th>
-            <th>
-                Tình trạng
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Chitietphieumuon item in ViewBag.DSCTPhieuMuon)
-        {
-            <tr>
-                <td>
-                    @item.MasachNavigation.Tensach
-                </td>
-                <td>
-                    @item.MasachNavigation.Namxuatban
-                </td>
-                <td>
-                    @{
-                        if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
-                        {
-                            string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
-                                            <img height="100" width="50" src="@Url.Content(tenFile)" />
-                        }
-                    }
-                </td>
-                <td>
-                    @{
-                        if (item.MasachNavigation.MaloaiNavigation != null)
-                        {
-                                            <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
-                        }
-                    }
-                </td>
-                <td>
-                    @{
-                        if (item.MasachNavigation.ManxbNavigation != null)
-                        {
-                                            <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
-                        }
-                    }
-                </td>
-                <td>
-                    @{
-                        List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.MasachNavigation.Masach).ToList();
-                        for (int i = 0; i < dsPhienBanSach.Count; i++)
-                        {
-                            Phienbansach p = dsPhienBanSach[i];
-                            string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
-                            if (i == 0)
-                            {
-                                                <text>@tenTacgia</text>
-                            }
-                            else if (i >= 1 && i < dsPhienBanSach.Count)
-                            {
-                                                <text>, @tenTacgia</text>
-                            }
-                        }
-                    }
-                </td>
-                <td>
-                    @{
-                        if (item.MatinhtrangNavigation != null)
-                        {
-                                            <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
-                        }
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-@if (Model.Matinhtrang == 1)
-{
-    <div>
-        <input type="button" value="Xác nhận" onclick="xacnhanMuonSach('@Model.Maphieu')" class="btn btn-success" /> |
-        <input type="button" value="Từ chối" onclick="tuchoiMuonSach('@Model.Maphieu')" class="btn btn-danger" />
-    </div>
-}
-else if (Model.Matinhtrang == 2 || Model.Matinhtrang == 5)
-{
-    <input type="button" value="Lập phiếu trả" onclick="kiemtraGiaHan('@Model.Maphieu')" class="btn btn-success" />
-}
-else if (Model.Matinhtrang == 3)
-{
-    <div>
-        @{
-            int maphieutra = db.Phieutrasach.Where(x => x.Maphieumuon == Model.Maphieu).FirstOrDefault().Maphieu;
-        }
-        <a asp-controller="Phieutrasach" asp-action="formXemCTPhieuTra" class="btn btn-success" asp-route-maphieutra="@maphieutra">Xem chi tiết phiếu trả</a>
-    </div>
-}
+<dl class="row ms-0 p-3 bg-light" style="width:30em">
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Maphieu)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Maphieu)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Ngaylapphieu)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.Ngaylapphieu != null)
+		{
+			@Model.Ngaylapphieu.Value.ToShortDateString()
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Ngaypheduyet)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.Ngaypheduyet != null)
+		{
+			@Model.Ngaypheduyet.Value.ToShortDateString()
+		}
+		else if (Model.Matinhtrang == 1)
+		{
+			<text>Chờ phê duyệt (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)</text>
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Hantra)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.Hantra != null)
+		{
+			@Model.Hantra.Value.ToShortDateString()
+		}
+		else if (Model.Matinhtrang == 1)
+		{
+			<input type="date" id="Hantra" class="form-control" />
+		}
+		else
+		{
+			<text>--/--</text>
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Soluongsach)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Soluongsach)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Matinhtrang)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.MatinhtrangNavigation != null)
+		{
+			@Model.MatinhtrangNavigation.Tentinhtrang
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Matt)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.MattNavigation != null)
+		{
+			@Model.MattNavigation.Tentt
+		}
+		else if (Model.Matinhtrang == 1)
+		{
+			string x = "Chưa có (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)";
+			@x
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Madocgia)
+	</dt>
+	<dd class="col-sm-8">
+		@Model.MadocgiaNavigation.Tendocgia
+	</dd>
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Ghichu)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.Matinhtrang == 1)
+		{
+			<input id="Ghichu" placeholder="Nhập ghi chú (nếu có)" value="@Model.Ghichu" class="form-control" />
+		}
+		else
+		{
+			if (string.IsNullOrEmpty(Model.Ghichu))
+			{
+				<text>Không có</text>
+			}
+			else
+			{
+				@Model.Ghichu
+			}
+		}
+	</dd>
+</dl>
+<div class="p-3 mt-4 bg-light">
+	<h3>Các cuốn sách độc giả mượn</h3>
+	<br />
+	<table class="table overflow-hidden border-top table-hover">
+		<thead class="border-top border-dark table-bordered">
+			<tr>
+				<th>
+				</th>
+				<th>
+					Tên sách
+				</th>
+				<th class="text-center">
+					Năm xuất bản
+				</th>
+				<th>
+					Thể loại
+				</th>
+				<th>
+					Nhà xuất bản
+				</th>
+				<th>
+					Tác giả
+				</th>
+				<th>
+					Tình trạng
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (Chitietphieumuon item in ViewBag.DSCTPhieuMuon)
+			{
+				<tr>
+					<td class="text-center">
+						@if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
+						{
+							string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
+							<img height="120" width="80" src="@Url.Content(tenFile)" />
+						}
+					</td>
+					<td>
+						@item.MasachNavigation.Tensach
+					</td>
+					<td class="text-center">
+						@item.MasachNavigation.Namxuatban
+					</td>
+					<td>
+						@{
+							if (item.MasachNavigation.MaloaiNavigation != null)
+							{
+								@item.MasachNavigation.MaloaiNavigation.Tenloai
+							}
+						}
+					</td>
+					<td>
+						@{
+							if (item.MasachNavigation.ManxbNavigation != null)
+							{
+								@item.MasachNavigation.ManxbNavigation.Tennxb
+							}
+						}
+					</td>
+					<td>
+						@{
+							List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.MasachNavigation.Masach).ToList();
+							for (int i = 0; i < dsPhienBanSach.Count; i++)
+							{
+								Phienbansach p = dsPhienBanSach[i];
+								string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+								if (i == 0)
+								{
+									<text>@tenTacgia</text>
+
+									<br />
+								}
+								else if (i >= 1 && i < dsPhienBanSach.Count)
+								{
+									<text>@tenTacgia</text>
+									<br />
+								}
+							}
+						}
+					</td>
+					<td>
+						@if (item.MatinhtrangNavigation != null)
+						{
+							@item.MatinhtrangNavigation.Tentinhtrang
+						}
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+<div class="ms-3 mt-3">
+	@if (Model.Matinhtrang == 1)
+	{
+	<div>
+		<input type="button" value="Xác nhận" onclick="xacnhanMuonSach('@Model.Maphieu')" class="btn btn-success" />
+		<input type="button" value="Từ chối" onclick="tuchoiMuonSach('@Model.Maphieu')" class="btn btn-danger" />
+	</div>
+	}
+	else if (Model.Matinhtrang == 2 || Model.Matinhtrang == 5)
+	{
+	<input type="button" value="Lập phiếu trả" onclick="kiemtraGiaHan('@Model.Maphieu')" class="btn btn-success" />
+	}
+	else if (Model.Matinhtrang == 3)
+	{
+	<div>
+		@{
+			int maphieutra = db.Phieutrasach.Where(x => x.Maphieumuon == Model.Maphieu).FirstOrDefault().Maphieu;
+		}
+		<a asp-controller="Phieutrasach" asp-action="formXemCTPhieuTra" class="btn btn-success" asp-route-maphieutra="@maphieutra">Xem chi tiết phiếu trả</a>
+	</div>
+	}
+</div>
 
 <script>
-    function xacnhanMuonSach(id) {
-        let hantra = document.getElementById("Hantra").value;
-        if (!hantra) {
-            alert("Bạn chưa gia hạn ngày trả sách");
-            return;
-        }
-        var xacnhan = window.confirm("Bạn có chắc chắn muốn xác nhận yêu cầu này?");
-        if (xacnhan)
-        {
-            let dateNow = new Date();
-            dateNow.setHours(0, 0, 0, 0);
-            let inputDate = new Date(hantra);
-            inputDate.setHours(0, 0, 0, 0);
-            if (inputDate >= dateNow) {
-                let ghichu = document.getElementById("Ghichu").value;
-                let data = {
-                    Maphieu: id,
-                    Hantra: hantra,
-                    Ghichu: ghichu
-                };
-                const xhttp = new XMLHttpRequest();
-                xhttp.onload = function () {
-                    if (JSON.parse(xhttp.responseText) == true) {
-                        alert("Xác nhận yêu cầu mượn sách thành công");
-                        location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
-                    }
-                    else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu mượn sách") {
-                        alert("Độc giả đã hủy yêu cầu mượn sách");
-                        location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
-                    }
-                    else {
-                        alert("Xác nhận yêu cầu mượn sách thất bại");
-                    }
-                }
-                const url = "/Phieumuonsach/xacNhanMuonSach";
-                xhttp.open("POST", url);
-                xhttp.setRequestHeader("Content-Type", "application/json");
-                xhttp.send(JSON.stringify(data));
-            }
-            else {
-                alert("Hạn trả không hợp lệ");
-            }
-        }
-    }
+	function xacnhanMuonSach(id) {
+		let hantra = document.getElementById("Hantra").value;
+		if (!hantra) {
+			alert("Bạn chưa gia hạn ngày trả sách");
+			return;
+		}
+		var xacnhan = window.confirm("Bạn có chắc chắn muốn xác nhận yêu cầu này?");
+		if (xacnhan) {
+			let dateNow = new Date();
+			dateNow.setHours(0, 0, 0, 0);
+			let inputDate = new Date(hantra);
+			inputDate.setHours(0, 0, 0, 0);
+			if (inputDate >= dateNow) {
+				let ghichu = document.getElementById("Ghichu").value;
+				let data = {
+					Maphieu: id,
+					Hantra: hantra,
+					Ghichu: ghichu
+				};
+				const xhttp = new XMLHttpRequest();
+				xhttp.onload = function () {
+					if (JSON.parse(xhttp.responseText) == true) {
+						alert("Xác nhận yêu cầu mượn sách thành công");
+						location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+					}
+					else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu mượn sách") {
+						alert("Độc giả đã hủy yêu cầu mượn sách");
+						location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+					}
+					else {
+						alert("Xác nhận yêu cầu mượn sách thất bại");
+					}
+				}
+				const url = "/Phieumuonsach/xacNhanMuonSach";
+				xhttp.open("POST", url);
+				xhttp.setRequestHeader("Content-Type", "application/json");
+				xhttp.send(JSON.stringify(data));
+			}
+			else {
+				alert("Hạn trả không hợp lệ");
+			}
+		}
+	}
 
-    function tuchoiMuonSach(id)
-    {
-        var xacnhan = window.confirm("Bạn có chắc chắn muốn từ chối yêu cầu này?");
-        if (xacnhan)
-        {
-            let ghichu = document.getElementById("Ghichu").value;
-            let data = {
-                Maphieu: id,
-                Ghichu: ghichu
-            };
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (JSON.parse(xhttp.responseText) == true) {
-                    alert("Từ chối yêu cầu mượn sách thành công");
-                    location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
-                }
-                else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu mượn sách") {
-                    alert("Độc giả đã hủy yêu cầu mượn sách");
-                    location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
-                }
-                else {
-                    alert("Từ chối yêu cầu mượn sách thất bại");
-                }
-            }
-            const url = "/Phieumuonsach/tuChoiMuonSach";
-            xhttp.open("POST", url);
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.send(JSON.stringify(data));
-        }
-        
-    }
+	function tuchoiMuonSach(id) {
+		var xacnhan = window.confirm("Bạn có chắc chắn muốn từ chối yêu cầu này?");
+		if (xacnhan) {
+			let ghichu = document.getElementById("Ghichu").value;
+			let data = {
+				Maphieu: id,
+				Ghichu: ghichu
+			};
+			const xhttp = new XMLHttpRequest();
+			xhttp.onload = function () {
+				if (JSON.parse(xhttp.responseText) == true) {
+					alert("Từ chối yêu cầu mượn sách thành công");
+					location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+				}
+				else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu mượn sách") {
+					alert("Độc giả đã hủy yêu cầu mượn sách");
+					location.href = "/Phieumuonsach/DSPhieuMuon_Thuthu";
+				}
+				else {
+					alert("Từ chối yêu cầu mượn sách thất bại");
+				}
+			}
+			const url = "/Phieumuonsach/tuChoiMuonSach";
+			xhttp.open("POST", url);
+			xhttp.setRequestHeader("Content-Type", "application/json");
+			xhttp.send(JSON.stringify(data));
+		}
 
-    function kiemtraGiaHan(id) { 
-        const xhttp = new XMLHttpRequest();
-        xhttp.onload = function () {
-            if (JSON.parse(xhttp.responseText) == false) {
-                location.href = "/Phieutrasach/formLapPhieuTra?maphieumuon=" + id;
-            }
-            else {
-                alert("Có yêu cầu gia hạn cho phiếu mượn này chưa được phê duyệt");
-            }
-        }
-        const url = "/Phieumuonsach/kiemtraPhieuGiaHan/" + id;
-        xhttp.open("GET", url);
-        xhttp.send();
-    }
+	}
+
+	function kiemtraGiaHan(id) {
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function () {
+			if (JSON.parse(xhttp.responseText) == false) {
+				location.href = "/Phieutrasach/formLapPhieuTra?maphieumuon=" + id;
+			}
+			else {
+				alert("Có yêu cầu gia hạn cho phiếu mượn này chưa được phê duyệt");
+			}
+		}
+		const url = "/Phieumuonsach/kiemtraPhieuGiaHan/" + id;
+		xhttp.open("GET", url);
+		xhttp.send();
+	}
 </script>
 

@@ -82,15 +82,17 @@ namespace OnlineLibraryManagement.Controllers
             ModelState.Remove(nameof(tkmoi.Tentk));
             ModelState.Remove(nameof(tkmoi.Email));
 
-            if (!ModelState.IsValid)
-            {
-                return View("frmDoiMatkhau");
-            }
+            if (!ModelState.IsValid) return View("frmDoiMatkhau");
 
             Taikhoan t = tk();
             if (t.Matkhau == tkmoi.Matkhaucu)
-            {
-                t.Matkhau = tkmoi.Matkhau;
+			{
+				if (tkmoi.Matkhaucu == tkmoi.Matkhau)
+				{
+					ModelState.AddModelError("Matkhau", "Mật khẩu mới phải khác mật khẩu cũ");
+					return View("frmDoiMatkhau");
+				}
+				t.Matkhau = tkmoi.Matkhau;
             }
             else
             {

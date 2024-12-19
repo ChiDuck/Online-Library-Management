@@ -8,13 +8,13 @@
 <h1 class="mt-4 mb-4">Danh sách thể loại</h1>
 
 <p>
-	<a asp-action="frmThemTheloai" class="btn btn-success" style="padding-left:1em">
+	<a data-bs-toggle ="modal" data-bs-target="#formModal" class="btn btn-success" style="padding-left:1em">
 		<i class="fa-solid fa-plus me-2" style="color: #ffffff;"></i>Thêm thể loại
 	</a>
 </p>
 <div class="p-3 bg-light text-center">
-	<table class="table overflow-hidden border-top table-hover">
-		<thead class="border-top border-dark align-middle table-bordered">
+	<table class="table overflow-hidden border-top align-middle table-hover">
+		<thead class="border-top border-dark  table-bordered">
 			<tr>
 				<th>
 					@Html.DisplayNameFor(model => model.Maloai)
@@ -49,4 +49,27 @@
 			}
 		</tbody>
 	</table>
+</div>
+
+<div class="container">
+	<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title mt-1">Thêm thể loại</h4>
+					<button type="button" class="btn-close me-1" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body ms-4 me-4">
+					<label class="form-label">
+						@Html.DisplayNameFor(model => model.Tenloai)
+					</label>
+					<input class="form-control" id="tenloai">
+					<span class="text-danger" id="validten"></span>
+				</div>
+				<div class="modal-footer border-0">
+					<input type="button" value="Thêm" onclick="themTheloai()" class="btn btn-success me-4 mb-3" />
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

@@ -114,11 +114,11 @@ footer {
     src: url('../font/MPLUSRounded1c-Medium.ttf') format('truetype');
 }
 
-.title {
+.titlefont {
     font-family: TitleFont, Bahnschrift;
 }
 
-.fa-trash {
+.fa-trash, .fa-circle-info {
     transform: translate(0,1.5px);
 }
  .longtext {

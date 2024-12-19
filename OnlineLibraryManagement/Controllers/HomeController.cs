@@ -57,8 +57,8 @@ namespace OnlineLibraryManagement.Controllers
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
-                        return View("~/Views/Thuthu/Index.cshtml");
-                    }
+                        return RedirectToAction("Index", "Sach");
+					}
 
                     else
                     {

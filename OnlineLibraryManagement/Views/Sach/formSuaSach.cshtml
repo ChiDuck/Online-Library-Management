@@ -1,134 +1,123 @@
 ﻿@model OnlineLibraryManagement.Models.Sach
 
 @{
-    ViewData["Title"] = "Thay đổi thông tin sách";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Thay đổi thông tin sách";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 @{
-    QuanLyThuVienContext db = new QuanLyThuVienContext();
-    SelectList DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
-    SelectList DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
+	QuanLyThuVienContext db = new QuanLyThuVienContext();
+	SelectList DSTheLoai = new SelectList(db.Theloai.ToList(), "Maloai", "Tenloai");
+	SelectList DSNhaXuatBan = new SelectList(db.Nhaxuatban.ToList(), "Manxb", "Tennxb");
 }
 
-<h1>Thay đổi thông tin sách</h1>
-<div>
-    <a class="btn btn-success" asp-action="Index">Xem danh sách các sách</a>
+<div class="mt-5 d-flex">
+	<h2 style="margin-bottom:0">Chỉnh sửa sách</h2>
+	<a asp-action="Index" class="btn bg-light ms-auto">
+		<i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+	</a>
 </div>
 <hr />
-<div class="row">
-    <div class="col-md-8">
-        <form asp-action="suaSach" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="hidden" asp-for="Masach" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Tensach" class="control-label"></label>
-                <input asp-for="Tensach" class="form-control" />
-                <span asp-validation-for="Tensach" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Soluong" class="control-label"></label>
-                <input type="number" asp-for="Soluong" class="form-control" />
-                <span asp-validation-for="Soluong" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Namxuatban" class="control-label"></label>
-                <input type="number" asp-for="Namxuatban" class="form-control" />
-                <span asp-validation-for="Namxuatban" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Anhbia" class="control-label">Thay đổi ảnh bìa</label>
-                <input type="hidden" asp-for="Anhbia" class="form-control" />
-                <input type="file" name="fileImg"  class="form-control" />
-                <span asp-validation-for="Anhbia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Maloai" class="control-label"></label>
-                <select asp-for="Maloai" asp-items="@DSTheLoai" class="form-select"></select>
-                <span asp-validation-for="Maloai" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Manxb" class="control-label"></label>
-                <select asp-for="Manxb" asp-items="@DSNhaXuatBan" class="form-select"></select>
-                <span asp-validation-for="Manxb" class="text-danger"></span>
-            </div>
-            <br />
-@*             <div>
-                <a asp-action="formChonTacGia" class="btn btn-primary">Chỉnh sửa tác giả</a>
-            </div> *@
-            @{
-                if (Model != null)
-                {
-                    <div>
-                        <h3>Danh sách tác giả</h3>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Tên tác giả
-                                    </th>
-                                    <th>
-                                        Ngày sinh
-                                    </th>
-                                    <th>
-                                        Quốc tịch
-                                    </th>
-                                    <th>
-                                        Vai trò
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    foreach (var item in Model.Phienbansach)
-                                    {
-                                                 <tr>
-                                                     <td>
-                                                         @item.MatacgiaNavigation.Tentacgia
-                                                     </td>
-                                                     <td>
-                                                         @{
-                                                             if (item.MatacgiaNavigation.Ngaysinh != null)
-                                                             {
-                                                        <p>@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()</p>
-                                                             }
-                                                         }
+<div class="row ">
+	<div class="col-md-6  ms-0 p-3 bg-light">
+		<form asp-action="suaSach" method="post" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<input type="hidden" asp-for="Masach" class="form-control" />
+			<div class="form-group">
+				<label asp-for="Tensach" class="control-label"></label>
+				<input asp-for="Tensach" class="form-control" />
+				<span asp-validation-for="Tensach" class="text-danger"></span>
+			</div>
+			<div class="form-group text-nowrap d-flex justify-content-evenly gap-3 mt-3">
+				<label asp-for="Soluong" class="control-label mt-2"></label>
+				<input type="number" asp-for="Soluong" class="form-control" />
+				<span asp-validation-for="Soluong" class="text-danger"></span>
 
-                                                     </td>
-                                                     <td>
-                                                         @item.MatacgiaNavigation.Quoctich
-                                                     </td>
-                                                     <td>
-                                                         @item.Vaitro
-                                                     </td>
-                                                 </tr>
-                                    }
-                                }
-                               
-                            </tbody>
-                        </table>
-                    </div>
-                }
-            }
-            <br />
-            <div class="form-group">
-                <input type="submit" value="Sửa" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-    <div class="col-md-4">
-        @{
-            if (!string.IsNullOrEmpty(Model.Anhbia))
-            {
-                string tenFile = "~/img/" + Model.Anhbia;
-                <img class="justify-content-center" height="500" width="300" src="@Url.Content(tenFile)" />
-            }
-        }
-    </div>
+				<label asp-for="Namxuatban" class="control-label mt-2"></label>
+				<input type="number" asp-for="Namxuatban" class="form-control" />
+				<span asp-validation-for="Namxuatban" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-3">
+				<label asp-for="Anhbia" class="control-label">Thay đổi ảnh bìa</label>
+				<input type="hidden" asp-for="Anhbia" class="form-control" />
+				<input type="file" name="fileImg" class="form-control" />
+				<span asp-validation-for="Anhbia" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-3">
+				<label asp-for="Maloai" class="control-label"></label>
+				<select asp-for="Maloai" asp-items="@DSTheLoai" class="form-select"></select>
+				<span asp-validation-for="Maloai" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-3">
+				<label asp-for="Manxb" class="control-label"></label>
+				<select asp-for="Manxb" asp-items="@DSNhaXuatBan" class="form-select"></select>
+				<span asp-validation-for="Manxb" class="text-danger"></span>
+			</div>
+			<br />
+			@if (Model != null)
+			{
+				<div class="p-3 mt-4 bg-light">
+					<h3>Danh sách tác giả</h3>
+					<br />
+					<table class="table overflow-hidden border-top table-hover">
+						<thead class="border-top border-dark table-bordered">
+							<tr>
+								<th>
+									Tên tác giả
+								</th>
+								<th>
+									Ngày sinh
+								</th>
+								<th>
+									Quốc tịch
+								</th>
+								<th>
+									Vai trò
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model.Phienbansach)
+							{
+								<tr>
+									<td>
+										@item.MatacgiaNavigation.Tentacgia
+									</td>
+									<td>
+										@if (item.MatacgiaNavigation.Ngaysinh != null)
+										{
+											@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()
+										}
+									</td>
+									<td>
+										@item.MatacgiaNavigation.Quoctich
+									</td>
+									<td>
+										@item.Vaitro
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			}
+			<br />
+			<div class="form-group ms-3">
+				<input type="submit" value="Sửa" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+	<div class="col-md-6 mx-auto">
+		@if (!string.IsNullOrEmpty(Model.Anhbia))
+		{
+			string tenFile = "~/img/" + Model.Anhbia;
+			<img class="justify-content-center" height="450" width="270" src="@Url.Content(tenFile)" />
+		}
+	</div>
 </div>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

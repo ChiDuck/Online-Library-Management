@@ -1,204 +1,205 @@
 ﻿@model OnlineLibraryManagement.Models.Phieugiahan
 
 @{
-    ViewData["Title"] = "Chi tiết phiếu gia hạn";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Chi tiết phiếu gia hạn";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 @{
-    Thuthu t = ViewBag.Thuthu as Thuthu;
+	Thuthu t = ViewBag.Thuthu as Thuthu;
 }
-<h1>Chi tiết phiếu gia hạn</h1>
-<div>
-    <a asp-action="Index" class="btn btn-primary">Xem tất cả các phiếu gia hạn</a>
-</div>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Maphieu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Maphieu)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ngaylapphieu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Ngaylapphieu.Value.ToShortDateString()
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ngaypheduyet)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.Ngaypheduyet != null)
-            {
-                @Model.Ngaypheduyet.Value.ToShortDateString()
-            }
-            else if (Model.Matinhtrang == 1)
-            {
-                string x = "Chờ phê duyệt (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)";
-                @x
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hantramoi)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.Hantramoi != null)
-            {
-                @Model.Hantramoi.Value.ToShortDateString()
-            }
-            else if (Model.Matinhtrang == 1)
-            {
-                <input type="date" id="Hantra" class="form-control" />
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Langiahan)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Langiahan)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lydo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lydo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Matinhtrang)
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.MatinhtrangNavigation.Tentinhtrang
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Maphieumuon)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Maphieumuon)
-        </dd>
-        <dt class="col-sm-2">
-           Độc giả
-        </dt>
-        <dd class="col-sm-10">
-            @Model.MaphieumuonNavigation.MadocgiaNavigation.Tendocgia
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Matt)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.MattNavigation != null)
-            {
-                @Model.MattNavigation.Tentt
-            }
-            else if (Model.Matinhtrang == 1)
-            {
-                string x = "Chưa có (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)";
-                @x
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ghichu)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.Matinhtrang == 1)
-            {
-                <input id="Ghichu" placeholder="Nhập ghi chú (nếu có)" value="@Model.Ghichu" class="form-control" />
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(Model.Ghichu))
-                {
-                    <p>Không có</p>
-                }
-                else
-                {
-                    @Model.Ghichu
-                }
-            }
-        </dd>
-    </dl>
+<div class="mt-5 d-flex">
+	<h2 style="margin-bottom:0">Chi tiết phiếu gia hạn</h2>
+	<a asp-action="Index" class="btn bg-light ms-auto">
+		<i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+	</a>
 </div>
 <hr />
+<dl class="row ms-0 p-3 bg-light" style="width:30em">
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Maphieu)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Maphieu)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Ngaylapphieu)
+	</dt>
+	<dd class="col-sm-8">
+		@Model.Ngaylapphieu.Value.ToShortDateString()
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Ngaypheduyet)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.Ngaypheduyet != null)
+		{
+			@Model.Ngaypheduyet.Value.ToShortDateString()
+		}
+		else if (Model.Matinhtrang == 1)
+		{
+			string x = "Chờ phê duyệt (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)";
+			@x
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Hantramoi)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.Hantramoi != null)
+		{
+			@Model.Hantramoi.Value.ToShortDateString()
+		}
+		else if (Model.Matinhtrang == 1)
+		{
+			<input type="date" id="Hantra" class="form-control" />
+		}
+		else
+		{
+			<text>--/--</text>
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Langiahan)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Langiahan)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Lydo)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Lydo)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Matinhtrang)
+	</dt>
+	<dd class="col-sm-8">
+		@Model.MatinhtrangNavigation.Tentinhtrang
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Maphieumuon)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Maphieumuon)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		Độc giả
+	</dt>
+	<dd class="col-sm-8">
+		@Model.MaphieumuonNavigation.MadocgiaNavigation.Tendocgia
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Matt)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.MattNavigation != null)
+		{
+			@Model.MattNavigation.Tentt
+		}
+		else if (Model.Matinhtrang == 1)
+		{
+			<text>Chưa có (Cập nhật tự động nếu chấp nhận hoặc từ chối yêu cầu)</text>
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Ghichu)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.Matinhtrang == 1)
+		{
+			<input id="Ghichu" placeholder="Nhập ghi chú (nếu có)" value="@Model.Ghichu" class="form-control" />
+		}
+		else
+		{
+			if (string.IsNullOrEmpty(Model.Ghichu))
+			{
+				<text>Không có</text>
+			}
+			else
+			{
+				@Model.Ghichu
+			}
+		}
+	</dd>
+</dl>
 @if (Model.Matinhtrang == 1)
 {
-    <div>
-        <input type="button" value="Xác nhận" onclick="xacnhanGiahan('@Model.Maphieu')" class="btn btn-success" /> |
-        <input type="button" value="Từ chối" onclick="tuchoiGiahan('@Model.Maphieu')" class="btn btn-danger" />
-    </div>
+	<div class="ms-3">
+		<input type="button" value="Xác nhận" onclick="xacnhanGiahan('@Model.Maphieu')" class="btn btn-success" />
+		<input type="button" value="Từ chối" onclick="tuchoiGiahan('@Model.Maphieu')" class="btn btn-danger" />
+	</div>
 }
 <script>
-    function xacnhanGiahan(id) {
-        let hantra = document.getElementById("Hantra").value;
-        if (!hantra) {
-            alert("Bạn chưa gia hạn ngày trả sách");
-            return;
-        }
-        var xacnhan = window.confirm("Bạn có chắc chắn muốn xác nhận yêu cầu này?");
-        if (xacnhan)
-        {
-            let dateNow = new Date();
-            dateNow.setHours(0, 0, 0, 0);
-            let inputDate = new Date(hantra);
-            inputDate.setHours(0, 0, 0, 0);
-            if (inputDate >= dateNow) {
-                let ghichu = document.getElementById("Ghichu").value;
-                let data = {
-                    Maphieu: id,
-                    Hantra: hantra,
-                    Ghichu: ghichu
-                };
-                const xhttp = new XMLHttpRequest();
-                xhttp.onload = function () {
-                    if (JSON.parse(xhttp.responseText) == true) {
-                        alert("Xác nhận yêu cầu gia hạn thành công");
-                        location.href = "/Phieugiahan/Index";
-                    }
-                    else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu gia hạn") {
-                        alert("Độc giả đã hủy yêu cầu gia hạn");
-                        location.href = "/Phieugiahan/Index";
-                    }
-                    else {
-                        alert("Xác nhận yêu cầu gia hạn thất bại");
-                    }
-                }
-                var url = "/Phieugiahan/xacNhanGiaHan";
-                xhttp.open("POST", url);
-                xhttp.setRequestHeader("Content-Type", "application/json");
-                xhttp.send(JSON.stringify(data));
-            }
-            else {
-                alert("Hạn trả không hợp lệ");
-            }
-        }
-    }
+	function xacnhanGiahan(id) {
+		let hantra = document.getElementById("Hantra").value;
+		if (!hantra) {
+			alert("Bạn chưa gia hạn ngày trả sách");
+			return;
+		}
+		var xacnhan = window.confirm("Bạn có chắc chắn muốn xác nhận yêu cầu này?");
+		if (xacnhan) {
+			let dateNow = new Date();
+			dateNow.setHours(0, 0, 0, 0);
+			let inputDate = new Date(hantra);
+			inputDate.setHours(0, 0, 0, 0);
+			if (inputDate >= dateNow) {
+				let ghichu = document.getElementById("Ghichu").value;
+				let data = {
+					Maphieu: id,
+					Hantra: hantra,
+					Ghichu: ghichu
+				};
+				const xhttp = new XMLHttpRequest();
+				xhttp.onload = function () {
+					if (JSON.parse(xhttp.responseText) == true) {
+						alert("Xác nhận yêu cầu gia hạn thành công");
+						location.href = "/Phieugiahan/Index";
+					}
+					else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu gia hạn") {
+						alert("Độc giả đã hủy yêu cầu gia hạn");
+						location.href = "/Phieugiahan/Index";
+					}
+					else {
+						alert("Xác nhận yêu cầu gia hạn thất bại");
+					}
+				}
+				var url = "/Phieugiahan/xacNhanGiaHan";
+				xhttp.open("POST", url);
+				xhttp.setRequestHeader("Content-Type", "application/json");
+				xhttp.send(JSON.stringify(data));
+			}
+			else {
+				alert("Hạn trả không hợp lệ");
+			}
+		}
+	}
 
-    function tuchoiGiahan(id) {
-        var xacnhan = window.confirm("Bạn có chắc chắn muốn từ chối yêu cầu này?");
-        if (xacnhan) {
-            let ghichu = document.getElementById("Ghichu").value;
-            let data = {
-                Maphieu: id,
-                Ghichu: ghichu
-            };
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (JSON.parse(xhttp.responseText) == true) {
-                    alert("Từ chối yêu cầu gia hạn thành công");
-                    location.href = "/Phieugiahan/Index";
-                }
-                else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu gia hạn") {
-                    alert("Độc giả đã hủy yêu cầu gia hạn");
-                    location.href = "/Phieugiahan/Index";
-                }
-                else {
-                    alert("Từ chối yêu cầu gia hạn thất bại");
-                }
-            }
-            var url = "/Phieugiahan/tuChoiGiaHan";
-            xhttp.open("POST", url);
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.send(JSON.stringify(data));
-        }
-    }
+	function tuchoiGiahan(id) {
+		var xacnhan = window.confirm("Bạn có chắc chắn muốn từ chối yêu cầu này?");
+		if (xacnhan) {
+			let ghichu = document.getElementById("Ghichu").value;
+			let data = {
+				Maphieu: id,
+				Ghichu: ghichu
+			};
+			const xhttp = new XMLHttpRequest();
+			xhttp.onload = function () {
+				if (JSON.parse(xhttp.responseText) == true) {
+					alert("Từ chối yêu cầu gia hạn thành công");
+					location.href = "/Phieugiahan/Index";
+				}
+				else if (JSON.parse(xhttp.responseText) == "Độc giả đã hủy yêu cầu gia hạn") {
+					alert("Độc giả đã hủy yêu cầu gia hạn");
+					location.href = "/Phieugiahan/Index";
+				}
+				else {
+					alert("Từ chối yêu cầu gia hạn thất bại");
+				}
+			}
+			var url = "/Phieugiahan/tuChoiGiaHan";
+			xhttp.open("POST", url);
+			xhttp.setRequestHeader("Content-Type", "application/json");
+			xhttp.send(JSON.stringify(data));
+		}
+	}
 </script>

@@ -1,152 +1,156 @@
 ﻿@model OnlineLibraryManagement.Models.Sach
 
 @{
-    ViewData["Title"] = "Xóa sách";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Xóa sách";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
-
 @if (ViewBag.flag == true)
 {
-    <h1>Xóa sách</h1>
-    <h3>Bạn chắc chắn muốn xóa cuốn sách này?</h3>
+	<h2 class="mt-5">Xóa sách</h2>
 }
 else
 {
-    <h1>Bạn không thể xóa cuốn sách này</h1>
-    <h3>Đã tồn tại dữ liệu phiếu mượn sách cho cuốn sách này</h3>
+	<h2 class="mt-5">Bạn không thể xóa cuốn sách này</h2>
+}
+<div class="mt-4 d-flex">
+	@if (ViewBag.flag == true)
+	{
+		<h4>Bạn chắc chắn muốn xóa cuốn sách này?</h4>
+	}
+	else
+	{
+		<h4>Đã tồn tại dữ liệu phiếu mượn sách cho cuốn sách này</h4>
+	}
+	<a asp-action="Index" class="btn bg-light ms-auto">
+		<i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+	</a>
+</div>
+<hr />
+<dl class="row ms-0 p-3 bg-light" style="width:30em">
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Masach)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Masach)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Tensach)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Tensach)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Soluong)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Soluong)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Namxuatban)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Namxuatban)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Anhbia)
+	</dt>
+	<dd class="col-sm-8">
+		@{
+			if (!string.IsNullOrEmpty(Model.Anhbia))
+			{
+				string tenFile = "~/img/" + Model.Anhbia;
+				<img height="150" width="100" src="@Url.Content(tenFile)" />
+			}
+			else
+			{
+				<text>Không có</text>
+			}
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Maloai)
+	</dt>
+	<dd class="col-sm-8">
+		@{
+			if (Model.MaloaiNavigation != null)
+			{
+				@Model.MaloaiNavigation.Tenloai
+			}
+			else
+			{
+				<text>--</text>
+			}
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Manxb)
+	</dt>
+	<dd class="col-sm-8">
+		@{
+			if (Model.ManxbNavigation != null)
+			{
+				@Model.ManxbNavigation.Tennxb
+			}
+			else
+			{
+				<text>--</text>
+			}
+		}
+	</dd>
+</dl>
+<div class="p-3 mt-4 bg-light">
+	<h3>Danh sách tác giả</h3>
+	<br />
+	<table class="table overflow-hidden border-top table-hover">
+		<thead class="border-top border-dark table-bordered">
+			<tr>
+				<th>
+					Tên tác giả
+				</th>
+				<th>
+					Ngày sinh
+				</th>
+				<th>
+					Quốc tịch
+				</th>
+				<th>
+					Vai trò
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.Phienbansach)
+			{
+				<tr>
+					<td>
+						@item.MatacgiaNavigation.Tentacgia
+					</td>
+					<td>
+						@{
+							if (@item.MatacgiaNavigation.Ngaysinh != null)
+							{
+								@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()
+							}
+
+						}
+					</td>
+					<td>
+						@item.MatacgiaNavigation.Quoctich
+					</td>
+					<td>
+						@item.Vaitro
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+@if (ViewBag.flag == true)
+{
+	<form asp-action="xoaSach">
+		<input type="hidden" name="masach" value="@Model.Masach" />
+		<input type="submit" value="Xóa" class="btn btn-danger mt-3 ms-3" />
+	</form>
 }
 
-<div>
-    <hr />
-    <dl class="row">
-@*         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Masach)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Masach)
-        </dd> *@
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tensach)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tensach)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Soluong)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Soluong)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Namxuatban)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Namxuatban)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Anhbia)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                if (!string.IsNullOrEmpty(Model.Anhbia))
-                {
-                    string tenFile = "~/img/" + Model.Anhbia;
-                    <img height="150" width="100" src="@Url.Content(tenFile)" />
-                }
-                else
-                {
-                    <p>Không có</p>
-                }
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Maloai)
-        </dt>
-        <dd class = "col-sm-10">
-            @{
-                if (Model.MaloaiNavigation != null)
-                {
-                    <p>@Model.MaloaiNavigation.Tenloai</p>
-                }
-                else
-                {
-                    <p>Chưa có</p>
-                }
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Manxb)
-        </dt>
-        <dd class = "col-sm-10">
-            @{
-                if (Model.ManxbNavigation != null)
-                {
-                    <p>@Model.ManxbNavigation.Tennxb</p>
-                }
-                else
-                {
-                    <p>Chưa có</p>
-                }
-            }
-        </dd>
-    </dl>
-    <div>
-        <h3>Danh sách tác giả</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Tên tác giả
-                    </th>
-                    <th>
-                        Ngày sinh
-                    </th>
-                    <th>
-                        Quốc tịch
-                    </th>
-                    <th>
-                        Vai trò
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Phienbansach)
-                {
-                    <tr>
-                        <td>
-                            @item.MatacgiaNavigation.Tentacgia
-                        </td>
-                        <td>
-                            @{
-                                if (@item.MatacgiaNavigation.Ngaysinh != null)
-                                {
-                                    <p>@item.MatacgiaNavigation.Ngaysinh.Value.ToShortDateString()</p>
-                                }
-
-                            }
-                        </td>
-                        <td>
-                            @item.MatacgiaNavigation.Quoctich
-                        </td>
-                        <td>
-                            @item.Vaitro
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (ViewBag.flag == true)
-    {
-        <form asp-action="xoaSach">
-            <input type="hidden" name="masach" value="@Model.Masach" />
-            <input type="submit" value="Xóa" class="btn btn-danger" /> |
-            <a class="btn btn-success" asp-action="Index">Quay lại</a>
-        </form>
-    }
-    else
-    {
-        <a class="btn btn-success" asp-action="Index">Quay lại danh sách</a>
-    }
-
-</div>

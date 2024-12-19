@@ -8,7 +8,7 @@
 <h1 class="mt-4 mb-4">Danh sách nhà xuất bản</h1>
 
 <p>
-	<a asp-action="frmThemNhaxuatban" class="btn btn-success" style="padding-left:1em">
+	<a data-bs-toggle="modal" data-bs-target="#formModal" class="btn btn-success" style="padding-left:1em">
 		<i class="fa-solid fa-plus me-2" style="color: #ffffff;"></i>Thêm nhà xuất bản
 	</a>
 </p>
@@ -61,4 +61,41 @@
 			}
 		</tbody>
 	</table>
+</div>
+
+<div class="container">
+	<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title mt-1">Thêm tác giả</h4>
+					<button type="button" class="btn-close me-1" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body ms-4 me-4">
+					<div class="mb-3">
+						<label class="form-label">
+							@Html.DisplayNameFor(model => model.Tennxb)
+						</label>
+						<input class="form-control" id="tennxb">
+						<p class="text-danger" id="validten"></p>
+					</div>
+					<div class="mb-3">
+						<label class="form-label">
+							@Html.DisplayNameFor(model => model.Email)
+						</label>
+						<input class="form-control" id="email" />
+					</div>
+					<div>
+						<label class="form-label">
+							@Html.DisplayNameFor(model => model.Diachi)
+						</label>
+						<input class="form-control" id="diachi" />
+					</div>
+				</div>
+				<div class="modal-footer border-0">
+					<input type="button" value="Thêm" onclick="themNxb()" class="btn btn-success me-4 mb-3" />
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

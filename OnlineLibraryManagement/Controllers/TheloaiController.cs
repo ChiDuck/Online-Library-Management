@@ -21,17 +21,15 @@ namespace OnlineLibraryManagement.Controllers
             return View();
         }
 
-        public IActionResult themTheloai(CTheloai ctl)
+        public IActionResult themTheloai(string id)
         {
-            if (ModelState.IsValid)
+            Theloai tl = new()
             {
-                Theloai tl = CTheloai.chuyenDoi(ctl);
-                db.Theloai.Add(tl);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View("frmThemTheloai");
+                Tenloai = id
+            };
+            db.Theloai.Add(tl);
+            db.SaveChanges();
+            return Json(true);
         }
 
         public IActionResult frmXoaTheloai(int id)

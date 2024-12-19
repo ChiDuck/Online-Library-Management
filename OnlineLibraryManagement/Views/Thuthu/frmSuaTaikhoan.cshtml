@@ -4,46 +4,42 @@
     ViewData["Title"] = "Chỉnh sửa thông tin";
     Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
-
-<h1>Sửa thông tin tài khoản</h1>
-<div>
-    <a asp-action="Taikhoan">Quay lại</a>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row pt-4 pb-4 mt-5 ms-auto me-auto bg-light" style="width:25em">
+    <div class="col-1"></div>
+    <div class="col">
+        <h3 class="text-center mb-4">Chỉnh sửa thông tin</h3>
         <form asp-action="suaTaikhoan" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="hidden" asp-for="Matt" class="form-control" />
+                <input hidden asp-for="Matt" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="MatkNavigation.Tentk" class="control-label"></label>
                 <input readonly asp-for="MatkNavigation.Tentk" class="form-control" />
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label asp-for="Tentt" class="control-label"></label>
                 <input asp-for="Tentt" class="form-control" />
                 <span asp-validation-for="Tentt" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label asp-for="Sdt" class="control-label"></label>
                 <input asp-for="Sdt" class="form-control" />
                 <span asp-validation-for="Sdt" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label asp-for="MatkNavigation.Email" class="control-label"></label>
                 <input asp-for="MatkNavigation.Email" class="form-control" />
                 <span asp-validation-for="MatkNavigation.Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="hidden" asp-for="Matk" class="form-control" />
-            </div>
+            <input type="hidden" asp-for="Matk" class="form-control" />
             <br />
-            <div class="form-group">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
+            <div class="form-group text-center">
+                <input type="submit" value="Lưu" class="btn btn-primary me-2" />
+                <a asp-action="Taikhoan" class="btn btn-danger">Hủy</a>
             </div>
         </form>
     </div>
+    <div class="col-1"></div>
 </div>
 

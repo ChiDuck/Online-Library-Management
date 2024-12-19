@@ -21,17 +21,17 @@ namespace OnlineLibraryManagement.Controllers
             return View();
         }
 
-        public IActionResult themNhaxuatban(CNhaxuatban cnxb)
+        public IActionResult themNhaxuatban([FromBody] CNhaxuatban2 cnxb)
         {
-            if (ModelState.IsValid)
+            Nhaxuatban nxb = new()
             {
-                Nhaxuatban nxb = CNhaxuatban.chuyenDoi(cnxb);
-                db.Nhaxuatban.Add(nxb);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View("frmThemNhaxuatban");
+                Tennxb = cnxb.Tennxb,
+                Email = cnxb.Email,
+                Diachi = cnxb.Diachi
+            };
+            db.Nhaxuatban.Add(nxb);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public IActionResult frmXoaNhaxuatban(int id)

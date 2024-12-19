@@ -1,31 +1,41 @@
 ﻿@model OnlineLibraryManagement.MyModels.CTheloai
 
 @{
-    ViewData["Title"] = "frmSuaTheloai";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "frmSuaTheloai";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 
-<h1>Sửa thể loại</h1>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="suaTheloai" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Maloai" class="form-control" />
-            <div class="form-group">
-                <label asp-for="Tenloai" class="control-label"></label>
-                <input asp-for="Tenloai" class="form-control" />
-                <span asp-validation-for="Tenloai" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-2">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-primary">Trở lại</a>
-            </div>
-        </form>
-    </div>
+<div class="mx-auto" style="width:42em">
+	<div class="mt-5 d-flex">
+		<h2 style="margin-bottom:0">Sửa thể loại</h2>
+		<a asp-action="Index" class="btn bg-light ms-auto">
+			<i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+		</a>
+	</div>
+	<hr />
+</div>
+<div class="row mx-auto pt-4 pb-4 bg-light" style="width:30em">
+	<div class="col-1"></div>
+	<div class="col">
+		<form asp-action="suaTheloai" method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="Maloai" class="form-control" />
+			<div class="form-group">
+				<label asp-for="Tenloai" class="control-label"></label>
+				<input asp-for="Tenloai" class="form-control" />
+				<span asp-validation-for="Tenloai" class="text-danger"></span>
+			</div>
+			<br />
+			<div class="form-group text-center">
+				<input type="submit" value="Lưu" class="btn btn-success" />
+			</div>
+		</form>
+	</div>
+	<div class="col-1"></div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

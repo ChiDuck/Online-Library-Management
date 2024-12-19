@@ -1,6 +1,5 @@
 ﻿// Tạo phiếu gia hạn 
 function taoPhieu() {
-    var ph = document.getElementById("taoPhieu");
     const modal = document.querySelector("#formModal");
     const modalInstance = bootstrap.Modal.getInstance(modal);
 
@@ -8,7 +7,7 @@ function taoPhieu() {
     let lydo = document.getElementById("lydo").value;
     let textma = document.getElementById("textma");
 
-    if (maphieumuon == "") {
+    if (maphieumuon.trim() == "") {
         textma.innerHTML = "Vui lòng nhập mã phiếu mượn";
         return;
     }
@@ -59,4 +58,87 @@ function scrollBack() {
 
 function scrollRight() {
     document.getElementById("bookContainer").scrollBy({ left: 300, behavior: "smooth" });
+}
+
+// Thêm tác giả
+function themTacgia() {
+    const modal = document.querySelector("#formModal");
+    const modalInstance = bootstrap.Modal.getInstance(modal);
+
+    let tentg = document.getElementById("tentg").value;
+    let ngaysinh = document.getElementById("ngaysinh").value;
+    let ngaymat = document.getElementById("ngaymat").value;
+    let quoctich = document.getElementById("quoctich").value;
+    if (ngaysinh == "") ngaysinh = null;
+    if (ngaymat == "") ngaymat = null;
+    let data = { Tentacgia: tentg, Ngaysinh: ngaysinh, Ngaymat: ngaymat, Quoctich: quoctich }
+    console.log(data);
+    if (tentg.trim() === "") {
+        document.getElementById("validten").innerHTML = "Vui lòng nhập tên tác giả";
+        return;
+    }
+  
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+        location.href = "/Tacgia/Index"
+    }
+
+    modalInstance.hide();
+
+    const url = "/Tacgia/themTacgia";
+    xhttp.open("POST", url);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(data));
+}
+
+// Thêm thể loại
+function themTheloai() {
+    const modal = document.querySelector("#formModal");
+    const modalInstance = bootstrap.Modal.getInstance(modal);
+
+    var id = document.getElementById("tenloai").value;
+    if (id.trim() == "") {
+        document.getElementById("validten").innerHTML = "Vui lòng nhập tên thể loại";
+        return;
+    }
+  
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+        location.href = "/Theloai/Index"
+    }
+
+    modalInstance.hide();
+
+    const url = "/Theloai/themTheloai/" + id;
+    xhttp.open("GET", url);
+    xhttp.send();
+}
+
+
+// Thêm nhà xuất bản
+function themNxb() {
+    const modal = document.querySelector("#formModal");
+    const modalInstance = bootstrap.Modal.getInstance(modal);
+
+    let tennxb = document.getElementById("tennxb").value;
+    let email = document.getElementById("email").value;
+    let diachi = document.getElementById("diachi").value;
+    let data = { Tennxb: tennxb, Email: email, Diachi: diachi }
+    console.log(data);
+    if (tennxb.trim() == "") {
+        document.getElementById("validten").innerHTML = "Vui lòng nhập tên nhà xuất bản";
+        return;
+    }
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+        location.href = "/Nhaxuatban/Index"
+    }
+
+    modalInstance.hide();
+
+    const url = "/Nhaxuatban/themNhaxuatban";
+    xhttp.open("POST", url);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(data));
 }

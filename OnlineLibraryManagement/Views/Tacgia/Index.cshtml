@@ -8,13 +8,13 @@
 <h1 class="mt-4 mb-4">Danh sách tác giả</h1>
 
 <p>
-	<a asp-action="frmThemTacgia" class="btn btn-success" style="padding-left:1em">
+	<a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#formModal" style="padding-left:1em">
 		<i class="fa-solid fa-plus me-2" style="color: #ffffff;"></i>Thêm tác giả
 	</a>
 </p>
 <div class="p-3 bg-light">
-	<table class="table overflow-hidden border-top table-hover">
-		<thead class="border-top border-dark align-middle table-bordered">
+	<table class="table overflow-hidden border-top align-middle table-hover">
+		<thead class="border-top border-dark table-bordered">
 			<tr>
 				<th class="text-center">
 					@Html.DisplayNameFor(model => model.Matacgia)
@@ -51,7 +51,7 @@
 							@item.Ngaysinh.Value.ToShortDateString()
 						else
 						{
-							<p>Không rõ</p>
+							<text>Không rõ</text>
 						}
 					</td>
 					<td>
@@ -59,7 +59,7 @@
 							@item.Ngaymat.Value.ToShortDateString()
 						else
 						{
-							<p>Không rõ</p>
+							<text>Không rõ</text>
 						}
 					</td>
 					<td class="ps-5">
@@ -78,3 +78,48 @@
 		</tbody>
 	</table>
 </div>
+
+<!-- Thêm -->
+<div class="container">
+	<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title mt-1">Thêm tác giả</h4>
+					<button type="button" class="btn-close me-1" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body ms-4 me-4">
+					<div class="mb-3">
+						<label class="form-label">
+							@Html.DisplayNameFor(model => model.Tentacgia)
+						</label>
+						<input class="form-control" id="tentg">
+						<p class="text-danger" id="validten"></p>
+					</div>
+					<div class="mb-3">
+						<label class="form-label">
+							@Html.DisplayNameFor(model => model.Ngaysinh)
+						</label>
+						<input type="date" class="form-control" id="ngaysinh" />
+					</div>
+					<div class="mb-3">
+						<label class="form-label">
+							@Html.DisplayNameFor(model => model.Ngaymat)
+						</label>
+						<input type="date" class="form-control" id="ngaymat" />
+					</div>
+					<div>
+						<label class="form-label">
+							@Html.DisplayNameFor(model => model.Quoctich)
+						</label>
+						<input class="form-control" id="quoctich" />
+					</div>
+				</div>
+				<div class="modal-footer border-0">
+					<input type="button" value="Thêm" onclick="themTacgia()" class="btn btn-success me-4 mb-3" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,175 +1,177 @@
 ﻿@model OnlineLibraryManagement.Models.Phieutrasach
 
 @{
-    ViewData["Title"] = "Chi tiết phiếu trả";
-    Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
+	ViewData["Title"] = "Chi tiết phiếu trả";
+	Layout = "~/Views/Shared/_LibrarianLayout.cshtml";
 }
 @{
-    QuanLyThuVienContext db = new QuanLyThuVienContext();
-    List<Chitietphieumuon> dsCTPhieuTra = ViewBag.DSCTPhieuTra as List<Chitietphieumuon>;
+	QuanLyThuVienContext db = new QuanLyThuVienContext();
+	List<Chitietphieumuon> dsCTPhieuTra = ViewBag.DSCTPhieuTra as List<Chitietphieumuon>;
 }
-<h1>Chi tiết phiếu trả</h1>
-<div>
-    <a asp-action="Index" class="btn btn-primary">Xem tất cả các phiếu trả</a>
+<div class="mt-5 d-flex">
+	<h2 style="margin-bottom:0">Chi tiết phiếu trả</h2>
+	<a asp-action="Index" class="btn bg-light ms-auto">
+		<i class="fa-solid fa-angle-left me-1"></i>Trở lại danh sách
+	</a>
 </div>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Maphieu)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Maphieu)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ngaylapphieu)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.Ngaylapphieu != null)
-            {
-                @Model.Ngaylapphieu.Value.ToShortDateString()
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sosachtra)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sosachtra)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Maphieumuon)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Maphieumuon)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Matt)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.MattNavigation != null)
-            {
-                @Model.MattNavigation.Tentt
-            }
-        </dd>
-        <dt class="col-sm-2">
-            Độc giả
-        </dt>
-        <dd class="col-sm-10">
-           @Model.MaphieumuonNavigation.MadocgiaNavigation.Tendocgia
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ghichu)
-        </dt>
-        <dd class="col-sm-10">
-            @if (string.IsNullOrEmpty(Model.Ghichu))
-            {
-                <p>Không có</p>
-            }
-            else
-            {
-                @Model.Ghichu
-            }
-        </dd>
-    </dl>
-</div>
+<hr />
+
+<dl class="row ms-0 p-3 bg-light" style="width:30em">
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Maphieu)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Maphieu)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Ngaylapphieu)
+	</dt>
+	<dd class="col-sm-8">
+		@Model.Ngaylapphieu.Value.ToShortDateString()
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Sosachtra)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Sosachtra)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Maphieumuon)
+	</dt>
+	<dd class="col-sm-8">
+		@Html.DisplayFor(model => model.Maphieumuon)
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Matt)
+	</dt>
+	<dd class="col-sm-8">
+		@if (Model.MattNavigation != null)
+		{
+			@Model.MattNavigation.Tentt
+		}
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		Độc giả
+	</dt>
+	<dd class="col-sm-8">
+		@Model.MaphieumuonNavigation.MadocgiaNavigation.Tendocgia
+	</dd>
+	<dt class="col-sm-4 text-end border-end">
+		@Html.DisplayNameFor(model => model.Ghichu)
+	</dt>
+	<dd class="col-sm-8">
+		@if (string.IsNullOrEmpty(Model.Ghichu))
+		{
+			<text>Không có</text>
+		}
+		else
+		{
+			@Model.Ghichu
+		}
+	</dd>
+</dl>
 @if (dsCTPhieuTra.Count > 0)
 {
-    <h3>Các cuốn sách độc giả đã trả</h3>
-    <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Tên sách
-                </th>
-                <th>
-                    Năm xuất bản
-                </th>
-                <th>
-                    Ảnh bìa
-                </th>
-                <th>
-                    Thể loại
-                </th>
-                <th>
-                    Nhà xuất bản
-                </th>
-                <th>
-                    Tác giả
-                </th>
-                <th>
-                    Tình trạng
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Chitietphieumuon item in ViewBag.DSCTPhieuTra)
-            {
-                <tr>
-                    <td>
-                        @item.MasachNavigation.Tensach
-                    </td>
-                    <td>
-                        @item.MasachNavigation.Namxuatban
-                    </td>
-                    <td>
-                        @{
-                            if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
-                            {
-                                string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
-                                <img height="100" width="50" src="@Url.Content(tenFile)" />
-                            }
-                        }
-                    </td>
-                    <td>
-                        @{
-                            if (item.MasachNavigation.MaloaiNavigation != null)
-                            {
-                                <p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
-                            }
-                        }
-                    </td>
-                    <td>
-                        @{
-                            if (item.MasachNavigation.ManxbNavigation != null)
-                            {
-                                <p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
-                            }
-                        }
-                    </td>
-                    <td>
-                        @{
-                            List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.MasachNavigation.Masach).ToList();
-                            for (int i = 0; i < dsPhienBanSach.Count; i++)
-                            {
-                                Phienbansach p = dsPhienBanSach[i];
-                                string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
-                                if (i == 0)
-                                {
-                                    <text>@tenTacgia</text>
-                                }
-                                else if (i >= 1 && i < dsPhienBanSach.Count)
-                                {
-                                    <text>, @tenTacgia</text>
-                                }
-                            }
-                        }
-                    </td>
-                    <td>
-                        @{
-                            if (item.MatinhtrangNavigation != null)
-                            {
-                                <p>@item.MatinhtrangNavigation.Tentinhtrang</p>
-                            }
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+	<div class="p-3 mt-4 bg-light">
+		<h3>Các cuốn sách độc giả đã trả</h3>
+		<br />
+		<table class="table overflow-hidden border-top table-hover">
+			<thead class="border-top border-dark table-bordered">
+				<tr>
+					<th>
+						Tên sách
+					</th>
+					<th>
+						Năm xuất bản
+					</th>
+					<th>
+						Ảnh bìa
+					</th>
+					<th>
+						Thể loại
+					</th>
+					<th>
+						Nhà xuất bản
+					</th>
+					<th>
+						Tác giả
+					</th>
+					<th>
+						Tình trạng
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (Chitietphieumuon item in ViewBag.DSCTPhieuTra)
+				{
+					<tr>
+						<td>
+							@item.MasachNavigation.Tensach
+						</td>
+						<td>
+							@item.MasachNavigation.Namxuatban
+						</td>
+						<td>
+							@{
+								if (!string.IsNullOrEmpty(item.MasachNavigation.Anhbia))
+								{
+									string tenFile = "~/img/" + item.MasachNavigation.Anhbia;
+									<img height="100" width="50" src="@Url.Content(tenFile)" />
+								}
+							}
+						</td>
+						<td>
+							@{
+								if (item.MasachNavigation.MaloaiNavigation != null)
+								{
+									<p>@item.MasachNavigation.MaloaiNavigation.Tenloai</p>
+								}
+							}
+						</td>
+						<td>
+							@{
+								if (item.MasachNavigation.ManxbNavigation != null)
+								{
+									<p>@item.MasachNavigation.ManxbNavigation.Tennxb</p>
+								}
+							}
+						</td>
+						<td>
+							@{
+								List<Phienbansach> dsPhienBanSach = db.Phienbansach.Where(x => x.Masach == item.MasachNavigation.Masach).ToList();
+								for (int i = 0; i < dsPhienBanSach.Count; i++)
+								{
+									Phienbansach p = dsPhienBanSach[i];
+									string tenTacgia = db.Tacgia.Find(p.Matacgia).Tentacgia;
+									if (i == 0)
+									{
+										<text>@tenTacgia</text>
+										<br />
+									}
+									else if (i >= 1 && i < dsPhienBanSach.Count)
+									{
+										<text>@tenTacgia</text>
+										<br />
+									}
+								}
+							}
+						</td>
+						<td>
+							@{
+								if (item.MatinhtrangNavigation != null)
+								{
+									<p>@item.MatinhtrangNavigation.Tentinhtrang</p>
+								}
+							}
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 }
 else
 {
-    <h3>Độc giả đã làm mất hết sách</h3>
+	<h3>Độc giả đã làm mất hết sách</h3>
 }
 
